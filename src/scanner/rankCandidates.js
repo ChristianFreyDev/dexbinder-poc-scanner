@@ -92,6 +92,16 @@ function rankCandidates(parsed, indexRecords, { topN = 5 } = {}) {
   // melhor, em vez de confiar só no nameGuess (a 1ª linha, só para exibição).
   const nameCandidates = parsed.nameLines && parsed.nameLines.length > 0 ? parsed.nameLines : [parsed.nameGuess];
 
+  // Idem para número: usa parsed.numberCandidates (todas as leituras) quando
+  // disponível; cai para o par único numberGuess/totalGuess por
+  // compatibilidade com chamadores antigos/sintéticos.
+  const numberCandidates =
+    parsed.numberCandidates && parsed.numberCandidates.length > 0
+      ? parsed.numberCandidates
+      : parsed.numberGuess
+        ? [{ number: parsed.numberGuess, total: parsed.totalGuess }]
+        : [];
+
   const scored = indexRecords.map((record) => {
     const reasons = [];
     let score = 0;
@@ -103,20 +113,34 @@ function rankCandidates(parsed, indexRecords, { topN = 5 } = {}) {
     else if (nameSim > 0) reasons.push("nome fraco");
     else reasons.push("nome não reconhecido");
 
-    const numRes = numberMatches(parsed.numberGuess, record.localId);
-    if (numRes.match) {
-      const totalRes = totalMatches(parsed.totalGuess, record);
+    // Achado real (ver parseCardText.js): o OCR às vezes lê o MESMO número
+    // de duas formas diferentes em linhas distintas de um mesmo recorte
+    // (uma certa, outra com um dígito confundido) — testa TODAS as leituras
+    // candidatas e usa a que der o melhor resultado para este registro, em
+    // vez de travar na primeira encontrada.
+    let bestNumberCredit = 0;
+    let bestNumberReason = "número ausente";
+    for (const candidate of numberCandidates) {
+      const numRes = numberMatches(candidate.number, record.localId);
+      if (!numRes.match) {
+        if (bestNumberCredit === 0 && bestNumberReason === "número ausente") bestNumberReason = numRes.reason;
+        continue;
+      }
+      const totalRes = totalMatches(candidate.total, record);
       if (totalRes.checked && !totalRes.match) {
         // Número bate, mas o total do set não — quase certamente uma carta
         // de outro set com o mesmo número de coleção por coincidência.
-        reasons.push("número bate, mas total do set não confere (outro set)");
-      } else {
-        score += WEIGHTS.number;
-        reasons.push(totalRes.checked ? "número e total do set exatos" : numRes.reason);
+        if (bestNumberCredit === 0) bestNumberReason = "número bate, mas total do set não confere (outro set)";
+        continue;
       }
-    } else {
-      reasons.push(numRes.reason);
+      const credit = WEIGHTS.number;
+      if (credit > bestNumberCredit) {
+        bestNumberCredit = credit;
+        bestNumberReason = totalRes.checked ? "número e total do set exatos" : numRes.reason;
+      }
     }
+    score += bestNumberCredit;
+    reasons.push(bestNumberReason);
 
     if (parsed.setAbbreviationGuess && record.setId) {
       const abbr = normalizeForComparison(parsed.setAbbreviationGuess);

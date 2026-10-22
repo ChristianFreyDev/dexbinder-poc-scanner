@@ -65,6 +65,15 @@ const COLLECTOR_NUMBER_PATTERN = /\b([A-Z]{1,5}\s?\d{1,4})\b/;
  * de coleção reais aparecem sozinhos numa linha pequena, não embutidos em
  * frases longas.
  *
+ * Achado real adicional (segunda rodada de fotos, mesmo dia): quando o OCR
+ * roda em múltiplos recortes (cabeçalho/foto inteira/rodapé), o MESMO
+ * número às vezes aparece lido de duas formas diferentes em linhas
+ * distintas — uma correta, outra com um erro de leitura (ex.: o final "5"
+ * de "165" lido como a letra "S", virando "16S"). Pegar só a PRIMEIRA
+ * leitura encontrada descartava a correta quando ela vinha depois. Por
+ * isso `numberCandidates` guarda TODAS as combinações número/total lidas
+ * nas linhas, e rankCandidates() testa todas, não só a primeira.
+ *
  * @param {string[]} rawTextBlocks - linhas/blocos devolvidos pelo OCR
  * @returns {{
  *   rawText: string,
@@ -73,6 +82,7 @@ const COLLECTOR_NUMBER_PATTERN = /\b([A-Z]{1,5}\s?\d{1,4})\b/;
  *   nameLines: string[],
  *   numberGuess: string|null,
  *   totalGuess: string|null,
+ *   numberCandidates: Array<{ number: string, total: string|null }>,
  *   setAbbreviationGuess: string|null,
  * }}
  */
@@ -87,25 +97,26 @@ function parseCardText(rawTextBlocks) {
   const nameLines = blocks.map((l) => l.trim()).filter((line) => /[A-Za-zÀ-ÿ]{2,}/.test(line) && !/^\d+\/\d+$/.test(line));
   const nameGuess = nameLines.length > 0 ? nameLines[0] : null;
 
-  let numberGuess = null;
-  let totalGuess = null;
+  // Achados reais (fotos físicas, 22/10/2026): o OCR às vezes lê o zero do
+  // número como a letra "o" minúscula ("o25/165"), e o "5" final de um
+  // total como a letra "S" ("16S" em vez de "165") — corrigido convertendo
+  // O/o para 0 e S para 5 quando colados a dígitos, só para reconhecer o
+  // número, nunca para o texto bruto exibido.
+  const fixOcrDigitConfusion = (s) =>
+    s.replace(/([Oo])(?=\d)|(?<=\d)([Oo])/g, "0").replace(/(S)(?=\d)|(?<=\d)(S)/g, "5");
+
+  const numberCandidates = [];
   for (const line of blocks) {
-    // Achados reais (fotos físicas, 22/10/2026): (a) o OCR às vezes lê o
-    // zero do número como a letra "o" minúscula ("o25/165" em vez de
-    // "025/165") — corrigido convertendo O/o para 0 quando colado a
-    // dígitos, só para fins de reconhecer o número, nunca para o texto
-    // bruto exibido. (b) uma palavra de ruído antes do número (ex.: "GWEN
+    // Achado real: uma palavra de ruído antes do número (ex.: "GWEN
     // 001/165") era incluída como se fosse parte dele — por isso o padrão
-    // de número com barra não aceita mais prefixo de letras, só dígitos.
-    const digitsOnly = line.replace(/([Oo])(?=\d)|(?<=\d)([Oo])/g, "0");
+    // de número com barra não aceita prefixo de letras, só dígitos.
+    const digitsOnly = fixOcrDigitConfusion(line);
     const m = digitsOnly.match(/(\d{1,4})\s*\/\s*(\d{1,4})/);
     if (m) {
-      numberGuess = m[1];
-      totalGuess = m[2];
-      break;
+      numberCandidates.push({ number: m[1], total: m[2] });
     }
   }
-  if (!numberGuess) {
+  if (numberCandidates.length === 0) {
     for (const line of blocks) {
       const trimmed = line.trim();
       // Só aceita se a linha for curta e o próprio número já ocupar a maior
@@ -113,11 +124,12 @@ function parseCardText(rawTextBlocks) {
       if (trimmed.length > 10) continue;
       const m = trimmed.match(COLLECTOR_NUMBER_PATTERN);
       if (m && m[0].length >= trimmed.length * 0.7) {
-        numberGuess = m[1].replace(/\s+/g, "").toUpperCase();
-        break;
+        numberCandidates.push({ number: m[1].replace(/\s+/g, "").toUpperCase(), total: null });
       }
     }
   }
+  const numberGuess = numberCandidates.length > 0 ? numberCandidates[0].number : null;
+  const totalGuess = numberCandidates.length > 0 ? numberCandidates[0].total : null;
 
   // Sigla de expansão: tokens curtos em maiúsculas isolados (ex.: "SV03.5", "TG", "GG")
   const setAbbrLine = blocks.find((line) => /^[A-Z]{2,6}[\d.]*$/.test(line.trim()));
@@ -130,6 +142,7 @@ function parseCardText(rawTextBlocks) {
     nameLines,
     numberGuess,
     totalGuess,
+    numberCandidates,
     setAbbreviationGuess,
   };
 }

@@ -488,3 +488,26 @@ test("achado real: palavra de ruído antes do número com barra ('GWEN 001/165')
   assert.equal(candidates[0].record.sourceCardId, "sv03.5-001");
   assert.ok(candidates[0].reasons.includes("número e total do set exatos"));
 });
+
+test("achado real: duas leituras do MESMO número numa foto (uma certa, outra com '5' lido como 'S') — usa a melhor, não só a primeira", () => {
+  // Texto real: OCR rodando em cabeçalho+foto inteira+rodapé leu o número
+  // duas vezes em linhas diferentes — "GMEW ro25/16S" (total truncado,
+  // "5" final virou "S") APARECE ANTES de "GNEWr025/165" (total completo
+  // e correto) no texto bruto. Pegar só a primeira leitura perdia a boa.
+  const lines = [
+    "BASICC",
+    "Pikachu",
+    "44* Soco Pikachu",
+    "2",
+    "GMEW ro25/16S", // lido primeiro, total truncado/errado ("16S")
+    "60",
+    "GNEWr025/165", // lido depois, número e total corretos
+  ];
+  const parsed = parseCardText(lines);
+  assert.equal(parsed.numberCandidates.length, 2, "deveria capturar as duas leituras do número");
+
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 5 });
+  assert.equal(candidates[0].record.sourceCardId, "sv03.5-025");
+  assert.ok(candidates[0].reasons.includes("número e total do set exatos"));
+});
