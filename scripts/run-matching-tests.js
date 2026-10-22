@@ -292,12 +292,30 @@ test("rankCandidates: '001/165' usa o total do set para não misturar cartas de 
 });
 
 test("totalMatches: sem totalGuess não afeta o score (comportamento antigo preservado)", () => {
-  const parsed = parseCardText(["Bulbasaur", "001"]); // sem "/total"
-  assert.equal(parsed.totalGuess, null);
+  const parsed = parseCardText(["Bulbasaur", "001/207"]); // com "/total" desta vez
+  assert.equal(parsed.totalGuess, "207");
   const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
   const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 3 });
   assert.equal(candidates[0].record.sourceCardId, "sv03.5-001");
-  assert.ok(candidates[0].reasons.includes("número exato"));
+  assert.ok(candidates[0].reasons.includes("número e total do set exatos"));
+});
+
+test("achado real: dígito isolado sem letra ('2') NÃO é tratado como número de coleção (evita colidir com cartas erradas)", () => {
+  // As três fotos reais testadas (Bulbasaur, Pikachu, Venusaur ex) tinham
+  // uma linha curta só com "2" (provável ícone de custo de fuga/HP), que
+  // batia por coincidência com o localId "2" de Reshiram (Celebrations) e
+  // o colocava acima do candidato certo, mesmo quando o NOME certo já
+  // tinha sido lido corretamente em outra linha.
+  const parsed = parseCardText(["Bulbasaur", "2", "70"]);
+  assert.equal(parsed.numberGuess, null, "dígito isolado sem letra não deve virar numberGuess");
+
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 3 });
+  assert.equal(
+    candidates[0].record.sourceCardId,
+    "sv03.5-001",
+    "Bulbasaur (nome exato) deve vencer mesmo sem sinal de número, não uma carta não relacionada cujo localId coincide com '2'"
+  );
 });
 
 // Texto OCR REAL, capturado por quem testou o app em um Android físico com
@@ -347,4 +365,86 @@ test("rankCandidates: com o texto OCR real e ruidoso, ainda encontra 'Charizard'
   const parsed = parseCardText(REAL_CHARIZARD_OCR_LINES);
   const { candidates } = rankCandidates(parsed, [charizardRecord, ...allRecords], { topN: 5 });
   assert.equal(candidates[0].record.sourceCardId, "swsh4-25", "deveria achar Charizard apesar do ruído antes do nome");
+});
+
+// Três fotos reais (Android físico, 22/10/2026) de cartas do set "151" que
+// ESTÃO no índice de 30 cartas desta PoC — diferente do Charizard acima,
+// aqui um match correto era possível de verdade.
+const REAL_BULBASAUR_OCR_LINES = [
+  "a Aventura Inesquecivel!EE",
+  "EEK-5",
+  "Bulbasaur",
+  "2",
+  "„70",
+  "Semente Sanguessuga 20",
+  "RF Reverse Foil",
+  "mon ?",
+  "omprased",
+  "lace",
+];
+
+const REAL_PIKACHU_OCR_LINES = [
+  "P Pokédex",
+  "DS MA|S ÉPICOS",
+  "ATISO Pikachu",
+  "Carga",
+  "rocure por uma carca de EnergaBsica no seu barlho",
+  "Emepuida embaralhe o seu",
+  "ligue-a esne",
+  "barala",
+  "44 Soco Pikachu",
+  "2",
+  "Produtos",
+  "F Foil",
+  "50",
+  "EPIC",
+  "Ion 2",
+  "Compras e deixe :",
+  "lace",
+  "+ LISTA",
+];
+
+const REAL_VENUSAUR_OCR_LINES = [
+  "DS MAIS ÉPICOS",
+  "50",
+  "Venusaurex340",
+  "Habidade Ho erena",
+  "Campa ra",
+  "Ernn",
+  "2",
+  "Chicot0xico Perigoso 150",
+  "Vendas nos Ütimos 3 meses",
+  "Mais de 50 unidades",
+  "EPIC",
+  "TIOn ?",
+  "omprase deix",
+  "lace",
+  "LIS",
+];
+
+test("achado real (foto 1/3, Bulbasaur): nome exato vence mesmo com ruído e um '2' solto no meio", () => {
+  const parsed = parseCardText(REAL_BULBASAUR_OCR_LINES);
+  assert.ok(parsed.nameLines.includes("Bulbasaur"));
+  assert.equal(parsed.numberGuess, null);
+
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 3 });
+  assert.equal(candidates[0].record.sourceCardId, "sv03.5-001");
+});
+
+test("achado real (foto 2/3, Pikachu): nome parcial ('ATISO Pikachu') ainda identifica a carta certa", () => {
+  const parsed = parseCardText(REAL_PIKACHU_OCR_LINES);
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 5 });
+  // Há 3 impressões de Pikachu no índice (base1-58, sv03.5-025, sv03.5-173);
+  // sem um número confiável, qualquer uma delas é uma resposta aceitável —
+  // o importante é que NENHUMA carta não relacionada (ex.: Reshiram) vença.
+  assert.equal(candidates[0].record.name, "Pikachu");
+});
+
+test("achado real (foto 3/3, Venusaur ex): nome ruidoso ('Venusaurex340') ainda identifica a carta certa", () => {
+  const parsed = parseCardText(REAL_VENUSAUR_OCR_LINES);
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 3 });
+  assert.equal(candidates[0].record.sourceCardId, "sv03.5-003");
 });

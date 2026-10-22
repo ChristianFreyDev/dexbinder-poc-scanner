@@ -32,13 +32,19 @@ function normalizeForComparison(text) {
     .trim();
 }
 
-// Número de colecionador: "123/207", "001", "DP01", "SWSH 001", "1".
-// Achado real: um hífen entre letra(s) e número costuma ser outra coisa
-// lida com ruído (ex.: "D-170®" = leitura ruidosa do indicador de HP
-// "HP 170", não um número de coleção) — por isso só espaço é aceito como
-// separador aqui, nunca hífen. Nenhum número de coleção real observado na
-// auditoria de catálogo usa hífen entre prefixo e dígitos.
-const COLLECTOR_NUMBER_PATTERN = /\b([A-Z]{1,5}\s?\d{1,4}|\d{1,4})\s*\/?\s*(\d{1,4})?\b/;
+// Número de colecionador SEM barra, exige prefixo de letra(s): "DP01",
+// "SWSH 001". Achados reais (três fotos de cartas físicas diferentes,
+// 22/10/2026): um dígito isolado como "2" aparece em QUALQUER carta
+// (custo de fuga, multiplicador de fraqueza, fragmento de HP) e não é um
+// sinal confiável de número de coleção — nos três testes, um "2" solto
+// bateu por coincidência com `localId` de uma carta errada (Reshiram,
+// Celebrations #2) e a superou em pontuação mesmo quando o NOME certo já
+// tinha sido lido em outra linha. Por isso o fallback sem barra exige
+// prefixo de letra(s); dígitos isolados só contam via o padrão "NNN/NNN"
+// abaixo, que é inequívoco. Um hífen entre letra(s) e número também não é
+// aceito aqui (ex.: "D-170®" = leitura ruidosa de "HP 170", não um número
+// de coleção — nenhum número real observado na auditoria usa hífen).
+const COLLECTOR_NUMBER_PATTERN = /\b([A-Z]{1,5}\s?\d{1,4})\b/;
 
 /**
  * Extrai candidatos a nome, número de colecionador e expansão a partir de
