@@ -32,13 +32,19 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
-      - name: Build debug APK
+      # assembleDebug NÃO empacota o JS no APK (espera um Metro ao vivo);
+      # só assembleRelease roda a task que gera e embute o bundle JS, por
+      # isso é essa a variante certa para um APK instalável standalone.
+      # O build type "release" deste projeto já usa a mesma debug.keystore
+      # (ver android/app/build.gradle) e minify está desligado em
+      # android/gradle.properties, então sai instalável sem passos extras.
+      - name: Build release APK (standalone, com bundle JS embutido)
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleRelease --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dexbinder-poc-scanner-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: dexbinder-poc-scanner-release
+          path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 14
