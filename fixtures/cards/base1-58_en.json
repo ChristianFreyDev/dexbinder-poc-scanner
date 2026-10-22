@@ -1,0 +1,330 @@
+{
+  "category": "Pokemon",
+  "id": "base1-58",
+  "illustrator": "Mitsuhiro Arita",
+  "image": "https://assets.tcgdex.net/en/base/base1/58",
+  "localId": "58",
+  "name": "Pikachu",
+  "rarity": "Common",
+  "set": {
+    "cardCount": {
+      "official": 102,
+      "total": 102
+    },
+    "id": "base1",
+    "logo": "https://assets.tcgdex.net/en/base/base1/logo",
+    "name": "Base Set"
+  },
+  "variants": {
+    "firstEdition": true,
+    "holo": false,
+    "normal": true,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "normal",
+      "subtype": "unlimited",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 273753,
+        "tcgplayer": 42402
+      },
+      "variantId": "3a83wf50tz7q114spsx7dw6v5",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 273753,
+          "avg": 20.15,
+          "low": 0.1,
+          "trend": 19.94,
+          "avg1": 3.66,
+          "avg7": 10.88,
+          "avg30": 18.78,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 36.37,
+          "avg1-holo": 1,
+          "avg7-holo": 42.86,
+          "avg30-holo": 22.72
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:54:33.803Z",
+          "normal": {
+            "productId": 42402,
+            "lowPrice": 2.98,
+            "midPrice": 6.28,
+            "highPrice": 1000,
+            "marketPrice": 11.02,
+            "directLowPrice": 7.5
+          }
+        }
+      }
+    },
+    {
+      "type": "normal",
+      "subtype": "shadowless",
+      "size": "standard",
+      "stamp": [
+        "1st-edition"
+      ],
+      "thirdParty": {
+        "tcgplayer": 107055,
+        "cardmarket": 660169
+      },
+      "variantId": "gx8bq2hefwadd3utcibq3oc56sjf4jqdz709e",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 660169,
+          "avg": 54.12,
+          "low": 14.95,
+          "trend": 241.45,
+          "avg1": 1089.99,
+          "avg7": 178.97,
+          "avg30": 134.31,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    },
+    {
+      "type": "normal",
+      "subtype": "shadowless",
+      "size": "standard",
+      "thirdParty": {
+        "tcgplayer": 107055,
+        "cardmarket": 660169
+      },
+      "variantId": "2tszcx1bpt4e79y5us0p570b9n",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 660169,
+          "avg": 54.12,
+          "low": 14.95,
+          "trend": 241.45,
+          "avg1": 1089.99,
+          "avg7": 178.97,
+          "avg30": 134.31,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    },
+    {
+      "type": "normal",
+      "subtype": "shadowless-red-cheek",
+      "size": "standard",
+      "thirdParty": {
+        "tcgplayer": 147229,
+        "cardmarket": 660170
+      },
+      "variantId": "mtltux8qussk4naabf2sjstrcyez6fa4nvy",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 660170,
+          "avg": 535.99,
+          "low": 49.99,
+          "trend": 377.39,
+          "avg1": 60,
+          "avg7": 405.71,
+          "avg30": 168.42,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    },
+    {
+      "type": "normal",
+      "subtype": "shadowless-red-cheek",
+      "size": "standard",
+      "stamp": [
+        "1st-edition"
+      ],
+      "thirdParty": {
+        "tcgplayer": 147229,
+        "cardmarket": 660170
+      },
+      "variantId": "3skqdujv9jyo7ijcqeiufs8ut5ygkjq1y1bpa3mn9q4bbjp",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 660170,
+          "avg": 535.99,
+          "low": 49.99,
+          "trend": 377.39,
+          "avg1": 60,
+          "avg7": 405.71,
+          "avg30": 168.42,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    },
+    {
+      "type": "normal",
+      "subtype": "1999-2000-copyright",
+      "size": "standard",
+      "variantId": "qi4g3e7tzbkcyhfflvx7zmvunxwjcq3pvp"
+    },
+    {
+      "type": "normal",
+      "size": "jumbo",
+      "thirdParty": {
+        "cardmarket": 362859
+      },
+      "variantId": "l7orfpmicmyc",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 362859,
+          "avg": 15,
+          "low": 8.8,
+          "trend": 12.93,
+          "avg1": 9,
+          "avg7": 10.79,
+          "avg30": 11.89,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    },
+    {
+      "type": "normal",
+      "subtype": "unlimited",
+      "size": "standard",
+      "stamp": [
+        "poketour-99"
+      ],
+      "thirdParty": {
+        "cardmarket": 275586
+      },
+      "variantId": "jnhspmmj4h1e7ohhxunqpao96lgmqwtl2ts1",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 275586,
+          "avg": 175.25,
+          "low": 749.95,
+          "trend": 374.05,
+          "avg1": 0.5,
+          "avg7": 367.34,
+          "avg30": 248.56,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    }
+  ],
+  "dexId": [
+    25
+  ],
+  "hp": 40,
+  "types": [
+    "Lightning"
+  ],
+  "description": "When several of these Pokémon gather, their electricity can cause lightning storms.",
+  "stage": "Basic",
+  "attacks": [
+    {
+      "cost": [
+        "Colorless"
+      ],
+      "name": "Gnaw",
+      "damage": 10
+    },
+    {
+      "cost": [
+        "Lightning",
+        "Colorless"
+      ],
+      "name": "Thunder Jolt",
+      "effect": "Flip a coin. If tails, Pikachu does 10 damage to itself.",
+      "damage": 30
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fighting",
+      "value": "×2"
+    }
+  ],
+  "retreat": 1,
+  "legal": {
+    "standard": false,
+    "expanded": false
+  },
+  "updated": "2026-08-20T08:25:49+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:32.997Z",
+      "unit": "EUR",
+      "idProduct": 273753,
+      "avg": 20.15,
+      "low": 0.1,
+      "trend": 19.94,
+      "avg1": 3.66,
+      "avg7": 10.88,
+      "avg30": 18.78,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 36.37,
+      "avg1-holo": 1,
+      "avg7-holo": 42.86,
+      "avg30-holo": 22.72
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:54:33.803Z",
+      "normal": {
+        "productId": 42402,
+        "lowPrice": 2.98,
+        "midPrice": 6.28,
+        "highPrice": 1000,
+        "marketPrice": 11.02,
+        "directLowPrice": 7.5
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "category": "Pokemon",
+  "id": "sm9-33",
+  "illustrator": "Mitsuhiro Arita",
+  "image": "https://assets.tcgdex.net/en/sm/sm9/33",
+  "localId": "33",
+  "name": "Pikachu & Zekrom GX",
+  "rarity": "Ultra Rare",
+  "set": {
+    "cardCount": {
+      "official": 181,
+      "total": 196
+    },
+    "id": "sm9",
+    "logo": "https://assets.tcgdex.net/en/sm/sm9/logo",
+    "name": "Team Up",
+    "symbol": "https://assets.tcgdex.net/univ/sm/sm9/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "normal",
+      "size": "standard",
+      "variantId": "generated"
+    }
+  ],
+  "dexId": [
+    25,
+    644
+  ],
+  "hp": 240,
+  "types": [
+    "Lightning"
+  ],
+  "suffix": "TAG TEAM-GX",
+  "attacks": [
+    {
+      "cost": [
+        "Lightning",
+        "Lightning",
+        "Lightning"
+      ],
+      "name": "Full Blitz",
+      "effect": "Search your deck for up to 3 Lightning Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck.",
+      "damage": 150
+    },
+    {
+      "cost": [
+        "Lightning",
+        "Lightning",
+        "Lightning"
+      ],
+      "name": "Tag Bolt GX",
+      "effect": "If this Pokémon has at least 3 extra Lightning Energy attached to it (in addition to this attack’s cost), this attack does 170 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) (You can’t use more than 1 GX attack in a game.)",
+      "damage": 200
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fighting",
+      "value": "×2"
+    }
+  ],
+  "resistances": [
+    {
+      "type": "Metal",
+      "value": "-20"
+    }
+  ],
+  "retreat": 3,
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-20T15:46:02+01:00",
+  "thirdParty": {
+    "cardmarket": 366888,
+    "tcgplayer": 183804
+  },
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:33.006Z",
+      "unit": "EUR",
+      "idProduct": 366888,
+      "avg": 59.46,
+      "low": 15,
+      "trend": 85.61,
+      "avg1": 48,
+      "avg7": 121.97,
+      "avg30": 72.78,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 6.15,
+      "avg1-holo": 4.83,
+      "avg7-holo": 6.13,
+      "avg30-holo": 6.44
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:02.145Z",
+      "holofoil": {
+        "productId": 183804,
+        "lowPrice": 44.99,
+        "midPrice": 58,
+        "highPrice": 999.99,
+        "marketPrice": 53.04,
+        "directLowPrice": 74.4
+      }
+    }
+  }
+}

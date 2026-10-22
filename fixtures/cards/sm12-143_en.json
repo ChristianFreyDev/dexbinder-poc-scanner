@@ -1,0 +1,116 @@
+{
+  "category": "Pokemon",
+  "id": "sm12-143",
+  "illustrator": "Mitsuhiro Arita",
+  "image": "https://assets.tcgdex.net/en/sm/sm12/143",
+  "localId": "143",
+  "name": "Togepi & Cleffa & Igglybuff GX",
+  "rarity": "Ultra Rare",
+  "set": {
+    "cardCount": {
+      "official": 236,
+      "total": 271
+    },
+    "id": "sm12",
+    "logo": "https://assets.tcgdex.net/en/sm/sm12/logo",
+    "name": "Cosmic Eclipse",
+    "symbol": "https://assets.tcgdex.net/univ/sm/sm12/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "normal",
+      "size": "standard",
+      "variantId": "generated"
+    }
+  ],
+  "dexId": [
+    173,
+    174,
+    175
+  ],
+  "hp": 240,
+  "types": [
+    "Fairy"
+  ],
+  "suffix": "TAG TEAM-GX",
+  "attacks": [
+    {
+      "cost": [
+        "Fairy",
+        "Fairy",
+        "Colorless"
+      ],
+      "name": "Rolling Panic",
+      "effect": "Flip a coin until you get tails. This attack does 30 more damage for each heads.",
+      "damage": "120+"
+    },
+    {
+      "cost": [
+        "Fairy",
+        "Fairy"
+      ],
+      "name": "Supreme Puff GX",
+      "effect": "Take another turn after this one. (Skip the between-turns step.) If this Pokémon has at least 14 extra Fairy Energy attached to it (in addition to this attack’s cost), your opponent shuffles all of their Benched Pokémon and all cards attached to them into their deck. (You can’t use more than 1 GX attack in a game.)"
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Metal",
+      "value": "×2"
+    }
+  ],
+  "resistances": [
+    {
+      "type": "Darkness",
+      "value": "-20"
+    }
+  ],
+  "retreat": 2,
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-16T22:11:28+01:00",
+  "thirdParty": {
+    "cardmarket": 398484,
+    "tcgplayer": 200353
+  },
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:33.003Z",
+      "unit": "EUR",
+      "idProduct": 398484,
+      "avg": 32.79,
+      "low": 6.49,
+      "trend": 27.81,
+      "avg1": 24.45,
+      "avg7": 30.19,
+      "avg30": 32.49,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 4.49,
+      "avg1-holo": 3.95,
+      "avg7-holo": 4.21,
+      "avg30-holo": 4.07
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:03.769Z",
+      "holofoil": {
+        "productId": 200353,
+        "lowPrice": 45,
+        "midPrice": 67.58,
+        "highPrice": 301.92,
+        "marketPrice": 64.39,
+        "directLowPrice": 67.58
+      }
+    }
+  }
+}

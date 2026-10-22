@@ -1,0 +1,67 @@
+{
+  "category": "Pokemon",
+  "id": "B2-001",
+  "illustrator": "Yuka Morii",
+  "image": "https://assets.tcgdex.net/en/tcgp/B2/001",
+  "localId": "001",
+  "name": "Ledyba",
+  "rarity": "One Diamond",
+  "set": {
+    "cardCount": {
+      "official": 155,
+      "total": 234
+    },
+    "id": "B2",
+    "logo": "https://assets.tcgdex.net/en/tcgp/B2/logo",
+    "name": "Fantastical Parade",
+    "symbol": "https://assets.tcgdex.net/univ/tcgp/B2/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "normal",
+      "size": "standard",
+      "variantId": "generated"
+    }
+  ],
+  "dexId": [
+    165
+  ],
+  "hp": 60,
+  "types": [
+    "Grass"
+  ],
+  "description": "These very cowardly Pokémon join together and\nuse Reflect to protect their nest.",
+  "stage": "Basic",
+  "attacks": [
+    {
+      "cost": [
+        "Colorless"
+      ],
+      "name": "Punch",
+      "damage": 10
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fire",
+      "value": "+20"
+    }
+  ],
+  "retreat": 1,
+  "legal": {
+    "standard": false,
+    "expanded": false
+  },
+  "updated": "2026-04-03T13:16:29+01:00",
+  "pricing": {
+    "cardmarket": null,
+    "tcgplayer": null
+  }
+}

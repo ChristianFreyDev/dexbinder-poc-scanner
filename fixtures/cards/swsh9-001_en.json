@@ -1,0 +1,202 @@
+{
+  "category": "Pokemon",
+  "id": "swsh9-001",
+  "illustrator": "0313",
+  "image": "https://assets.tcgdex.net/en/swsh/swsh9/001",
+  "localId": "001",
+  "name": "Exeggcute",
+  "rarity": "Common",
+  "set": {
+    "cardCount": {
+      "official": 172,
+      "total": 186
+    },
+    "id": "swsh9",
+    "logo": "https://assets.tcgdex.net/en/swsh/swsh9/logo",
+    "name": "Brilliant Stars",
+    "symbol": "https://assets.tcgdex.net/univ/swsh/swsh9/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "normal",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 608425,
+        "tcgplayer": 263578
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 608425,
+          "avg": 0.03,
+          "low": 0.02,
+          "trend": 0.03,
+          "avg1": 0.04,
+          "avg7": 0.03,
+          "avg30": 0.03,
+          "avg-holo": 0.13,
+          "low-holo": 0.02,
+          "trend-holo": 0.1,
+          "avg1-holo": 0.02,
+          "avg7-holo": 0.13,
+          "avg30-holo": 0.13
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:07.332Z",
+          "normal": {
+            "productId": 263578,
+            "lowPrice": 0.01,
+            "midPrice": 0.18,
+            "highPrice": 20,
+            "marketPrice": 0.16,
+            "directLowPrice": 0.01
+          },
+          "reverse-holofoil": {
+            "productId": 263578,
+            "lowPrice": 0.08,
+            "midPrice": 0.24,
+            "highPrice": 19.8,
+            "marketPrice": 0.19,
+            "directLowPrice": null
+          }
+        }
+      }
+    },
+    {
+      "type": "reverse",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 608425,
+        "tcgplayer": 263578
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 608425,
+          "avg": 0.03,
+          "low": 0.02,
+          "trend": 0.03,
+          "avg1": 0.04,
+          "avg7": 0.03,
+          "avg30": 0.03,
+          "avg-holo": 0.13,
+          "low-holo": 0.02,
+          "trend-holo": 0.1,
+          "avg1-holo": 0.02,
+          "avg7-holo": 0.13,
+          "avg30-holo": 0.13
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:07.332Z",
+          "normal": {
+            "productId": 263578,
+            "lowPrice": 0.01,
+            "midPrice": 0.18,
+            "highPrice": 20,
+            "marketPrice": 0.16,
+            "directLowPrice": 0.01
+          },
+          "reverse-holofoil": {
+            "productId": 263578,
+            "lowPrice": 0.08,
+            "midPrice": 0.24,
+            "highPrice": 19.8,
+            "marketPrice": 0.19,
+            "directLowPrice": null
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    102
+  ],
+  "hp": 50,
+  "types": [
+    "Grass"
+  ],
+  "description": "Though it may look like it's just a bunch of eggs, it's a proper Pokémon. Exeggcute communicates with others of its kind via telepathy, apparently.",
+  "stage": "Basic",
+  "attacks": [
+    {
+      "cost": [
+        "Colorless"
+      ],
+      "name": "Ram",
+      "damage": 10
+    },
+    {
+      "cost": [
+        "Grass",
+        "Colorless"
+      ],
+      "name": "Seed Bomb",
+      "damage": 20
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fire",
+      "value": "×2"
+    }
+  ],
+  "retreat": 1,
+  "regulationMark": "F",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-20T01:39:37+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:32.997Z",
+      "unit": "EUR",
+      "idProduct": 608425,
+      "avg": 0.03,
+      "low": 0.02,
+      "trend": 0.03,
+      "avg1": 0.04,
+      "avg7": 0.03,
+      "avg30": 0.03,
+      "avg-holo": 0.13,
+      "low-holo": 0.02,
+      "trend-holo": 0.1,
+      "avg1-holo": 0.02,
+      "avg7-holo": 0.13,
+      "avg30-holo": 0.13
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:07.332Z",
+      "normal": {
+        "productId": 263578,
+        "lowPrice": 0.01,
+        "midPrice": 0.18,
+        "highPrice": 20,
+        "marketPrice": 0.16,
+        "directLowPrice": 0.01
+      },
+      "reverse-holofoil": {
+        "productId": 263578,
+        "lowPrice": 0.08,
+        "midPrice": 0.24,
+        "highPrice": 19.8,
+        "marketPrice": 0.19,
+        "directLowPrice": null
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "category": "Pokemon",
+  "id": "dpp-DP01",
+  "illustrator": "Masakazu Fukuda",
+  "image": "https://assets.tcgdex.net/en/dp/dpp/DP01",
+  "localId": "DP01",
+  "name": "Turtwig",
+  "rarity": "Common",
+  "set": {
+    "cardCount": {
+      "official": 56,
+      "total": 56
+    },
+    "id": "dpp",
+    "logo": "https://assets.tcgdex.net/en/dp/dpp/logo",
+    "name": "DP Black Star Promos",
+    "symbol": "https://assets.tcgdex.net/univ/dp/dpp/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "holo",
+      "size": "standard",
+      "variantId": "jr7oetx1mqug9"
+    }
+  ],
+  "dexId": [
+    387
+  ],
+  "hp": 60,
+  "types": [
+    "Grass"
+  ],
+  "description": "Made from soil, the shell on its back hardens when it drinks water. It lives along lakes.",
+  "stage": "Basic",
+  "attacks": [
+    {
+      "name": "Tackle",
+      "damage": 10
+    },
+    {
+      "cost": [
+        "Grass"
+      ],
+      "name": "Razor Leaf",
+      "damage": 20
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fire",
+      "value": "+10"
+    }
+  ],
+  "resistances": [
+    {
+      "type": "Water",
+      "value": "-20"
+    }
+  ],
+  "retreat": 2,
+  "legal": {
+    "standard": false,
+    "expanded": false
+  },
+  "updated": "2026-05-23T17:30:20+01:00",
+  "pricing": {
+    "cardmarket": null,
+    "tcgplayer": null
+  }
+}

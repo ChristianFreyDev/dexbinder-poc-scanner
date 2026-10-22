@@ -1,0 +1,137 @@
+{
+  "category": "Energy",
+  "id": "sv03.5-207",
+  "image": "https://assets.tcgdex.net/en/sv/sv03.5/207",
+  "localId": "207",
+  "name": "Basic Psychic Energy",
+  "rarity": "Hyper rare",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/en/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "holo",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 733802,
+        "tcgplayer": 517053,
+        "cardtrader": 261385
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.986Z",
+          "unit": "EUR",
+          "idProduct": 733802,
+          "avg": 5.23,
+          "low": 2,
+          "trend": 4.47,
+          "avg1": 4.14,
+          "avg7": 4.62,
+          "avg30": 5.04,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 517053,
+            "lowPrice": 2.5,
+            "midPrice": 4.8,
+            "highPrice": 56.44,
+            "marketPrice": 3.9,
+            "directLowPrice": 4
+          }
+        }
+      }
+    },
+    {
+      "type": "holo",
+      "size": "standard",
+      "foil": "gold",
+      "thirdParty": {
+        "cardmarket": 733802
+      },
+      "variantId": "8ebbnojbbdlcw08zyl",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.986Z",
+          "unit": "EUR",
+          "idProduct": 733802,
+          "avg": 5.23,
+          "low": 2,
+          "trend": 4.47,
+          "avg1": 4.14,
+          "avg7": 4.62,
+          "avg30": 5.04,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    }
+  ],
+  "types": [
+    "Psychic"
+  ],
+  "energyType": "Normal",
+  "legal": {
+    "standard": true,
+    "expanded": true
+  },
+  "updated": "2026-05-13T16:42:54+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:32.986Z",
+      "unit": "EUR",
+      "idProduct": 733802,
+      "avg": 5.23,
+      "low": 2,
+      "trend": 4.47,
+      "avg1": 4.14,
+      "avg7": 4.62,
+      "avg30": 5.04,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 0,
+      "avg1-holo": null,
+      "avg7-holo": null,
+      "avg30-holo": null
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "holofoil": {
+        "productId": 517053,
+        "lowPrice": 2.5,
+        "midPrice": 4.8,
+        "highPrice": 56.44,
+        "marketPrice": 3.9,
+        "directLowPrice": 4
+      }
+    }
+  }
+}

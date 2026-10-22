@@ -1,0 +1,133 @@
+{
+  "category": "Pokemon",
+  "id": "sv03.5-166",
+  "illustrator": "Yoriyuki Ikegami",
+  "image": "https://assets.tcgdex.net/en/sv/sv03.5/166",
+  "localId": "166",
+  "name": "Bulbasaur",
+  "rarity": "Illustration rare",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/en/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "holo",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 733761,
+        "tcgplayer": 516997,
+        "cardtrader": 261291
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.988Z",
+          "unit": "EUR",
+          "idProduct": 733761,
+          "avg": 69.51,
+          "low": 36.98,
+          "trend": 68.59,
+          "avg1": 65.89,
+          "avg7": 73.41,
+          "avg30": 68.92,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 516997,
+            "lowPrice": 50.79,
+            "midPrice": 75.58,
+            "highPrice": 225,
+            "marketPrice": 61.17,
+            "directLowPrice": 62.57
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    1
+  ],
+  "hp": 70,
+  "types": [
+    "Grass"
+  ],
+  "description": "While it is young, it uses the nutrients that are stored in the seed on its back in order to grow.",
+  "stage": "Basic",
+  "attacks": [
+    {
+      "cost": [
+        "Grass",
+        "Colorless"
+      ],
+      "name": "Leech Seed",
+      "effect": "Heal 20 damage from this Pokémon.",
+      "damage": 20
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fire",
+      "value": "×2"
+    }
+  ],
+  "retreat": 2,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:32.988Z",
+      "unit": "EUR",
+      "idProduct": 733761,
+      "avg": 69.51,
+      "low": 36.98,
+      "trend": 68.59,
+      "avg1": 65.89,
+      "avg7": 73.41,
+      "avg30": 68.92,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 0,
+      "avg1-holo": null,
+      "avg7-holo": null,
+      "avg30-holo": null
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "holofoil": {
+        "productId": 516997,
+        "lowPrice": 50.79,
+        "midPrice": 75.58,
+        "highPrice": 225,
+        "marketPrice": 61.17,
+        "directLowPrice": 62.57
+      }
+    }
+  }
+}

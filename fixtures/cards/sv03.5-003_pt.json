@@ -1,0 +1,142 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-003",
+  "illustrator": "5ban Graphics",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/003",
+  "localId": "003",
+  "name": "Venusaur ex",
+  "rarity": "Rara Dupla",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Holo",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733598,
+        "tcgplayer": 502554,
+        "cardtrader": 261103
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 733598,
+          "avg": 2.32,
+          "low": 0.6,
+          "trend": 2.29,
+          "avg1": 1.73,
+          "avg7": 2.17,
+          "avg30": 2.3,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 502554,
+            "lowPrice": 0.25,
+            "midPrice": 1.35,
+            "highPrice": 16.74,
+            "marketPrice": 1.27,
+            "directLowPrice": 1.38
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    3
+  ],
+  "hp": 340,
+  "types": [
+    "Planta"
+  ],
+  "evolveFrom": "Ivysaur",
+  "stage": "Estágio 2",
+  "suffix": "ex",
+  "abilities": [
+    {
+      "type": "Habilidade",
+      "name": "Flor Serena",
+      "effect": "Uma vez durante o seu turno, se este Pokémon estiver no Campo Ativo, você poderá curar 60 pontos de dano de 1 dos seus Pokémon."
+    }
+  ],
+  "attacks": [
+    {
+      "cost": [
+        "Planta",
+        "Planta",
+        "Incolor"
+      ],
+      "name": "Chicotóxico Perigoso",
+      "effect": "O Pokémon Ativo do seu oponente agora está Confuso e Envenenado.",
+      "damage": 150
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fogo",
+      "value": "×2"
+    }
+  ],
+  "retreat": 4,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-06-09T12:54:48+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:32.997Z",
+      "unit": "EUR",
+      "idProduct": 733598,
+      "avg": 2.32,
+      "low": 0.6,
+      "trend": 2.29,
+      "avg1": 1.73,
+      "avg7": 2.17,
+      "avg30": 2.3,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 0,
+      "avg1-holo": null,
+      "avg7-holo": null,
+      "avg30-holo": null
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "holofoil": {
+        "productId": 502554,
+        "lowPrice": 0.25,
+        "midPrice": 1.35,
+        "highPrice": 16.74,
+        "marketPrice": 1.27,
+        "directLowPrice": 1.38
+      }
+    }
+  }
+}

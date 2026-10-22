@@ -1,0 +1,137 @@
+{
+  "category": "Trainer",
+  "id": "sv03.5-206",
+  "illustrator": "Studio Bora Inc.",
+  "image": "https://assets.tcgdex.net/en/sv/sv03.5/206",
+  "localId": "206",
+  "name": "Switch",
+  "rarity": "Hyper rare",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/en/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "holo",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 733801,
+        "tcgplayer": 517052,
+        "cardtrader": 261387
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:33.008Z",
+          "unit": "EUR",
+          "idProduct": 733801,
+          "avg": 3.33,
+          "low": 1,
+          "trend": 3.51,
+          "avg1": 4.5,
+          "avg7": 3.27,
+          "avg30": 3.25,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 517052,
+            "lowPrice": 0.96,
+            "midPrice": 2.9,
+            "highPrice": 22.17,
+            "marketPrice": 2.22,
+            "directLowPrice": 3.33
+          }
+        }
+      }
+    },
+    {
+      "type": "holo",
+      "size": "standard",
+      "foil": "gold",
+      "thirdParty": {
+        "cardmarket": 733801
+      },
+      "variantId": "8ebbnojbbdlcw08zyl",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:33.008Z",
+          "unit": "EUR",
+          "idProduct": 733801,
+          "avg": 3.33,
+          "low": 1,
+          "trend": 3.51,
+          "avg1": 4.5,
+          "avg7": 3.27,
+          "avg30": 3.25,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    }
+  ],
+  "effect": "Switch your Active Pokémon with 1 of your Benched Pokémon.",
+  "trainerType": "Item",
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:33.008Z",
+      "unit": "EUR",
+      "idProduct": 733801,
+      "avg": 3.33,
+      "low": 1,
+      "trend": 3.51,
+      "avg1": 4.5,
+      "avg7": 3.27,
+      "avg30": 3.25,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 0,
+      "avg1-holo": null,
+      "avg7-holo": null,
+      "avg30-holo": null
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "holofoil": {
+        "productId": 517052,
+        "lowPrice": 0.96,
+        "midPrice": 2.9,
+        "highPrice": 22.17,
+        "marketPrice": 2.22,
+        "directLowPrice": 3.33
+      }
+    }
+  }
+}

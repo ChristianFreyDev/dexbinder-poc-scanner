@@ -1,0 +1,178 @@
+{
+  "category": "Pokemon",
+  "id": "svp-004",
+  "illustrator": "PLANETA Yamashita",
+  "image": "https://assets.tcgdex.net/en/sv/svp/004",
+  "localId": "004",
+  "name": "Mimikyu ex",
+  "rarity": "Promo",
+  "set": {
+    "cardCount": {
+      "official": 225,
+      "total": 226
+    },
+    "id": "svp",
+    "name": "SVP Black Star Promos"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "holo",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 701130,
+        "tcgplayer": 487435
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:33.006Z",
+          "unit": "EUR",
+          "idProduct": 701130,
+          "avg": 0.91,
+          "low": 0.1,
+          "trend": 1.11,
+          "avg1": 1.1,
+          "avg7": 1.01,
+          "avg30": 0.95,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    },
+    {
+      "type": "holo",
+      "size": "jumbo",
+      "thirdParty": {
+        "cardmarket": 701131,
+        "tcgplayer": 487439
+      },
+      "variantId": "slwlv6rn87",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:33.006Z",
+          "unit": "EUR",
+          "idProduct": 701131,
+          "avg": 0.75,
+          "low": 0.2,
+          "trend": 1.14,
+          "avg1": 1.53,
+          "avg7": 1.5,
+          "avg30": 1.1,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    },
+    {
+      "type": "holo",
+      "size": "standard",
+      "stamp": [
+        "player-rewards-program"
+      ],
+      "thirdParty": {
+        "cardmarket": 730153,
+        "tcgplayer": 513798
+      },
+      "variantId": "mtltux8quqoc7vwp24c9zzhgmzduu8xcik8",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:33.006Z",
+          "unit": "EUR",
+          "idProduct": 730153,
+          "avg": 40,
+          "low": 19.99,
+          "trend": 52.91,
+          "avg1": 40,
+          "avg7": 33.31,
+          "avg30": 19.1,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    }
+  ],
+  "dexId": [
+    778
+  ],
+  "hp": 190,
+  "types": [
+    "Psychic"
+  ],
+  "stage": "Basic",
+  "suffix": "ex",
+  "attacks": [
+    {
+      "cost": [
+        "Psychic"
+      ],
+      "name": "Void Return",
+      "effect": "You may switch this Pokémon with 1 of your Benched Pokémon.",
+      "damage": 30
+    },
+    {
+      "cost": [
+        "Psychic",
+        "Colorless",
+        "Colorless"
+      ],
+      "name": "Energy Burst",
+      "effect": "This attack does 30 damage for each Energy attached to both Active Pokémon.",
+      "damage": "30×"
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Metal",
+      "value": "×2"
+    }
+  ],
+  "retreat": 1,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-06-17T18:43:13+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:33.006Z",
+      "unit": "EUR",
+      "idProduct": 701130,
+      "avg": 0.91,
+      "low": 0.1,
+      "trend": 1.11,
+      "avg1": 1.1,
+      "avg7": 1.01,
+      "avg30": 0.95,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 0,
+      "avg1-holo": null,
+      "avg7-holo": null,
+      "avg30-holo": null
+    },
+    "tcgplayer": null
+  }
+}

@@ -1,0 +1,12 @@
+# O EAS Build roda `npm install` na nuvem a partir de package.json/package-lock.json,
+# então node_modules local não precisa (e não deve) ser enviado — reduz o upload.
+node_modules
+
+# Artefatos de build nativo gerados localmente, se existirem (não há cache
+# de Gradle útil para reenviar; a nuvem compila do zero).
+android/build
+android/app/build
+android/.gradle
+
+# Scratch/temporário desta sessão de desenvolvimento, irrelevante para o build.
+*.log

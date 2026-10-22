@@ -1,0 +1,13 @@
+# Dependências — reinstaladas via npm install (local e na nuvem do EAS Build)
+node_modules/
+
+# Artefatos de build nativo gerados localmente por `expo prebuild`/compilação
+android/.gradle/
+android/app/build/
+android/build/
+ios/build/
+
+# Caches e logs
+*.log
+.expo/
+dist/

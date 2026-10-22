@@ -1,0 +1,167 @@
+{
+  "category": "Pokemon",
+  "id": "gym1-1",
+  "illustrator": "Ken Sugimori",
+  "image": "https://assets.tcgdex.net/en/gym/gym1/1",
+  "localId": "1",
+  "name": "Blaine's Moltres",
+  "rarity": "Holo Rare",
+  "set": {
+    "cardCount": {
+      "official": 132,
+      "total": 132
+    },
+    "id": "gym1",
+    "logo": "https://assets.tcgdex.net/en/gym/gym1/logo",
+    "name": "Gym Heroes",
+    "symbol": "https://assets.tcgdex.net/univ/gym/gym1/symbol"
+  },
+  "variants": {
+    "firstEdition": true,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "holo",
+      "size": "standard",
+      "thirdParty": {
+        "tcgplayer": 83875
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": null,
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:54:35.363Z",
+          "1st-edition-holofoil": {
+            "productId": 83875,
+            "lowPrice": 650,
+            "midPrice": 999.99,
+            "highPrice": 1413.99,
+            "marketPrice": 243.32,
+            "directLowPrice": null
+          },
+          "unlimited-holofoil": {
+            "productId": 83875,
+            "lowPrice": 89.78,
+            "midPrice": 144.5,
+            "highPrice": 879.32,
+            "marketPrice": 139.36,
+            "directLowPrice": 119.99
+          }
+        }
+      }
+    },
+    {
+      "type": "holo",
+      "size": "standard",
+      "stamp": [
+        "1st-edition"
+      ],
+      "thirdParty": {
+        "tcgplayer": 83875,
+        "cardmarket": 274137
+      },
+      "variantId": "3a83wf50ts0izj268xwv3crwi",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:33.006Z",
+          "unit": "EUR",
+          "idProduct": 274137,
+          "avg": 354.08,
+          "low": 19.9,
+          "trend": 296.15,
+          "avg1": 96,
+          "avg7": 128.16,
+          "avg30": 201.64,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 39.55,
+          "avg1-holo": 29.99,
+          "avg7-holo": 46.31,
+          "avg30-holo": 39.25
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:54:35.363Z",
+          "1st-edition-holofoil": {
+            "productId": 83875,
+            "lowPrice": 650,
+            "midPrice": 999.99,
+            "highPrice": 1413.99,
+            "marketPrice": 243.32,
+            "directLowPrice": null
+          },
+          "unlimited-holofoil": {
+            "productId": 83875,
+            "lowPrice": 89.78,
+            "midPrice": 144.5,
+            "highPrice": 879.32,
+            "marketPrice": 139.36,
+            "directLowPrice": 119.99
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    146
+  ],
+  "hp": 90,
+  "types": [
+    "Fire"
+  ],
+  "stage": "Basic",
+  "attacks": [
+    {
+      "cost": [
+        "Fire",
+        "Fire",
+        "Fire",
+        "Fire",
+        "Fire"
+      ],
+      "name": "Phoenix Flame",
+      "effect": "Flip a coin. If tails, shuffle Blaine's Moltres and all cards attached to it into your deck (after doing damage).",
+      "damage": 90
+    }
+  ],
+  "resistances": [
+    {
+      "type": "Fighting",
+      "value": "-30"
+    }
+  ],
+  "retreat": 3,
+  "legal": {
+    "standard": false,
+    "expanded": false
+  },
+  "updated": "2026-07-25T23:48:29+01:00",
+  "pricing": {
+    "cardmarket": null,
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:54:35.363Z",
+      "1st-edition-holofoil": {
+        "productId": 83875,
+        "lowPrice": 650,
+        "midPrice": 999.99,
+        "highPrice": 1413.99,
+        "marketPrice": 243.32,
+        "directLowPrice": null
+      },
+      "unlimited-holofoil": {
+        "productId": 83875,
+        "lowPrice": 89.78,
+        "midPrice": 144.5,
+        "highPrice": 879.32,
+        "marketPrice": 139.36,
+        "directLowPrice": 119.99
+      }
+    }
+  }
+}

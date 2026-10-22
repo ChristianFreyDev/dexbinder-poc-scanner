@@ -1,0 +1,109 @@
+{
+  "category": "Pokemon",
+  "id": "swsh12.5gg-GG01",
+  "illustrator": "HYOGONOSUKE",
+  "localId": "GG01",
+  "name": "Hisuian Voltorb",
+  "rarity": "Rare",
+  "set": {
+    "cardCount": {
+      "official": 70,
+      "total": 70
+    },
+    "id": "swsh12.5gg",
+    "name": "Crown Zenith Galarian Gallery"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "holo",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 691880,
+        "tcgplayer": 478017
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:33.006Z",
+          "unit": "EUR",
+          "idProduct": 691880,
+          "avg": 3.26,
+          "low": 0.99,
+          "trend": 3.2,
+          "avg1": 3.37,
+          "avg7": 3.25,
+          "avg30": 3.25,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    }
+  ],
+  "dexId": [
+    100
+  ],
+  "hp": 50,
+  "types": [
+    "Grass"
+  ],
+  "description": "An enigmatic Pokémon that happens to bear a resemblance to a Poké Ball. When excited, it discharges the electric current it has stored in its belly, then lets out a great, uproarious laugh.",
+  "stage": "Basic",
+  "attacks": [
+    {
+      "name": "Cheerful Charge",
+      "effect": "You can use this attack only if you go second, and only during your first turn. Choose up to 2 of your Benched Pokémon. For each of those Pokémon, search your deck for a basic Energy card and attach it to that Pokémon. Then, shuffle your deck."
+    },
+    {
+      "cost": [
+        "Grass"
+      ],
+      "name": "Ram",
+      "damage": 10
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fire",
+      "value": "×2"
+    }
+  ],
+  "retreat": 1,
+  "regulationMark": "F",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:14:35+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:33.006Z",
+      "unit": "EUR",
+      "idProduct": 691880,
+      "avg": 3.26,
+      "low": 0.99,
+      "trend": 3.2,
+      "avg1": 3.37,
+      "avg7": 3.25,
+      "avg30": 3.25,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 0,
+      "avg1-holo": null,
+      "avg7-holo": null,
+      "avg30-holo": null
+    },
+    "tcgplayer": null
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "poc-catalog-scanner",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Protótipo isolado (Entrega 0) do DexBinder: auditoria de catálogo TCGdex + PoC de câmera/OCR. Não é o aplicativo final.",
+  "main": "expo/AppEntry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "audit:catalog": "node scripts/run-catalog-audit.js",
+    "build:series-map": "node scripts/build-series-map.js",
+    "build:index-bundle": "node scripts/export-index-bundle.js",
+    "test:matching": "node --test scripts/run-matching-tests.js",
+    "check:jsx": "node scripts/check-jsx-syntax.js",
+    "test": "npm run test:matching && npm run check:jsx"
+  },
+  "dependencies": {
+    "expo": "58.0.17",
+    "expo-camera": "58.0.12",
+    "expo-image-manipulator": "58.0.15",
+    "expo-sqlite": "58.0.13",
+    "react": "19.3.0",
+    "react-native": "0.88.0",
+    "rn-mlkit-ocr": "^0.3.1"
+  },
+  "devDependencies": {
+    "@babel/parser": "^7.25.0",
+    "@react-native-community/cli": "^20.2.0"
+  },
+  "notes": [
+    "react@19.3.0 e react-native@0.88.0 foram confirmados por `npx expo install --fix` real contra o Expo SDK 58.0.17",
+    "instalado nesta sessão (ver reports/decision.md, seção 3.1) — não foram escolhidos a priori.",
+    "Reexecute `npx expo install --fix` se o SDK Expo for atualizado depois desta data (22/10/2026), para não",
+    "copiar estas versões como se fossem permanentes.",
+    "@babel/parser e @react-native-community/cli são devDependencies só para checagens que não exigem Android SDK",
+    "(sintaxe JSX e resolução de autolinking — ver scripts/check-jsx-syntax.js e reports/decision.md, seção 3.3).",
+    "`main` precisa ser 'expo/AppEntry' (não um App.js direto): foi a causa REAL do crash 'main has not been",
+    "registered' no Android físico em 22/10/2026 — ver reports/decision.md, seção 3.9/3.10."
+  ]
+}

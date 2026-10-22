@@ -1,0 +1,572 @@
+{
+  "generatedAt": "2026-10-22T16:25:48.341Z",
+  "totalRecords": 30,
+  "removedDigitalOnlyRecords": 1,
+  "records": [
+    {
+      "sourceCardId": "2011bw-1",
+      "sourceLanguage": "en",
+      "sourceFile": "2011bw-1_en.json",
+      "name": "Snivy",
+      "category": "Pokemon",
+      "rarity": "None",
+      "localId": "1",
+      "setId": "2011bw",
+      "setName": "McDonald's Collection 2011",
+      "setSerieId": "mc",
+      "setOfficial": 12,
+      "setTotal": 12,
+      "dexIds": [
+        495
+      ],
+      "hasImage": false,
+      "imageBaseUrl": null
+    },
+    {
+      "sourceCardId": "30th-005",
+      "sourceLanguage": "en",
+      "sourceFile": "30th-005_en.json",
+      "name": "Tropius",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "005",
+      "setId": "30th",
+      "setName": "30th Celebration",
+      "setSerieId": "me",
+      "setOfficial": 128,
+      "setTotal": 158,
+      "dexIds": [],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/me/30th/005"
+    },
+    {
+      "sourceCardId": "base1-58",
+      "sourceLanguage": "en",
+      "sourceFile": "base1-58_en.json",
+      "name": "Pikachu",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "58",
+      "setId": "base1",
+      "setName": "Base Set",
+      "setSerieId": "base",
+      "setOfficial": 102,
+      "setTotal": 102,
+      "dexIds": [
+        25
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/base/base1/58"
+    },
+    {
+      "sourceCardId": "cel25-2",
+      "sourceLanguage": "en",
+      "sourceFile": "cel25-2_en.json",
+      "name": "Reshiram",
+      "category": "Pokemon",
+      "rarity": "Rare",
+      "localId": "2",
+      "setId": "cel25",
+      "setName": "Celebrations",
+      "setSerieId": "swsh",
+      "setOfficial": 25,
+      "setTotal": 25,
+      "dexIds": [
+        643
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/swsh/cel25/2"
+    },
+    {
+      "sourceCardId": "dpp-DP01",
+      "sourceLanguage": "en",
+      "sourceFile": "dpp-DP01_en.json",
+      "name": "Turtwig",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "DP01",
+      "setId": "dpp",
+      "setName": "DP Black Star Promos",
+      "setSerieId": "dp",
+      "setOfficial": 56,
+      "setTotal": 56,
+      "dexIds": [
+        387
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/dp/dpp/DP01"
+    },
+    {
+      "sourceCardId": "gym1-1",
+      "sourceLanguage": "en",
+      "sourceFile": "gym1-1_en.json",
+      "name": "Blaine's Moltres",
+      "category": "Pokemon",
+      "rarity": "Holo Rare",
+      "localId": "1",
+      "setId": "gym1",
+      "setName": "Gym Heroes",
+      "setSerieId": "gym",
+      "setOfficial": 132,
+      "setTotal": 132,
+      "dexIds": [
+        146
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/gym/gym1/1"
+    },
+    {
+      "sourceCardId": "neo1-1",
+      "sourceLanguage": "en",
+      "sourceFile": "neo1-1_en.json",
+      "name": "Ampharos",
+      "category": "Pokemon",
+      "rarity": "Rare",
+      "localId": "1",
+      "setId": "neo1",
+      "setName": "Neo Genesis",
+      "setSerieId": "neo",
+      "setOfficial": 111,
+      "setTotal": 111,
+      "dexIds": [
+        181
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/neo/neo1/1"
+    },
+    {
+      "sourceCardId": "sm12-143",
+      "sourceLanguage": "en",
+      "sourceFile": "sm12-143_en.json",
+      "name": "Togepi & Cleffa & Igglybuff GX",
+      "category": "Pokemon",
+      "rarity": "Ultra Rare",
+      "localId": "143",
+      "setId": "sm12",
+      "setName": "Cosmic Eclipse",
+      "setSerieId": "sm",
+      "setOfficial": 236,
+      "setTotal": 271,
+      "dexIds": [
+        173,
+        174,
+        175
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sm/sm12/143"
+    },
+    {
+      "sourceCardId": "sm9-33",
+      "sourceLanguage": "en",
+      "sourceFile": "sm9-33_en.json",
+      "name": "Pikachu & Zekrom GX",
+      "category": "Pokemon",
+      "rarity": "Ultra Rare",
+      "localId": "33",
+      "setId": "sm9",
+      "setName": "Team Up",
+      "setSerieId": "sm",
+      "setOfficial": 181,
+      "setTotal": 196,
+      "dexIds": [
+        25,
+        644
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sm/sm9/33"
+    },
+    {
+      "sourceCardId": "sv03.5-001",
+      "sourceLanguage": "de",
+      "sourceFile": "sv03.5-001_de.json",
+      "name": "Bisasam",
+      "category": "Pokémon",
+      "rarity": "Häufig",
+      "localId": "001",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        1
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/de/sv/sv03.5/001"
+    },
+    {
+      "sourceCardId": "sv03.5-001",
+      "sourceLanguage": "en",
+      "sourceFile": "sv03.5-001_en.json",
+      "name": "Bulbasaur",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "001",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        1
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/001"
+    },
+    {
+      "sourceCardId": "sv03.5-001",
+      "sourceLanguage": "fr",
+      "sourceFile": "sv03.5-001_fr.json",
+      "name": "Bulbizarre",
+      "category": "Pokémon",
+      "rarity": "Commune",
+      "localId": "001",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        1
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/fr/sv/sv03.5/001"
+    },
+    {
+      "sourceCardId": "sv03.5-001",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-001_pt.json",
+      "name": "Bulbasaur",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "001",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        1
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/001"
+    },
+    {
+      "sourceCardId": "sv03.5-003",
+      "sourceLanguage": "en",
+      "sourceFile": "sv03.5-003_en.json",
+      "name": "Venusaur ex",
+      "category": "Pokemon",
+      "rarity": "Double rare",
+      "localId": "003",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        3
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/003"
+    },
+    {
+      "sourceCardId": "sv03.5-003",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-003_pt.json",
+      "name": "Venusaur ex",
+      "category": "Pokémon",
+      "rarity": "Rara Dupla",
+      "localId": "003",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        3
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/003"
+    },
+    {
+      "sourceCardId": "sv03.5-025",
+      "sourceLanguage": "en",
+      "sourceFile": "sv03.5-025_en.json",
+      "name": "Pikachu",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "025",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        25
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/025"
+    },
+    {
+      "sourceCardId": "sv03.5-165",
+      "sourceLanguage": "en",
+      "sourceFile": "sv03.5-165_en.json",
+      "name": "Rigid Band",
+      "category": "Trainer",
+      "rarity": "Uncommon",
+      "localId": "165",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/165"
+    },
+    {
+      "sourceCardId": "sv03.5-166",
+      "sourceLanguage": "en",
+      "sourceFile": "sv03.5-166_en.json",
+      "name": "Bulbasaur",
+      "category": "Pokemon",
+      "rarity": "Illustration rare",
+      "localId": "166",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        1
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/166"
+    },
+    {
+      "sourceCardId": "sv03.5-173",
+      "sourceLanguage": "en",
+      "sourceFile": "sv03.5-173_en.json",
+      "name": "Pikachu",
+      "category": "Pokemon",
+      "rarity": "Illustration rare",
+      "localId": "173",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        25
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/173"
+    },
+    {
+      "sourceCardId": "sv03.5-180",
+      "sourceLanguage": "en",
+      "sourceFile": "sv03.5-180_en.json",
+      "name": "Omanyte",
+      "category": "Pokemon",
+      "rarity": "Illustration rare",
+      "localId": "180",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        138
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/180"
+    },
+    {
+      "sourceCardId": "sv03.5-206",
+      "sourceLanguage": "en",
+      "sourceFile": "sv03.5-206_en.json",
+      "name": "Switch",
+      "category": "Trainer",
+      "rarity": "Hyper rare",
+      "localId": "206",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/206"
+    },
+    {
+      "sourceCardId": "sv03.5-207",
+      "sourceLanguage": "en",
+      "sourceFile": "sv03.5-207_en.json",
+      "name": "Basic Psychic Energy",
+      "category": "Energy",
+      "rarity": "Hyper rare",
+      "localId": "207",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/207"
+    },
+    {
+      "sourceCardId": "SV2a-001",
+      "sourceLanguage": "ja",
+      "sourceFile": "SV2a-001_ja.json",
+      "name": "フシギダネ",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "001",
+      "setId": "SV2a",
+      "setName": "ポケモンカード151",
+      "setSerieId": null,
+      "setOfficial": 165,
+      "setTotal": 210,
+      "dexIds": [
+        1
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/ja/SV/SV2a/001"
+    },
+    {
+      "sourceCardId": "SV2a-025",
+      "sourceLanguage": "ja",
+      "sourceFile": "SV2a-025_ja.json",
+      "name": "ピカチュウ",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "025",
+      "setId": "SV2a",
+      "setName": "ポケモンカード151",
+      "setSerieId": null,
+      "setOfficial": 165,
+      "setTotal": 210,
+      "dexIds": [
+        25
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/ja/SV/SV2a/025"
+    },
+    {
+      "sourceCardId": "svp-004",
+      "sourceLanguage": "en",
+      "sourceFile": "svp-004_en.json",
+      "name": "Mimikyu ex",
+      "category": "Pokemon",
+      "rarity": "Promo",
+      "localId": "004",
+      "setId": "svp",
+      "setName": "SVP Black Star Promos",
+      "setSerieId": "sv",
+      "setOfficial": 225,
+      "setTotal": 226,
+      "dexIds": [
+        778
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/sv/svp/004"
+    },
+    {
+      "sourceCardId": "svp-004",
+      "sourceLanguage": "fr",
+      "sourceFile": "svp-004_fr.json",
+      "name": "Mimiqui-ex",
+      "category": "Pokémon",
+      "rarity": "Promo",
+      "localId": "004",
+      "setId": "svp",
+      "setName": "SVP Black Star Promos",
+      "setSerieId": "sv",
+      "setOfficial": 225,
+      "setTotal": 225,
+      "dexIds": [
+        778
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/fr/sv/svp/004"
+    },
+    {
+      "sourceCardId": "swsh12.5gg-GG01",
+      "sourceLanguage": "en",
+      "sourceFile": "swsh12.5gg-GG01_en.json",
+      "name": "Hisuian Voltorb",
+      "category": "Pokemon",
+      "rarity": "Rare",
+      "localId": "GG01",
+      "setId": "swsh12.5gg",
+      "setName": "Crown Zenith Galarian Gallery",
+      "setSerieId": "swsh",
+      "setOfficial": 70,
+      "setTotal": 70,
+      "dexIds": [
+        100
+      ],
+      "hasImage": false,
+      "imageBaseUrl": null
+    },
+    {
+      "sourceCardId": "swsh9-001",
+      "sourceLanguage": "en",
+      "sourceFile": "swsh9-001_en.json",
+      "name": "Exeggcute",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "001",
+      "setId": "swsh9",
+      "setName": "Brilliant Stars",
+      "setSerieId": "swsh",
+      "setOfficial": 172,
+      "setTotal": 186,
+      "dexIds": [
+        102
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/swsh/swsh9/001"
+    },
+    {
+      "sourceCardId": "swshp-SWSH001",
+      "sourceLanguage": "en",
+      "sourceFile": "swshp-SWSH001_en.json",
+      "name": "Grookey",
+      "category": "Pokemon",
+      "rarity": "Promo",
+      "localId": "SWSH001",
+      "setId": "swshp",
+      "setName": "SWSH Black Star Promos",
+      "setSerieId": "swsh",
+      "setOfficial": 307,
+      "setTotal": 307,
+      "dexIds": [
+        810
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/swsh/swshp/SWSH001"
+    },
+    {
+      "sourceCardId": "xy1-1",
+      "sourceLanguage": "en",
+      "sourceFile": "xy1-1_en.json",
+      "name": "Venusaur EX",
+      "category": "Pokemon",
+      "rarity": "Ultra Rare",
+      "localId": "1",
+      "setId": "xy1",
+      "setName": "XY",
+      "setSerieId": "xy",
+      "setOfficial": 146,
+      "setTotal": 146,
+      "dexIds": [
+        3
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/en/xy/xy1/1"
+    }
+  ]
+}

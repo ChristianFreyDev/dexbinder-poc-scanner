@@ -1,0 +1,117 @@
+{
+  "category": "Pokemon",
+  "id": "2011bw-1",
+  "illustrator": "Ken Sugimori",
+  "localId": "1",
+  "name": "Snivy",
+  "rarity": "None",
+  "set": {
+    "cardCount": {
+      "official": 12,
+      "total": 12
+    },
+    "id": "2011bw",
+    "name": "McDonald's Collection 2011"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "holo",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 281790,
+        "tcgplayer": 89378
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.988Z",
+          "unit": "EUR",
+          "idProduct": 281790,
+          "avg": 2.59,
+          "low": 0.03,
+          "trend": 1.59,
+          "avg1": 0.2,
+          "avg7": 1.65,
+          "avg30": 1.73,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 1.13,
+          "avg1-holo": 0.5,
+          "avg7-holo": 0.84,
+          "avg30-holo": 0.88
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:54:50.002Z",
+          "holofoil": {
+            "productId": 89378,
+            "lowPrice": 3.52,
+            "midPrice": 5.7,
+            "highPrice": 40.22,
+            "marketPrice": 7.71,
+            "directLowPrice": null
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    495
+  ],
+  "hp": 60,
+  "types": [
+    "Grass"
+  ],
+  "description": "It is very intelligent and calm. Being exposed to lots of sunlight makes its movements swifter.",
+  "stage": "Basic",
+  "attacks": [
+    {
+      "name": "Slam",
+      "effect": "Flip 2 coins. This attack does 20 damage times the number of heads.",
+      "damage": "20×"
+    }
+  ],
+  "legal": {
+    "standard": false,
+    "expanded": false
+  },
+  "updated": "2026-08-13T20:58:05+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:32.988Z",
+      "unit": "EUR",
+      "idProduct": 281790,
+      "avg": 2.59,
+      "low": 0.03,
+      "trend": 1.59,
+      "avg1": 0.2,
+      "avg7": 1.65,
+      "avg30": 1.73,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 1.13,
+      "avg1-holo": 0.5,
+      "avg7-holo": 0.84,
+      "avg30-holo": 0.88
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:54:50.002Z",
+      "holofoil": {
+        "productId": 89378,
+        "lowPrice": 3.52,
+        "midPrice": 5.7,
+        "highPrice": 40.22,
+        "marketPrice": 7.71,
+        "directLowPrice": null
+      }
+    }
+  }
+}

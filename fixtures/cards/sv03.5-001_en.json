@@ -1,0 +1,258 @@
+{
+  "category": "Pokemon",
+  "id": "sv03.5-001",
+  "illustrator": "Yuu Nishida",
+  "image": "https://assets.tcgdex.net/en/sv/sv03.5/001",
+  "localId": "001",
+  "name": "Bulbasaur",
+  "rarity": "Common",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/en/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "normal",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 733596,
+        "tcgplayer": 502552,
+        "cardtrader": 261065
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 733596,
+          "avg": 0.13,
+          "low": 0.02,
+          "trend": 0.12,
+          "avg1": 0.12,
+          "avg7": 0.12,
+          "avg30": 0.13,
+          "avg-holo": 0.36,
+          "low-holo": 0.02,
+          "trend-holo": 0.39,
+          "avg1-holo": 0.76,
+          "avg7-holo": 0.39,
+          "avg30-holo": 0.37
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 502552,
+            "lowPrice": 0.01,
+            "midPrice": 0.43,
+            "highPrice": 41.93,
+            "marketPrice": 0.62,
+            "directLowPrice": 0.37
+          },
+          "normal": {
+            "productId": 502552,
+            "lowPrice": 0.01,
+            "midPrice": 0.28,
+            "highPrice": 16.8,
+            "marketPrice": 0.31,
+            "directLowPrice": null
+          }
+        }
+      }
+    },
+    {
+      "type": "reverse",
+      "size": "standard",
+      "thirdParty": {
+        "cardmarket": 733596,
+        "tcgplayer": 502552,
+        "cardtrader": 261065
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 733596,
+          "avg": 0.13,
+          "low": 0.02,
+          "trend": 0.12,
+          "avg1": 0.12,
+          "avg7": 0.12,
+          "avg30": 0.13,
+          "avg-holo": 0.36,
+          "low-holo": 0.02,
+          "trend-holo": 0.39,
+          "avg1-holo": 0.76,
+          "avg7-holo": 0.39,
+          "avg30-holo": 0.37
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 502552,
+            "lowPrice": 0.01,
+            "midPrice": 0.43,
+            "highPrice": 41.93,
+            "marketPrice": 0.62,
+            "directLowPrice": 0.37
+          },
+          "normal": {
+            "productId": 502552,
+            "lowPrice": 0.01,
+            "midPrice": 0.28,
+            "highPrice": 16.8,
+            "marketPrice": 0.31,
+            "directLowPrice": null
+          }
+        }
+      }
+    },
+    {
+      "type": "normal",
+      "size": "standard",
+      "stamp": [
+        "set-logo"
+      ],
+      "thirdParty": {
+        "cardmarket": 720365
+      },
+      "variantId": "3takscxpcqodqyjzqnsbuwq6",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 720365,
+          "avg": 74.37,
+          "low": 65,
+          "trend": 60.53,
+          "avg1": 78.99,
+          "avg7": 79.44,
+          "avg30": 108.19,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    },
+    {
+      "type": "reverse",
+      "size": "standard",
+      "foil": "cosmos",
+      "thirdParty": {
+        "cardmarket": 794908
+      },
+      "variantId": "3ts5hd5swdcuwzv63t639rp",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-21T22:54:32.997Z",
+          "unit": "EUR",
+          "idProduct": 794908,
+          "avg": null,
+          "low": 5.99,
+          "trend": 0,
+          "avg1": null,
+          "avg7": null,
+          "avg30": null,
+          "avg-holo": 10.16,
+          "low-holo": 5.99,
+          "trend-holo": 8.91,
+          "avg1-holo": 16.08,
+          "avg7-holo": 11.48,
+          "avg30-holo": 10
+        },
+        "tcgplayer": null
+      }
+    }
+  ],
+  "dexId": [
+    1
+  ],
+  "hp": 70,
+  "types": [
+    "Grass"
+  ],
+  "description": "While it is young, it uses the nutrients that are stored in the seed on its back in order to grow.",
+  "stage": "Basic",
+  "attacks": [
+    {
+      "cost": [
+        "Grass",
+        "Colorless"
+      ],
+      "name": "Leech Seed",
+      "effect": "Heal 20 damage from this Pokémon.",
+      "damage": 20
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fire",
+      "value": "×2"
+    }
+  ],
+  "retreat": 2,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-21T22:54:32.997Z",
+      "unit": "EUR",
+      "idProduct": 733596,
+      "avg": 0.13,
+      "low": 0.02,
+      "trend": 0.12,
+      "avg1": 0.12,
+      "avg7": 0.12,
+      "avg30": 0.13,
+      "avg-holo": 0.36,
+      "low-holo": 0.02,
+      "trend-holo": 0.39,
+      "avg1-holo": 0.76,
+      "avg7-holo": 0.39,
+      "avg30-holo": 0.37
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "reverse-holofoil": {
+        "productId": 502552,
+        "lowPrice": 0.01,
+        "midPrice": 0.43,
+        "highPrice": 41.93,
+        "marketPrice": 0.62,
+        "directLowPrice": 0.37
+      },
+      "normal": {
+        "productId": 502552,
+        "lowPrice": 0.01,
+        "midPrice": 0.28,
+        "highPrice": 16.8,
+        "marketPrice": 0.31,
+        "directLowPrice": null
+      }
+    }
+  }
+}
