@@ -106,7 +106,19 @@ export default function ScannerPocScreen() {
     setErrorMessage(null);
     try {
       const crops = await generateCardCrops(capturedPhoto.uri, capturedPhoto);
-      const textBlocks = await recognizeCardText(crops.fullUri, { provider: "rn-mlkit-ocr" });
+      // Achado real: rodar o OCR só na foto inteira lia mal (ou não lia)
+      // o número de coleção, que ocupa uma fração minúscula da imagem.
+      // Roda o OCR também nos recortes de cabeçalho/rodapé (ampliados
+      // relativamente à foto inteira), e junta todo o texto reconhecido —
+      // dá ao nome e ao número uma segunda e terceira chance de serem lidos
+      // com mais nitidez. Cada recorte roda em sequência (não em paralelo)
+      // para não sobrecarregar o módulo nativo de OCR com 3 chamadas
+      // simultâneas; isso deixa o processamento mais lento, é uma troca
+      // deliberada por mais acerto.
+      const fullBlocks = await recognizeCardText(crops.fullUri, { provider: "rn-mlkit-ocr" });
+      const headerBlocks = await recognizeCardText(crops.headerUri, { provider: "rn-mlkit-ocr" }).catch(() => []);
+      const footerBlocks = await recognizeCardText(crops.footerUri, { provider: "rn-mlkit-ocr" }).catch(() => []);
+      const textBlocks = [...headerBlocks, ...fullBlocks, ...footerBlocks];
       const parsed = parseCardText(textBlocks);
       const { candidates, needsManualConfirmation } = rankCandidates(parsed, LOCAL_INDEX, { topN: 5 });
 

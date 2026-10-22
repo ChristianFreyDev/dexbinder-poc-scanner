@@ -43,11 +43,17 @@ async function generateCardCrops(photoUri, photoSize) {
     width: Math.round(width * 0.7),
     height: Math.round(height * 0.12),
   };
+  // Achado real (testes em Android físico, 22/10/2026): a numeração não
+  // foi lida em nenhuma das últimas fotos testadas — provável causa: o
+  // recorte do rodapé era estreito (só os 40% da direita) e a posição
+  // exata do número varia entre layouts de carta. Alargado para quase a
+  // largura toda da faixa inferior, para não cortar o número fora do
+  // recorte independente de estar mais à esquerda ou à direita.
   const footerNumberRegion = {
-    originX: Math.round(width * 0.55),
-    originY: Math.round(height * 0.88),
-    width: Math.round(width * 0.4),
-    height: Math.round(height * 0.1),
+    originX: Math.round(width * 0.03),
+    originY: Math.round(height * 0.85),
+    width: Math.round(width * 0.94),
+    height: Math.round(height * 0.13),
   };
 
   const [fullUri, headerUri, footerUri] = await Promise.all([
