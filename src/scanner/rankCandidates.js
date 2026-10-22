@@ -87,11 +87,16 @@ function totalMatches(totalGuess, record) {
  * @returns {Array<{record, score, reasons: string[]}>}
  */
 function rankCandidates(parsed, indexRecords, { topN = 5 } = {}) {
+  // Achado real (ver parseCardText.js): o nome certo nem sempre é a 1ª
+  // linha — testa a similaridade contra TODAS as linhas plausíveis e usa a
+  // melhor, em vez de confiar só no nameGuess (a 1ª linha, só para exibição).
+  const nameCandidates = parsed.nameLines && parsed.nameLines.length > 0 ? parsed.nameLines : [parsed.nameGuess];
+
   const scored = indexRecords.map((record) => {
     const reasons = [];
     let score = 0;
 
-    const nameSim = nameSimilarity(parsed.nameGuess, record.name);
+    const nameSim = Math.max(0, ...nameCandidates.map((line) => nameSimilarity(line, record.name)));
     score += nameSim * WEIGHTS.name;
     if (nameSim >= 0.99) reasons.push("nome exato");
     else if (nameSim >= 0.75) reasons.push("nome parcial");

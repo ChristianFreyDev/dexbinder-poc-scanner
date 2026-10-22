@@ -299,3 +299,52 @@ test("totalMatches: sem totalGuess não afeta o score (comportamento antigo pres
   assert.equal(candidates[0].record.sourceCardId, "sv03.5-001");
   assert.ok(candidates[0].reasons.includes("número exato"));
 });
+
+// Texto OCR REAL, capturado por quem testou o app em um Android físico com
+// uma carta física real (Charizard, 22/10/2026) — não é um exemplo
+// sintético. "Charizard" só aparece na 2ª linha; a 1ª é ruído de fundo.
+const REAL_CHARIZARD_OCR_LINES = [
+  "ma Aventura Inesquecível!GEEK-5",
+  "Charizard",
+  "AblEy",
+  "ncdurino",
+  "Battle Sense",
+  "Royal Blaze",
+  "D-170®",
+  "100+",
+  "THSatLack doe 0 mordamae oeach Leon card in",
+  "our discard pil",
+  "Vendas nos Útimos 3 meses",
+  "nicladeS",
+  "mon 2",
+  "Comprase dei",
+  "lace",
+  "+ LE",
+];
+
+test("parseCardText: com ruído real antes do nome, 'Charizard' aparece em nameLines mesmo não sendo a 1ª linha", () => {
+  const parsed = parseCardText(REAL_CHARIZARD_OCR_LINES);
+  assert.ok(parsed.nameLines.includes("Charizard"), "nameLines deveria conter 'Charizard' (2ª linha do texto real)");
+  assert.notEqual(parsed.nameGuess, "Charizard", "nameGuess (só para exibição) ainda é a 1ª linha, como antes");
+});
+
+test("parseCardText: não extrai 'GEEK-5' nem 'D-170' como número de coleção (achado real)", () => {
+  const parsed = parseCardText(REAL_CHARIZARD_OCR_LINES);
+  assert.notEqual(parsed.numberGuess, "GEEK-5", "GEEK-5 é ruído de fundo embutido numa frase longa, não um número de coleção");
+  assert.notEqual(parsed.numberGuess, "D-170", "D-170 é uma leitura ruidosa do indicador de HP, não um número de coleção");
+});
+
+test("rankCandidates: com o texto OCR real e ruidoso, ainda encontra 'Charizard' no índice graças às múltiplas linhas de nome", () => {
+  // Charizard não está nas 31 fixtures reais da auditoria (índice pequeno
+  // de demonstração desta PoC) — por isso construímos um registro sintético
+  // aqui só para provar que a lógica de múltiplas linhas funciona com o
+  // texto OCR real. Isso NÃO afirma que o catálogo de produção tem Charizard.
+  const charizardRecord = normalizeCard(
+    { id: "swsh4-25", localId: "025", name: "Charizard", set: { id: "swsh4", name: "Vivid Voltage" } },
+    "en",
+    "synthetic_test_only.json"
+  );
+  const parsed = parseCardText(REAL_CHARIZARD_OCR_LINES);
+  const { candidates } = rankCandidates(parsed, [charizardRecord, ...allRecords], { topN: 5 });
+  assert.equal(candidates[0].record.sourceCardId, "swsh4-25", "deveria achar Charizard apesar do ruído antes do nome");
+});
