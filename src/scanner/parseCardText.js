@@ -90,9 +90,17 @@ function parseCardText(rawTextBlocks) {
   let numberGuess = null;
   let totalGuess = null;
   for (const line of blocks) {
-    const m = line.match(/([A-Za-z]{0,5}\s?\d{1,4})\s*\/\s*(\d{1,4})/);
+    // Achados reais (fotos físicas, 22/10/2026): (a) o OCR às vezes lê o
+    // zero do número como a letra "o" minúscula ("o25/165" em vez de
+    // "025/165") — corrigido convertendo O/o para 0 quando colado a
+    // dígitos, só para fins de reconhecer o número, nunca para o texto
+    // bruto exibido. (b) uma palavra de ruído antes do número (ex.: "GWEN
+    // 001/165") era incluída como se fosse parte dele — por isso o padrão
+    // de número com barra não aceita mais prefixo de letras, só dígitos.
+    const digitsOnly = line.replace(/([Oo])(?=\d)|(?<=\d)([Oo])/g, "0");
+    const m = digitsOnly.match(/(\d{1,4})\s*\/\s*(\d{1,4})/);
     if (m) {
-      numberGuess = m[1].replace(/\s+/g, "");
+      numberGuess = m[1];
       totalGuess = m[2];
       break;
     }

@@ -448,3 +448,43 @@ test("achado real (foto 3/3, Venusaur ex): nome ruidoso ('Venusaurex340') ainda 
   const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 3 });
   assert.equal(candidates[0].record.sourceCardId, "sv03.5-003");
 });
+
+// Segunda rodada de fotos reais (22/10/2026): expôs que o OCR às vezes lê
+// o zero do número como "o" minúsculo, e que uma palavra de ruído antes do
+// número (ex.: "GWEN") era incluída como se fosse parte do número.
+
+test("achado real: 'o25/165' (zero lido como letra 'o') ainda extrai o número 025/165 e desempata entre as 3 impressões de Pikachu", () => {
+  const lines = [
+    "SandshrW 60",
+    "BASICO",
+    "Pikachu",
+    "Fraquezax2",
+    "Carga",
+    "Syst. Noyo Kim",
+    "GWEN o25/165", // "o" minúsculo no lugar do zero + "GWEN" de ruído antes do número
+    "Sandslash",
+  ];
+  const parsed = parseCardText(lines);
+  assert.equal(parsed.numberGuess, "025", "deveria normalizar 'o25' para '025'");
+  assert.equal(parsed.totalGuess, "165");
+
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 5 });
+  assert.equal(
+    candidates[0].record.sourceCardId,
+    "sv03.5-025",
+    "com o número corretamente extraído, deve desempatar a favor da impressão 151 #025, não Base Set nem #173"
+  );
+  assert.ok(candidates[0].reasons.includes("número e total do set exatos"));
+});
+
+test("achado real: palavra de ruído antes do número com barra ('GWEN 001/165') não vira parte do número", () => {
+  const parsed = parseCardText(["Bulbasaur", "GNEW 001/165", "70"]);
+  assert.equal(parsed.numberGuess, "001", "não deveria ser 'GNEW001'");
+  assert.equal(parsed.totalGuess, "165");
+
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 3 });
+  assert.equal(candidates[0].record.sourceCardId, "sv03.5-001");
+  assert.ok(candidates[0].reasons.includes("número e total do set exatos"));
+});
