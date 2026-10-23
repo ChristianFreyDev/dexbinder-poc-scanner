@@ -89,7 +89,13 @@ function loadFixtureCards({ fixturesDir = FIXTURES_DIR, seriesMapPath = SERIES_M
   if (!fs.existsSync(fixturesDir)) return [];
 
   const seriesMap = loadSeriesMap({ seriesMapPath });
-  const files = fs.readdirSync(fixturesDir).filter((f) => f.endsWith(".json"));
+  // .sort(): fs.readdirSync() não garante ordem entre sistemas de arquivo
+  // (achado real: Windows e o runner Linux do GitHub Actions devolviam
+  // ordens diferentes para o mesmo diretório), e rankCandidates() usa a
+  // ordem de allRecords como desempate quando duas cartas empatam no score
+  // — sem ordenar aqui, o mesmo teste podia escolher um candidato diferente
+  // dependendo do sistema operacional rodando.
+  const files = fs.readdirSync(fixturesDir).filter((f) => f.endsWith(".json")).sort();
   const records = [];
 
   for (const file of files) {

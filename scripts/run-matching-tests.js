@@ -274,8 +274,22 @@ test("rankCandidates: '001/165' usa o total do set para não misturar cartas de 
   const physicalRecords = filterPhysicalCards(allRecords, { seriesMap });
   const { candidates } = rankCandidates(parsed, physicalRecords, { topN: 10 });
 
+  // Achado real (CI em Linux, 23/10/2026): as fixtures têm DOIS set ids reais
+  // da TCGdex pro mesmo "151" — "sv03.5" (release internacional, total
+  // oficial 165/207) e "SV2a" (release japonesa, 165/210). Sem nome nem
+  // código de expansão no texto (só "001/165"), os dois empatam de verdade
+  // no score — não há nenhum sinal real pra desambiguar os dois, então
+  // qual deles vence o empate dependia da ordem de `fs.readdirSync()`, que
+  // o Windows e o runner Linux do GitHub Actions devolviam diferente (ver
+  // catalogFixtures.js, agora com `.sort()` pra ficar determinístico entre
+  // sistemas operacionais). O que este teste prova de verdade é a
+  // desambiguação de sets SEM NENHUMA relação (abaixo), não qual das duas
+  // releases do mesmo "151" ganha um empate genuíno.
   const top = candidates[0];
-  assert.equal(top.record.setId, "sv03.5", "o melhor candidato deve ser do set 151 (sv03.5), que tem total 165/207");
+  assert.ok(
+    ["sv03.5", "SV2a"].includes(top.record.setId),
+    `o melhor candidato deve ser da família do set 151 (sv03.5 ou SV2a, ambos total oficial 165), veio "${top.record.setId}"`
+  );
 
   // Cartas de outros sets com o MESMO número "001"/"1" não devem aparecer
   // com crédito de número — devem ficar com score baixo (sem "número e
