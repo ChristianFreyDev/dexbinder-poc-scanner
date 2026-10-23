@@ -274,3 +274,24 @@ Discussão levantada ao revisar `src/storage/catalogIndex.js` (índice SQLite es
 Isso resolve as três exigências reais levantadas na conversa: catálogo completo (não só uma amostra), atualização automática sem depender de publicar um app novo, e funcionamento **offline desde o primeiro escaneamento** (miniatura sempre presente, sem depender de já ter visto aquela carta online antes).
 
 **Por isso `src/storage/catalogIndex.js` foi mantido no repositório** (não removido como código morto) — é a base correta para a metade "ler o índice local" desta arquitetura; falta a metade "baixar/sincronizar o pacote publicado", que é trabalho real da Entrega 1, fora do escopo desta PoC.
+
+### 11.1. Base real já construída e testada em pequena escala (22-23/10/2026)
+
+Dois scripts novos implementam a metade "processo de sincronização" do item 2 acima, testados de verdade contra a API real (amostra pequena, não o catálogo completo — ver justificativa de escala abaixo):
+
+- **[`scripts/sync-full-catalog.js`](../scripts/sync-full-catalog.js)**: gera o banco SQLite completo. Achado real relevante: `GET /{lang}/sets/{setId}` já devolve TODOS os cards do set numa única resposta (forma reduzida: id/imagem/número/nome — suficiente pra tudo que `rankCandidates.js` usa), **e inclui `abbreviation.official`** — o código de expansão impresso de verdade na carta (confirmado: `"MEW"` para o set "151", batendo exatamente com o que tínhamos descoberto manualmente via OCR real). Isso elimina duas limitações da PoC: não precisa de uma requisição por carta (uma por SET já basta — ~220 ao todo), e o código de expansão não precisa mais ser hardcoded um set de cada vez com evidência fotográfica (`setPrintedCode` em `catalogFixtures.js` continua existindo só pra esta PoC de 30 cartas).
+- **[`scripts/build-thumbnails.js`](../scripts/build-thumbnails.js)**: gera as miniaturas pequenas pré-empacotadas (60×84px, WebP) a partir do banco acima.
+
+**Testado contra dados reais em pequena escala**: 2 sets × 2 idiomas (516 cartas, nenhuma falha) para o banco; 5 cartas reais baixadas e comprimidas para as miniaturas — **1130 bytes/miniatura em média**, confirmando a estimativa da seção 11 (~1-2KB cada). Banco gerado: 100KB para 516 linhas.
+
+**Por que não foi rodado em escala completa de uma vez só**: o script do banco (`sync-full-catalog.js --full`) faria ~1100 requisições reais (220 sets × 5 idiomas) — tecnicamente leve (só JSON), mas é uma ação real contra a API pública de terceiros. O script de miniaturas (`build-thumbnails.js --full`) é mais pesado: um download de imagem real por carta, dezenas de milhares no total. Os dois scripts suportam escopo reduzido (`--sets`/`--langs`/`--limit`) para testes incrementais sem essa escala.
+
+### 11.2. Sincronização automática em lotes — rodando de verdade (23/10/2026)
+
+Pedido real: em vez de rodar tudo de uma vez, buscar o catálogo aos poucos (um lote por hora), retomando de onde parou, até completar; depois, passar a rodar bem mais espaçado (de 3 em 3 dias) só pra achar cartas/sets novos.
+
+- `scripts/sync-full-catalog.js` ganhou `--resume` (não apaga o banco existente; consulta uma tabela `synced_pairs` pra saber quais combinações set×idioma já tem, e pula essas) e `--batch=N` (processa só N combinações novas por execução). Testado localmente simulando 3 execuções seguidas (6 pares, lotes de 3): a 1ª processou 3, a 2ª retomou e processou as 3 restantes sem refazer nada, a 3ª reconheceu corretamente que não havia mais nada pendente ("CATÁLOGO COMPLETO").
+- **[`.github/workflows/sync-catalog.yml`](../.github/workflows/sync-catalog.yml)**: roda o script acima de hora em hora (`cron: "7 * * * *"`, `BATCH_SIZE=25`), publicando o progresso (banco SQLite + manifesto) como assets de uma Release fixa do repositório (`catalog-data`) — não como commits no histórico do git, pra não acumular um binário SQLite mudando toda hora no histórico. Cada execução baixa o progresso da anterior (se existir), processa mais um lote, e republica.
+- **A troca de cadência (hora em hora → 3 em 3 dias) é manual e deliberada**, uma linha no `cron:` do workflow, para quando o primeiro ciclo completo terminar (`remainingPairs: 0` / `complete: true` no manifesto) — não há nada se auto-ajustando aqui, de propósito, para manter simples e auditável.
+- Com `BATCH_SIZE=25` e ~1100 pares no total, o primeiro ciclo completo leva aproximadamente 44 horas corridas (sujeito ao agendador do GitHub Actions, que não garante execução exatamente na hora certa).
+- **Escopo desta automação**: só os metadados (banco SQLite). A geração de miniaturas (`build-thumbnails.js`, mais pesada — download de imagem real por carta) continua manual/sob demanda por enquanto, não entrou neste workflow.

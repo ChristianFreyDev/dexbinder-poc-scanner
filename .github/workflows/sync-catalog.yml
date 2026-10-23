@@ -1,0 +1,72 @@
+name: Sync Full Catalog
+
+# Base real da arquitetura de catálogo completo/auto-atualizável (Entrega 1,
+# ver reports/decision.md, seções 11/11.1). Roda scripts/sync-full-catalog.js
+# em lotes pequenos (não tudo de uma vez — ~1100 requisições reais no total
+# contra a API pública do TCGdex), retomando de onde parou a cada execução
+# (--resume), e publica o progresso como assets de uma Release fixa deste
+# repositório ("catalog-data") — não como commits no histórico do git, pra
+# não acumular um binário SQLite mudando a cada hora no histórico.
+#
+# Pedido real (23/10/2026): rodar de hora em hora até completar o catálogo
+# inteiro (todos os sets, todos os idiomas), depois passar a rodar bem mais
+# espaçado (de 3 em 3 dias) só pra pegar sets/cartas novas. A troca de
+# cadência é manual e deliberada (uma linha no cron abaixo) quando o
+# primeiro ciclo completo terminar — não há nada "se auto-ajustando" aqui,
+# de propósito, pra manter simples.
+#
+# BATCH_SIZE controla quantos pares (set × idioma) são buscados por
+# execução — ajuste aqui, não precisa mexer no resto do workflow.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "7 * * * *" # de hora em hora (minuto 7, não 0, por boa prática de agendamento)
+
+env:
+  BATCH_SIZE: 25
+  RELEASE_TAG: catalog-data
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      # Baixa o progresso da execução anterior, se existir (primeira
+      # execução de todas: a Release ainda não existe, começa do zero).
+      - name: Baixar progresso anterior (se existir)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p dist/catalog
+          gh release download "$RELEASE_TAG" --dir dist/catalog --clobber || echo "Nenhuma release anterior encontrada — começando do zero."
+
+      - name: Sincronizar um lote do catálogo
+        run: node scripts/sync-full-catalog.js --full --resume --batch=$BATCH_SIZE
+
+      - name: Mostrar progresso
+        run: cat dist/catalog/catalog-version.json
+
+      # Cria a release na primeira vez, ou só atualiza os assets nas
+      # próximas (--clobber substitui os arquivos existentes).
+      - name: Publicar progresso na Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" \
+            --title "Catalog data (sincronização em andamento)" \
+            --notes "Banco SQLite do catálogo completo + manifesto de progresso, gerados automaticamente por scripts/sync-full-catalog.js. Ver reports/decision.md, seção 11."
+          gh release upload "$RELEASE_TAG" dist/catalog/catalog.db dist/catalog/catalog-version.json --clobber

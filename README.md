@@ -67,6 +67,20 @@ npx expo run:android                             # requer Android Studio/SDK con
 
 Para completar o protocolo formal da especificação (dataset de 60 fotos/30 impressões, seção 16.3), siga o runbook na seção 7 de [`reports/decision.md`](reports/decision.md).
 
+## Catálogo completo (base da Entrega 1, rodando automaticamente)
+
+Além do bundle estático de 30 cartas desta PoC, já existe a base real da arquitetura de catálogo completo (ver `reports/decision.md`, seções 11/11.1/11.2): um workflow (`.github/workflows/sync-catalog.yml`) roda de hora em hora, buscando um lote do catálogo completo (todos os sets, todos os idiomas) direto da API do TCGdex, retomando de onde parou a cada execução, e publicando o progresso como assets da Release `catalog-data` deste repositório. Scripts por trás disso:
+
+```bash
+# Gera/atualiza o banco SQLite do catálogo completo (dist/catalog/catalog.db)
+npm run sync:full-catalog -- --full --resume --batch=25
+
+# Gera miniaturas pequenas pré-empacotadas (dist/catalog/thumbnails/), a partir do banco acima
+node scripts/build-thumbnails.js --limit=20   # amostra; use --full para todas (download pesado, combinar antes)
+```
+
+Ambos têm modo de amostra pequena por padrão (sem `--full`) — seguros de rodar localmente para testar sem varrer o catálogo inteiro.
+
 ## Estrutura
 
 ```text
@@ -84,10 +98,12 @@ src/scanner/parseCardText.js     # normalização (acentos/caixa/pontuação) e 
 src/scanner/rankCandidates.js    # pontuação heurística de candidatos (função pura, testada)
 src/scanner/naturalSort.js       # ordenação natural de localId (nunca converte para inteiro)
 src/scanner/resolveImageUrl.js   # resolve URL de imagem só quando há base real
-src/storage/catalogIndex.js      # índice local em SQLite (expo-sqlite) a partir das fixtures
+src/storage/catalogIndex.js      # índice local em SQLite (expo-sqlite) — base da leitura local da Entrega 1, ver decision.md seção 11
 scripts/run-catalog-audit.js     # roda a auditoria real do catálogo (ver reports/catalog-audit.md)
 scripts/build-series-map.js      # consulta real a /series e /series/{id}; gera o mapa set->série
-scripts/export-index-bundle.js   # gera app/assets/catalog-index.json (fixtures + filtro tcgp)
+scripts/export-index-bundle.js   # gera app/assets/catalog-index.json (fixtures + filtro tcgp) — só para esta PoC
+scripts/sync-full-catalog.js     # gera/atualiza o banco SQLite do catálogo completo (todos os sets/idiomas), retomável em lotes
+scripts/build-thumbnails.js      # gera miniaturas pequenas pré-empacotadas a partir do banco acima
 scripts/run-matching-tests.js    # 36 testes automatizados reais (node:test), incluindo regressões com OCR real
 scripts/check-jsx-syntax.js      # valida sintaxe JSX real com @babel/parser
 fixtures/cards/*.json            # 31 respostas REAIS da API TCGdex, salvas pela auditoria
@@ -97,6 +113,7 @@ reports/decision.md              # relatório final — PoC A + PoC B, GO/GO COM
 reports/ocr-test-results.csv     # 3 linhas informais reais (ver decision.md 3.12) + template do dataset formal, ainda pendente (seção 16.3)
 .github/workflows/build-android.yml      # APK standalone (release), build automático a cada push
 .github/workflows/build-android-dev.yml  # APK de dev-client (debug), manual — só quando dependência nativa muda
+.github/workflows/sync-catalog.yml       # sincronização automática do catálogo completo, de hora em hora, ver seção acima
 ```
 
 ## Versões (verificadas no registro npm/Expo em 22/10/2026, não copiadas de tutorial)

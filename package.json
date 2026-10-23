@@ -10,6 +10,7 @@
     "audit:catalog": "node scripts/run-catalog-audit.js",
     "build:series-map": "node scripts/build-series-map.js",
     "build:index-bundle": "node scripts/export-index-bundle.js",
+    "sync:full-catalog": "node scripts/sync-full-catalog.js",
     "test:matching": "node --test scripts/run-matching-tests.js",
     "check:jsx": "node scripts/check-jsx-syntax.js",
     "test": "npm run test:matching && npm run check:jsx"
@@ -27,7 +28,9 @@
   },
   "devDependencies": {
     "@babel/parser": "^7.25.0",
-    "@react-native-community/cli": "^20.2.0"
+    "@react-native-community/cli": "^20.2.0",
+    "better-sqlite3": "^13.0.3",
+    "sharp": "^0.35.5"
   },
   "notes": [
     "react@19.3.0 e react-native@0.88.0 foram confirmados por `npx expo install --fix` real contra o Expo SDK 58.0.17",
@@ -37,6 +40,9 @@
     "@babel/parser e @react-native-community/cli são devDependencies só para checagens que não exigem Android SDK",
     "(sintaxe JSX e resolução de autolinking — ver scripts/check-jsx-syntax.js e reports/decision.md, seção 3.3).",
     "`main` precisa ser 'expo/AppEntry' (não um App.js direto): foi a causa REAL do crash 'main has not been",
-    "registered' no Android físico em 22/10/2026 — ver reports/decision.md, seção 3.9/3.10."
+    "registered' no Android físico em 22/10/2026 — ver reports/decision.md, seção 3.9/3.10.",
+    "better-sqlite3 e sharp são devDependencies só para scripts/sync-full-catalog.js (gera o catálogo completo",
+    "fora do app, ver reports/decision.md seção 11) — rodam em Node puro, nunca são empacotados no app React",
+    "Native (que usa expo-sqlite em runtime, API totalmente diferente)."
   ]
 }
