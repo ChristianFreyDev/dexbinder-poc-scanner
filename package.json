@@ -13,8 +13,9 @@
     "sync:full-catalog": "node scripts/sync-full-catalog.js",
     "test:matching": "node --test scripts/run-matching-tests.js",
     "test:catalog-sync": "node --test scripts/run-catalog-sync-tests.js",
+    "test:cron-switch": "node --test scripts/run-cron-switch-tests.js",
     "check:jsx": "node scripts/check-jsx-syntax.js",
-    "test": "npm run test:matching && npm run test:catalog-sync && npm run check:jsx"
+    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:cron-switch && npm run check:jsx"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",

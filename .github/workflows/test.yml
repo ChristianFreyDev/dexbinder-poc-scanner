@@ -1,0 +1,31 @@
+name: Test
+
+# Roda os testes automatizados reais (40 testes node:test + checagem de
+# sintaxe JSX, ver `npm test`) a cada push/PR, pra pegar qualquer regressão
+# sem depender de alguém lembrar de rodar `npm test` manualmente antes de
+# commitar. Não precisa de Android SDK/emulador — só Node (ver README.md).
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: npm test (matching + catalog-sync + jsx)
+        run: npm test

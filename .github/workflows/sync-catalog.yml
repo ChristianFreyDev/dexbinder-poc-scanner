@@ -11,9 +11,11 @@ name: Sync Full Catalog
 # Pedido real (23/10/2026): rodar de hora em hora até completar o catálogo
 # inteiro (todos os sets, todos os idiomas), depois passar a rodar bem mais
 # espaçado (de 3 em 3 dias) só pra pegar sets/cartas novas. A troca de
-# cadência é manual e deliberada (uma linha no cron abaixo) quando o
-# primeiro ciclo completo terminar — não há nada "se auto-ajustando" aqui,
-# de propósito, pra manter simples.
+# cadência é automática (ver step "Reduzir frequência..." abaixo e
+# scripts/maybe-slow-down-cron.js / src/automation/cronSwitch.js, com testes
+# reais em scripts/run-cron-switch-tests.js): quando o manifesto desta
+# execução marca `complete: true` pela primeira vez, o próprio workflow edita
+# e commita a troca do cron neste arquivo, sem precisar de ninguém lembrar.
 #
 # BATCH_SIZE controla quantos pares (set × idioma) são buscados por
 # execução — ajuste aqui, não precisa mexer no resto do workflow.
@@ -70,3 +72,20 @@ jobs:
             --title "Catalog data (sincronização em andamento)" \
             --notes "Banco SQLite do catálogo completo + manifesto de progresso, gerados automaticamente por scripts/sync-full-catalog.js. Ver reports/decision.md, seção 11."
           gh release upload "$RELEASE_TAG" dist/catalog/catalog.db dist/catalog/catalog-version.json --clobber
+
+      # Quando o catálogo completo termina o primeiro ciclo (complete:true
+      # no manifesto desta execução), reduz sozinho a frequência deste
+      # mesmo workflow pra cada 3 dias — editando e commitando este arquivo.
+      # Idempotente (só mexe uma vez: ver src/automation/cronSwitch.js).
+      - name: Reduzir frequência automaticamente quando o catálogo completar
+        run: |
+          node scripts/maybe-slow-down-cron.js
+          if git diff --quiet -- .github/workflows/sync-catalog.yml; then
+            echo "Cron sem mudanças."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add .github/workflows/sync-catalog.yml
+            git commit -m "Catálogo completo: reduz frequência da sincronização para cada 3 dias"
+            git push
+          fi
