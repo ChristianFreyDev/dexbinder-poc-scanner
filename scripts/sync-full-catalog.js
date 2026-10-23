@@ -104,6 +104,20 @@ function createSchema(db) {
       card_count INTEGER NOT NULL,
       PRIMARY KEY (set_id, lang)
     );
+    -- Achado real (23/10/2026, 1ª execução real do workflow): alguns pares
+    -- set×idioma devolvem 404 de verdade (ex.: "miscp"/"jumbo"/"basep" em
+    -- pt/fr/de/ja — sets sem tradução nesses idiomas no TCGdex, não um erro
+    -- transitório). Sem isto, esses pares seriam tentados de novo em TODA
+    -- execução, para sempre, desperdiçando parte do lote a cada hora. Só
+    -- erros com kind "not_found" (404 real) entram aqui — timeout/rede/
+    -- outros HTTP errors continuam sendo tentados de novo (podem ser
+    -- transitórios).
+    CREATE TABLE IF NOT EXISTS not_found_pairs (
+      set_id TEXT NOT NULL,
+      lang TEXT NOT NULL,
+      checked_at TEXT NOT NULL,
+      PRIMARY KEY (set_id, lang)
+    );
   `);
 }
 
@@ -164,10 +178,15 @@ async function main() {
   const db = new Database(DB_PATH);
   createSchema(db);
 
-  // Pares (set, idioma) já sincronizados com sucesso em execuções anteriores
-  // (só relevante com --resume) — pula esses, processa só os que faltam.
+  // Pares (set, idioma) já resolvidos em execuções anteriores (só relevante
+  // com --resume) — tanto sincronizados com sucesso quanto confirmados 404
+  // (não existem de verdade, não adianta tentar de novo) — pula os dois,
+  // processa só o que ainda está pendente de verdade.
   const alreadySynced = args.resume
     ? new Set(db.prepare(`SELECT set_id || '::' || lang AS k FROM synced_pairs`).all().map((r) => r.k))
+    : new Set();
+  const knownNotFound = args.resume
+    ? new Set(db.prepare(`SELECT set_id || '::' || lang AS k FROM not_found_pairs`).all().map((r) => r.k))
     : new Set();
 
   const allTargetPairs = [];
@@ -176,12 +195,14 @@ async function main() {
       allTargetPairs.push({ setId, lang });
     }
   }
-  const pendingPairs = allTargetPairs.filter((p) => !alreadySynced.has(`${p.setId}::${p.lang}`));
+  const pendingPairs = allTargetPairs.filter(
+    (p) => !alreadySynced.has(`${p.setId}::${p.lang}`) && !knownNotFound.has(`${p.setId}::${p.lang}`)
+  );
   const pairsThisRun = args.batch ? pendingPairs.slice(0, args.batch) : pendingPairs;
 
   console.log(
     `Alvo total: ${allTargetPairs.length} pares set×idioma. Já sincronizados: ${alreadySynced.size}. ` +
-      `Pendentes: ${pendingPairs.length}. Nesta execução: ${pairsThisRun.length}.`
+      `Confirmados inexistentes (404): ${knownNotFound.size}. Pendentes de verdade: ${pendingPairs.length}. Nesta execução: ${pairsThisRun.length}.`
   );
 
   const client = createTcgdexClient();
@@ -195,6 +216,9 @@ async function main() {
   `);
   const insertSyncedPair = db.prepare(`
     INSERT OR REPLACE INTO synced_pairs (set_id, lang, synced_at, card_count) VALUES (?, ?, ?, ?)
+  `);
+  const insertNotFoundPair = db.prepare(`
+    INSERT OR REPLACE INTO not_found_pairs (set_id, lang, checked_at) VALUES (?, ?, ?)
   `);
   const commitPair = db.transaction((setId, lang, records) => {
     const physical = records.filter((r) => !r.setSerieId || !DIGITAL_ONLY_SERIES.includes(r.setSerieId));
@@ -210,24 +234,31 @@ async function main() {
       commitPair(setId, lang, records);
       console.log(`${records.length} cartas`);
     } catch (e) {
-      console.log(`ERRO: ${e.message}`);
-      failures.push({ lang, setId, error: e.message });
+      if (e.kind === "not_found") {
+        insertNotFoundPair.run(setId, lang, new Date().toISOString());
+        console.log(`404 real (não existe nesse idioma) — não tenta de novo: ${e.message}`);
+      } else {
+        console.log(`ERRO (pode ser transitório, tenta de novo na próxima execução): ${e.message}`);
+      }
+      failures.push({ lang, setId, kind: e.kind ?? "unknown", error: e.message });
     }
   }
 
   const totalRows = db.prepare(`SELECT COUNT(*) AS c FROM card_index`).get().c;
   const totalSyncedPairs = db.prepare(`SELECT COUNT(*) AS c FROM synced_pairs`).get().c;
+  const totalNotFoundPairs = db.prepare(`SELECT COUNT(*) AS c FROM not_found_pairs`).get().c;
   db.close();
 
   const dbBuffer = fs.readFileSync(DB_PATH);
   const checksum = crypto.createHash("sha256").update(dbBuffer).digest("hex");
-  const remaining = allTargetPairs.length - totalSyncedPairs;
+  const remaining = allTargetPairs.length - totalSyncedPairs - totalNotFoundPairs;
 
   const manifest = {
     generatedAt: new Date().toISOString(),
     langs,
     targetPairs: allTargetPairs.length,
     syncedPairs: totalSyncedPairs,
+    notFoundPairs: totalNotFoundPairs,
     remainingPairs: Math.max(remaining, 0),
     complete: remaining <= 0,
     totalRecords: totalRows,
