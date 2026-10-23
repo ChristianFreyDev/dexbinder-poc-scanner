@@ -1,14 +1,16 @@
 /**
- * Índice local reduzido para a PoC, usando expo-sqlite.
+ * Índice local em SQLite — NÃO usado pelo app desta PoC (que usa o bundle
+ * JSON estático em app/assets/catalog-index.json, suficiente para a amostra
+ * de 30 cartas desta Entrega 0). Mantido deliberadamente no repositório: é a
+ * base correta para a Entrega 1, quando o catálogo precisa ter TODAS as
+ * cartas/expansões e se atualizar sozinho (sem publicar um app novo a cada
+ * expansão) — ver reports/decision.md, seção 11, para a arquitetura completa
+ * (sincronização periódica + download do catálogo pelo app + cache de
+ * imagens). Falta aqui o passo de popular esta tabela a partir de um pacote
+ * baixado da rede, em vez das fixtures locais da PoC — trabalho da Entrega 1.
  *
- * ATENÇÃO (honestidade de execução): este arquivo usa a API real do
- * `expo-sqlite` conforme a documentação oficial, mas NÃO foi executado
- * em um dispositivo/emulador nesta sessão — este ambiente de desenvolvimento
- * não tem Android SDK, emulador nem dispositivo físico conectado (ver
- * reports/decision.md). A lógica de pontuação/match em rankCandidates.js
- * e parseCardText.js é independente deste arquivo e FOI testada de forma
- * automatizada (scripts/run-matching-tests.js) com os dados reais da
- * auditoria de catálogo.
+ * Usa a API real do `expo-sqlite` conforme a documentação oficial, mas não
+ * foi executado em dispositivo nesta PoC (não tem chamador — ver acima).
  *
  * Mantém a tabela mínima para a PoC: uma linha por impressão de carta,
  * já normalizada por catalogFixtures.normalizeCard().

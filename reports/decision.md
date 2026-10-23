@@ -253,3 +253,24 @@ A especificação pede para avaliar uma estratégia complementar (ex.: comparaç
 1. Executar o runbook da seção 7 (completar o dataset formal no celular físico, preencher `ocr-test-results.csv`) — o pipeline já está comprovadamente funcional com fotos reais, falta só a cobertura completa.
 2. Com os números reais de Top-1/Top-3/tempo em mãos, decidir se `rn-mlkit-ocr` atinge o nível útil (metas da seção 16.3 da especificação) ou se precisa do fallback documentado.
 3. Só então avaliar se a estratégia complementar de comparação visual (seção 8) é de fato necessária.
+
+## 11. Arquitetura recomendada para o catálogo completo (Entrega 1 — NÃO implementado nesta PoC)
+
+Discussão levantada ao revisar `src/storage/catalogIndex.js` (índice SQLite escrito no início do projeto, nunca usado pelo app real desta PoC — que usa um bundle JSON estático de 30 cartas, gerado em tempo de build). Pergunta real do proprietário: o app final precisa ter **todas** as cartas Pokémon de **todas** as expansões já lançadas, e acompanhar **automaticamente** expansões novas conforme saem — o bundle estático atual não escala para isso (o catálogo completo passa de 20.000 cartas, crescendo a cada poucos meses; embutir tudo no app exigiria uma atualização de loja a cada expansão nova).
+
+**Decisão de arquitetura recomendada** (a implementar na Entrega 1, não nesta PoC):
+
+1. **Fonte de verdade**: a API pública do TCGdex (`api.tcgdex.net/v2`) continua sendo a origem dos dados — nunca copiada/mantida manualmente.
+2. **Processo de sincronização** (fora do app, ex.: tarefa agendada no GitHub Actions, rodando periodicamente — diário ou semanal): consulta a API real, gera e publica, versionado, num local público (GitHub Release, ou S3/Supabase Storage):
+   - um banco **SQLite** com os metadados de todas as cartas (nome, expansão, número, idioma, dexId, URL da imagem) — texto/números, tipicamente poucos MB mesmo com 20.000+ linhas;
+   - **miniaturas pequenas pré-geradas** (recomprimidas menores que a "low" do TCGdex, ~1-2KB cada) para **todas** as cartas, empacotadas junto — com 20.000+ cartas, algo em torno de 30-40MB no total;
+   - um manifesto pequeno (`catalog-version.json`: versão/data/checksum) pra o app conseguir checar "existe algo mais novo?" sem baixar tudo de novo a cada abertura.
+3. **No app** (celular do usuário):
+   - Ao abrir (ou sob demanda, "atualizar catálogo"), confere o manifesto; se houver versão nova, baixa o pacote (SQLite + miniaturas) e substitui a cópia local.
+   - Busca/identificação de carta roda **inteiramente local**, contra esse SQLite — sem depender de rede por escaneamento (`catalogIndex.js` é a base certa pra isso; falta só o passo de popular a partir do pacote baixado, em vez das fixtures locais da PoC).
+   - As imagens de **melhor qualidade** ("low"/"high" do TCGdex) continuam vindo pela rede sob demanda (como já funciona hoje, `resolveImageUrl.js`), mas com **cache progressivo em disco**: toda imagem buscada com sucesso fica salva localmente, disponível offline nas próximas vezes.
+   - **A UI nunca bloqueia a identificação por falta de imagem de qualidade melhor**: sempre mostra o texto (nome/expansão/número — o que o usuário já pode comparar com a carta física na mão) e a melhor imagem disponível localmente, com esta prioridade: cache de qualidade melhor (se já buscada antes) → miniatura pré-empacotada (sempre disponível, desde o primeiro uso, mesmo nunca tendo tido internet) → nenhuma imagem (nunca deveria acontecer, já que a miniatura é garantida).
+
+Isso resolve as três exigências reais levantadas na conversa: catálogo completo (não só uma amostra), atualização automática sem depender de publicar um app novo, e funcionamento **offline desde o primeiro escaneamento** (miniatura sempre presente, sem depender de já ter visto aquela carta online antes).
+
+**Por isso `src/storage/catalogIndex.js` foi mantido no repositório** (não removido como código morto) — é a base correta para a metade "ler o índice local" desta arquitetura; falta a metade "baixar/sincronizar o pacote publicado", que é trabalho real da Entrega 1, fora do escopo desta PoC.
