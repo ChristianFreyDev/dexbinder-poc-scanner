@@ -5,7 +5,7 @@ Protótipo **isolado e descartável** (não é o aplicativo final) criado para r
 1. O catálogo TCGdex serve como base confiável para checklists/impressões/variantes/idiomas?
 2. Uma foto de carta + OCR no dispositivo permite gerar candidatos úteis, mantendo confirmação manual?
 
-**Leia primeiro:** [`reports/decision.md`](reports/decision.md) — relatório final GO / GO COM LIMITAÇÕES / NO-GO, com o que foi executado de verdade (incluindo `expo-doctor`, `expo prebuild` e resolução de autolinking reais) e o que ainda depende de um Android físico com câmera e cartas reais.
+**Leia primeiro:** [`reports/decision.md`](reports/decision.md) — relatório final GO / GO COM LIMITAÇÕES / NO-GO, com o que foi executado de verdade (incluindo `expo-doctor`, `expo prebuild`, resolução de autolinking, e testes reais em Android físico com cartas físicas — seção 3.12) e o que ainda falta (dataset formal de 60 fotos, seção 16.3 da especificação).
 
 ## O que roda agora, sem nenhum dispositivo Android
 
@@ -23,8 +23,8 @@ npm run build:series-map
 # fixtures + do mapa de séries, já com o TCG Pocket filtrado
 npm run build:index-bundle
 
-# Roda os 21 testes automatizados da lógica de reconhecimento/ranking/filtro,
-# usando os registros reais coletados pela auditoria
+# Roda os 36 testes automatizados da lógica de reconhecimento/ranking/filtro,
+# incluindo testes de regressão com texto OCR real transcrito de fotos físicas
 npm run test:matching
 
 # Verifica a sintaxe JSX/JS real do app (sem precisar instalar o React Native inteiro)
@@ -36,7 +36,7 @@ npm test
 
 Nenhum desses comandos precisa de Android SDK, JDK, emulador ou câmera.
 
-## O que já foi verificado de verdade nesta sessão (mas ainda não em hardware)
+## Verificações de config/build que não precisam de Android físico
 
 ```bash
 npx expo-doctor          # 19/20 checks reais passando (1 flag real sobre New Architecture — ver decision.md)
@@ -46,15 +46,26 @@ npx react-native config  # confirma que o rn-mlkit-ocr é descoberto pelo autoli
 
 O diretório `android/` já está gerado neste repositório (saída real de `expo prebuild`) — confirme com `cat android/app/src/main/AndroidManifest.xml` que a permissão de câmera foi injetada, e com `cat android/build.gradle` que o plugin do `rn-mlkit-ocr` configurou `ocrModels`/`ocrUseBundled`.
 
-## O que precisa de um Android físico (NÃO executado nesta sessão)
+## Testado em Android físico real, com cartas físicas reais
 
-Captura de câmera, recorte de imagem e OCR real (`rn-mlkit-ocr`) exigem compilar e rodar a development build nativa — não funcionam no Expo Go. A configuração já está pronta (seção acima); falta só compilar em uma máquina com JDK + Android SDK:
+Captura de câmera, recorte de imagem e OCR real (`rn-mlkit-ocr`) exigem a development build nativa — não funcionam no Expo Go. Já foi gerado um build de dev-client (GitHub Actions, `.github/workflows/build-android-dev.yml`) e testado num celular físico em casa: captura, rotação manual, OCR e identificação de carta funcionando de ponta a ponta com cartas reais (ver `reports/decision.md`, seção 3.12, e `reports/ocr-test-results.csv` para os dados reais coletados).
+
+Para iterar rapidamente sem gerar um APK novo a cada mudança, o app usa **Expo Dev Client com hot reload**: o celular (com o dev-client instalado) e o computador precisam estar na mesma rede Wi-Fi.
 
 ```bash
-npx expo run:android       # requer Android Studio/SDK configurado na máquina
+npx expo start              # sobe o Metro; abra o app no celular conectado na mesma Wi-Fi
 ```
 
-Depois disso, siga o runbook de coleta de fotos reais na seção 7 de [`reports/decision.md`](reports/decision.md).
+Um APK de dev-client novo só é necessário quando uma dependência NATIVA nova é adicionada (ex.: `@expo/vector-icons`, que usa `expo-font`, já incluído — não exigiu rebuild). Para gerar um build standalone (sem hot reload), ou um dev-client novo após uma dependência nativa real:
+
+```bash
+npx expo run:android                             # requer Android Studio/SDK configurado na máquina
+# ou, via GitHub Actions (sem precisar de SDK local):
+#   build-android.yml      → APK standalone (release)
+#   build-android-dev.yml  → APK de dev-client (debug, conecta ao Metro)
+```
+
+Para completar o protocolo formal da especificação (dataset de 60 fotos/30 impressões, seção 16.3), siga o runbook na seção 7 de [`reports/decision.md`](reports/decision.md).
 
 ## Estrutura
 
@@ -66,6 +77,7 @@ android/                        # gerado por `expo prebuild` nesta sessão (conf
 src/catalog/tcgdexClient.js      # adaptador HTTP isolado para a API TCGdex v2
 src/catalog/catalogFixtures.js   # loader (Node) das fixtures reais + resolução do mapa set->série
 src/scanner/cameraCapture.js     # captura de foto estática (expo-camera)
+src/scanner/rotateImage.js       # rotação manual da foto (botão "girar") — correção automática por EXIF não confiável nesta forma de uso, ver decision.md 3.12
 src/scanner/cropImage.js         # recortes (expo-image-manipulator, API nova "manipulate()")
 src/scanner/ocrAdapter.js        # isola rn-mlkit-ocr / @react-native-ml-kit/text-recognition
 src/scanner/parseCardText.js     # normalização (acentos/caixa/pontuação) e extração de nome+número
@@ -76,20 +88,23 @@ src/storage/catalogIndex.js      # índice local em SQLite (expo-sqlite) a parti
 scripts/run-catalog-audit.js     # roda a auditoria real do catálogo (ver reports/catalog-audit.md)
 scripts/build-series-map.js      # consulta real a /series e /series/{id}; gera o mapa set->série
 scripts/export-index-bundle.js   # gera app/assets/catalog-index.json (fixtures + filtro tcgp)
-scripts/run-matching-tests.js    # 21 testes automatizados reais (node:test)
+scripts/run-matching-tests.js    # 36 testes automatizados reais (node:test), incluindo regressões com OCR real
 scripts/check-jsx-syntax.js      # valida sintaxe JSX real com @babel/parser
 fixtures/cards/*.json            # 31 respostas REAIS da API TCGdex, salvas pela auditoria
 fixtures/catalog/set-series-map.json  # mapa real set->série (220 sets, 21 séries)
 reports/catalog-audit.md         # relatório da PoC A (catálogo) — achados reais, com evidência
 reports/decision.md              # relatório final — PoC A + PoC B, GO/GO COM LIMITAÇÕES/NÃO EXECUTADO
-reports/ocr-test-results.csv     # TEMPLATE vazio — preencher com fotos reais (ver decision.md, seção 7)
+reports/ocr-test-results.csv     # 3 linhas informais reais (ver decision.md 3.12) + template do dataset formal, ainda pendente (seção 16.3)
+.github/workflows/build-android.yml      # APK standalone (release), build automático a cada push
+.github/workflows/build-android-dev.yml  # APK de dev-client (debug), manual — só quando dependência nativa muda
 ```
 
 ## Versões (verificadas no registro npm/Expo em 22/10/2026, não copiadas de tutorial)
 
 - `expo@58.0.17`, `react@19.3.0`, `react-native@0.88.0` — confirmados por `npx expo install --fix` real, depois que `expo-doctor` apontou que os valores anteriores (`react@19.1.0`/`react-native@0.82.0`, herdados sem verificação) estavam desatualizados.
-- `expo-camera@58.0.12`, `expo-image-manipulator@58.0.15`, `expo-sqlite@58.0.13` — versões reais da família SDK 58.
+- `expo-camera@58.0.12`, `expo-image-manipulator@58.0.15`, `expo-sqlite@58.0.13`, `expo-dev-client@~58.0.14` — versões reais da família SDK 58.
 - `rn-mlkit-ocr@0.3.1` — candidato primário de OCR (ver `reports/decision.md`, seção 5, para a comparação com a alternativa e as ressalvas sobre New Architecture).
+- `@expo/vector-icons@^15.0.2` — ícones da interface (Feather/MaterialCommunityIcons); usa `expo-font`, já incluído como dependência transitiva do pacote `expo` e autolinkado — não exigiu gerar um APK novo.
 
 ## Importante
 

@@ -81,7 +81,7 @@ function totalMatches(totalGuess, record) {
 }
 
 /**
- * @param {{nameGuess, numberGuess, setAbbreviationGuess}} parsed - saída de parseCardText()
+ * @param {{nameGuess, numberGuess, normalizedText}} parsed - saída de parseCardText()
  * @param {Array} indexRecords - registros normalizados (ver catalogFixtures.normalizeCard)
  * @param {{ topN?: number }} options
  * @returns {Array<{record, score, reasons: string[]}>}
@@ -142,11 +142,15 @@ function rankCandidates(parsed, indexRecords, { topN = 5 } = {}) {
     score += bestNumberCredit;
     reasons.push(bestNumberReason);
 
-    if (parsed.setAbbreviationGuess && record.setId) {
-      const abbr = normalizeForComparison(parsed.setAbbreviationGuess);
-      const setId = normalizeForComparison(record.setId);
-      const setName = normalizeForComparison(record.setName || "");
-      if (setId.includes(abbr) || abbr.includes(setId) || setName.includes(abbr)) {
+    // Achado real (3 fotos de cartas físicas distintas, 22/10/2026): o
+    // código de expansão impresso ("MEW" para o set "151") vem colado no
+    // MESMO texto ruidoso do número ("G MEWPI 025/165"), nunca sozinho
+    // numa linha própria — por isso a busca é por substring no texto bruto
+    // inteiro (via setPrintedCode, ver catalogFixtures.js), não por uma
+    // linha isolada extraída à parte.
+    if (record.setPrintedCode) {
+      const code = normalizeForComparison(record.setPrintedCode);
+      if (parsed.normalizedText && parsed.normalizedText.includes(code)) {
         score += WEIGHTS.set;
         reasons.push("expansão compatível");
       } else {

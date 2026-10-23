@@ -13,6 +13,20 @@ const FIXTURES_DIR = path.join(__dirname, "..", "..", "fixtures", "cards");
 const SERIES_MAP_PATH = path.join(__dirname, "..", "..", "fixtures", "catalog", "set-series-map.json");
 
 /**
+ * Código de expansão impresso fisicamente na carta perto do número de
+ * colecionador (achado real, fotos de dispositivo físico, 22/10/2026): o
+ * rodapé de cartas do set "151" (setId "sv03.5") sempre traz "MEW" colado
+ * perto do número — ex. "G MEWPI 025/165", "MEW P O01/165" — confirmado em
+ * 3 fotos reais de cartas diferentes desse set. Não é o `setId` do TCGdex
+ * nem o `setName` (nenhum dos dois é "MEW"), é um código de impressão à
+ * parte. Mapa deliberadamente pequeno: só adicionar outra entrada aqui
+ * depois de confirmar com foto real de carta daquele set, não por suposição.
+ */
+const SET_PRINTED_CODES = {
+  "sv03.5": "MEW",
+};
+
+/**
  * Carrega o mapeamento real `set_id -> serie_id` construído por
  * scripts/build-series-map.js (ver especificação, seção 17.2: "Usar o
  * relacionamento entre conjunto e série para aplicar esse filtro").
@@ -52,6 +66,7 @@ function normalizeCard(rawCard, sourceLanguage, sourceFileName, seriesMap = null
     localId: rawCard.localId != null ? String(rawCard.localId) : null,
     setId,
     setName: rawCard.set ? rawCard.set.name : null,
+    setPrintedCode: setId ? SET_PRINTED_CODES[setId] ?? null : null,
     setSerieId: resolvedSerieId,
     // Contagens do set, usadas para desambiguar números de coleção (ex.: o
     // usuário digita "001/165" — 165 é o total impresso na carta física e

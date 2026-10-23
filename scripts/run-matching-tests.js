@@ -511,3 +511,118 @@ test("achado real: duas leituras do MESMO número numa foto (uma certa, outra co
   assert.equal(candidates[0].record.sourceCardId, "sv03.5-025");
   assert.ok(candidates[0].reasons.includes("número e total do set exatos"));
 });
+
+// Segunda rodada de fotos físicas reais em casa (22/10/2026) — achado real:
+// nas 3 fotos, o código de expansão impresso ("MEW", set "151"/sv03.5)
+// aparece colado no MESMO texto ruidoso do número de colecionador, nunca
+// sozinho numa linha própria (ver rankCandidates.js e catalogFixtures.js).
+const REAL_PIKACHU_151_OCR_LINES = [
+  "GME",
+  "llust. N",
+  "Fraque",
+  "bat",
+  "e",
+  "Pr",
+  "2023",
+  "Pokémon/Nintendo/Creatures/GAME FREAK",
+  "G MEWPI 025/165",
+  "lust. Naoyo Kimura",
+  "energia armazenada nas bolsas em suas bochechas.",
+  "Quando está com raiva, descarrega",
+  "imediatamente a",
+  "Fraqueza x2",
+  "Resistência",
+  "Recuo",
+  "Soco Pikachu",
+  "50",
+  "baralho.",
+  "e ligue-a a este Pokémon. Em seguida, embaralhe o seu",
+  "Procure por uma carta de Energia 4 Básica no seu baralho",
+  "Carga",
+  "N° 0025 Pokémon Rato Altura: 0,4 m Peso: 6,0 kg",
+  "CASS Pikachu",
+  "„604",
+];
+
+const REAL_BULBASAUR_151_OCR_LINES = [
+  "GME",
+  "llust.",
+  "Fraque",
+  "2023 PokémonintendoiCreaturesGAME PREAK",
+  "MEW P O01/165",
+  "lust. Yuu Nishida",
+  "armazenados na",
+  "semente em suas costas para cTescer",
+  "Durante sua",
+  "juventude, usa os nutrientes",
+  "Fraqueza x2",
+  "Resistência",
+  "Recuo",
+  "**",
+  "Cure 20 pontos de dano deste Pokémon.",
+  "Semente Sanguessuga",
+  "20",
+  "N 0001 Pokérnon Sernente Altua. 0,7 m Peso 69 ka",
+  "Bulbasaur",
+  "ABulbas",
+  "„70",
+];
+
+const REAL_VENUSAUR_EX_151_OCR_LINES = [
+  "2023 RokemordNintendoitieitirsGAME FREAK",
+  "G MEW P003/165 K*",
+  "llust, Sban Graphics",
+  "Nocauteado, seu",
+  "oponente pega 2 catas de Prmio.",
+  "Quando seu Pokenon eX",
+  "Regra dos Pokémon ex",
+  "Fraqueza",
+  "x2",
+  "R/sistência",
+  "Recuo",
+  "Envenenado.",
+  "O Pokémoa Ativo do seu oponente agora está Confuso e",
+  "Chicotóxico Perigoso",
+  "150",
+  "dos seus Pokémon.",
+  "Campo Ativo, voce poderá curar 60 pontos de dano de",
+  "Uma vez durante o seu turno, se este Pokémon estiver no",
+  "HabilidadeFlOr Jerena",
+  "Evolui de ysaur",
+  "VenusaurX",
+  "340 4",
+];
+
+test("achado real (2ª rodada, Pikachu 151): código de expansão 'MEW' colado no número ('G MEWPI 025/165') conta como expansão compatível", () => {
+  const parsed = parseCardText(REAL_PIKACHU_151_OCR_LINES);
+  assert.equal(parsed.numberGuess, "025");
+  assert.equal(parsed.totalGuess, "165");
+
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates, needsManualConfirmation } = rankCandidates(parsed, singleLanguageIndex, { topN: 5 });
+  assert.equal(candidates[0].record.sourceCardId, "sv03.5-025");
+  assert.ok(candidates[0].reasons.includes("expansão compatível"));
+  assert.equal(needsManualConfirmation, false);
+});
+
+test("achado real (2ª rodada, Bulbasaur 151): 'MEW P O01/165' (O confundido com zero) ainda identifica expansão e número certos", () => {
+  const parsed = parseCardText(REAL_BULBASAUR_151_OCR_LINES);
+  assert.equal(parsed.numberGuess, "001");
+  assert.equal(parsed.totalGuess, "165");
+
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 5 });
+  assert.equal(candidates[0].record.sourceCardId, "sv03.5-001");
+  assert.ok(candidates[0].reasons.includes("expansão compatível"));
+});
+
+test("achado real (2ª rodada, Venusaur ex 151): 'G MEW P003/165 K*' identifica expansão certa mesmo com nome bem ruidoso ('VenusaurX')", () => {
+  const parsed = parseCardText(REAL_VENUSAUR_EX_151_OCR_LINES);
+  assert.equal(parsed.numberGuess, "003");
+  assert.equal(parsed.totalGuess, "165");
+
+  const singleLanguageIndex = allRecords.filter((r) => r.sourceLanguage === "en");
+  const { candidates } = rankCandidates(parsed, singleLanguageIndex, { topN: 5 });
+  assert.equal(candidates[0].record.sourceCardId, "sv03.5-003");
+  assert.ok(candidates[0].reasons.includes("expansão compatível"));
+});

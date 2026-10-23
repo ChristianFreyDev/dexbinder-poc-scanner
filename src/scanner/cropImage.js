@@ -7,7 +7,10 @@
  * a recomendada atualmente pela documentação oficial em 22/10/2026
  * (a antiga `manipulateAsync` está marcada como deprecated).
  *
- * NÃO EXECUTADO em dispositivo nesta sessão — ver reports/decision.md.
+ * Executado em dispositivo físico real (sessão de testes em casa,
+ * 22-23/10/2026): os três recortes (carta inteira, cabeçalho, rodapé) são
+ * gerados e passados ao OCR sem travar, e as proporções abaixo já foram
+ * ajustadas a partir de achados reais (ver footerNumberRegion).
  */
 
 const { ImageManipulator } = require("expo-image-manipulator");

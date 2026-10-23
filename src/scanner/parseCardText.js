@@ -47,8 +47,11 @@ function normalizeForComparison(text) {
 const COLLECTOR_NUMBER_PATTERN = /\b([A-Z]{1,5}\s?\d{1,4})\b/;
 
 /**
- * Extrai candidatos a nome, número de colecionador e expansão a partir de
- * blocos de texto do OCR. Mantém o texto bruto para depuração local.
+ * Extrai candidatos a nome e número de colecionador a partir de blocos de
+ * texto do OCR. Mantém o texto bruto (`normalizedText`) para depuração
+ * local e para rankCandidates.js buscar o código de expansão impresso
+ * (ver setPrintedCode em catalogFixtures.js) — colado perto do número, não
+ * extraível como uma linha isolada, por isso não é tratado aqui.
  *
  * Achado real (foto de carta física real, Charizard, 22/10/2026): o OCR
  * muitas vezes devolve uma linha de RUÍDO (texto de fundo, overlay, etc.)
@@ -83,7 +86,6 @@ const COLLECTOR_NUMBER_PATTERN = /\b([A-Z]{1,5}\s?\d{1,4})\b/;
  *   numberGuess: string|null,
  *   totalGuess: string|null,
  *   numberCandidates: Array<{ number: string, total: string|null }>,
- *   setAbbreviationGuess: string|null,
  * }}
  */
 function parseCardText(rawTextBlocks) {
@@ -131,10 +133,6 @@ function parseCardText(rawTextBlocks) {
   const numberGuess = numberCandidates.length > 0 ? numberCandidates[0].number : null;
   const totalGuess = numberCandidates.length > 0 ? numberCandidates[0].total : null;
 
-  // Sigla de expansão: tokens curtos em maiúsculas isolados (ex.: "SV03.5", "TG", "GG")
-  const setAbbrLine = blocks.find((line) => /^[A-Z]{2,6}[\d.]*$/.test(line.trim()));
-  const setAbbreviationGuess = setAbbrLine ? setAbbrLine.trim() : null;
-
   return {
     rawText,
     normalizedText,
@@ -143,7 +141,6 @@ function parseCardText(rawTextBlocks) {
     numberGuess,
     totalGuess,
     numberCandidates,
-    setAbbreviationGuess,
   };
 }
 

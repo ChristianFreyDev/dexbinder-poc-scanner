@@ -12,9 +12,15 @@
  *   apontando para `App.js` em vez de `expo/AppEntry` (ver
  *   reports/decision.md, seção 3.9/3.10), corrigida depois de reproduzir
  *   o crash em um emulador local e ler o stack trace real.
- * - Ainda NÃO confirmado: se `MlkitOcr.recognizeText()` de fato retorna
- *   texto reconhecido processando uma foto real de carta física — esse é
- *   o próximo teste, não um resultado já obtido.
+ * - Confirmado em dispositivo físico real (sessão de testes em casa,
+ *   22-23/10/2026): `MlkitOcr.recognizeText()` reconhece texto de fotos
+ *   reais de cartas físicas (Pikachu, Bulbasaur, Venusaur ex, todas do set
+ *   "151"), com ruído típico de OCR mas suficiente para `parseCardText.js`/
+ *   `rankCandidates.js` identificarem a carta certa — ver os achados reais
+ *   registrados nesses dois arquivos e em scripts/run-matching-tests.js.
+ *   Ainda não medido formalmente contra o dataset de 30 impressões/60 fotos
+ *   da especificação (seção 16.3) — isso seguiria pendente, ver
+ *   reports/decision.md.
  *
  * Candidato primário recomendado por esta PoC: `rn-mlkit-ocr` (ver
  * reports/decision.md, seção de biblioteca nativa) — construído como

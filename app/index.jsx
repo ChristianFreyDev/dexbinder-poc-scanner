@@ -3,25 +3,37 @@
  * captura → prévia com opção de refazer → OCR → candidatos com
  * confirmação manual obrigatória → busca manual sempre disponível.
  *
- * STATUS: escrito com as APIs reais e documentadas (expo-camera,
- * expo-image-manipulator, rn-mlkit-ocr — ver comentários em cada módulo
- * de src/scanner), mas NÃO executado em dispositivo físico nesta sessão
- * (sem Android SDK/emulador/aparelho conectado neste ambiente — ver
- * reports/decision.md para o runbook de validação real pendente).
- *
  * O índice local vem de um bundle único (app/assets/catalog-index.json),
  * gerado por scripts/export-index-bundle.js a partir das fixtures reais
  * da auditoria + do mapa real set->série (já filtra o Pokémon TCG Pocket).
  * Reexecute esse script sempre que as fixtures ou o mapa de séries mudarem.
+ *
+ * Este arquivo cuida só da lógica e do fluxo. A aparência (cores, botões,
+ * cards) fica isolada em COLORS/styles/AppButton logo abaixo, pra não
+ * misturar estilo com as regras de negócio nos handlers.
  */
 
 import { useCallback, useMemo, useRef, useState } from "react";
-import { ActivityIndicator, Button, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import indexBundle from "./assets/catalog-index.json";
 import { captureStillPhoto } from "../src/scanner/cameraCapture";
 import { generateCardCrops } from "../src/scanner/cropImage";
+import { rotateImage } from "../src/scanner/rotateImage";
 import { recognizeCardText } from "../src/scanner/ocrAdapter";
 import { parseCardText } from "../src/scanner/parseCardText";
 import { rankCandidates } from "../src/scanner/rankCandidates";
@@ -29,29 +41,147 @@ import { resolveImageUrl } from "../src/scanner/resolveImageUrl";
 
 const LOCAL_INDEX = indexBundle.records;
 
+const COLORS = {
+  bg: "#0F1115",
+  surface: "#1A1D24",
+  surfaceAlt: "#20242C",
+  border: "#2A2E37",
+  textPrimary: "#F2F3F5",
+  textSecondary: "#9AA1AC",
+  textMuted: "#6B7280",
+  primary: "#3B82F6",
+  warning: "#D97706",
+  warningBg: "rgba(217,119,6,0.14)",
+  warningText: "#F2B872",
+  success: "#16A34A",
+  successBg: "rgba(22,163,74,0.14)",
+  successText: "#6FD79A",
+  dangerBg: "rgba(220,38,38,0.14)",
+  dangerText: "#F29494",
+};
+
+/** Botão customizado único (substitui o <Button> nativo cru em toda a tela). */
+function AppButton({ title, onPress, variant = "primary", compact = false, disabled = false }) {
+  const variantStyle = BUTTON_VARIANTS[variant] || BUTTON_VARIANTS.primary;
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={disabled}
+      style={({ pressed }) => [
+        styles.button,
+        compact && styles.buttonCompact,
+        { backgroundColor: variantStyle.bg, borderColor: variantStyle.border, borderWidth: variantStyle.border ? 1 : 0 },
+        pressed && !disabled && { opacity: 0.8 },
+        disabled && { opacity: 0.4 },
+      ]}
+    >
+      <Text style={[styles.buttonText, compact && styles.buttonTextCompact, { color: variantStyle.text }]}>{title}</Text>
+    </Pressable>
+  );
+}
+
+const BUTTON_VARIANTS = {
+  primary: { bg: COLORS.primary, text: "#FFFFFF" },
+  outline: { bg: "transparent", border: COLORS.border, text: COLORS.textPrimary },
+  warning: { bg: COLORS.warning, text: "#FFFFFF" },
+  success: { bg: COLORS.success, text: "#FFFFFF" },
+};
+
+/** Botão circular com ícone vetorial (Feather/MaterialIcons), para ações compactas lado a lado. */
+function IconButton({ icon, iconSet: IconSet = Feather, onPress, variant = "outline", accessibilityLabel, size = 52 }) {
+  const variantStyle = BUTTON_VARIANTS[variant] || BUTTON_VARIANTS.outline;
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityLabel={accessibilityLabel}
+      style={({ pressed }) => [
+        styles.iconButton,
+        {
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+          backgroundColor: variantStyle.bg,
+          borderColor: variantStyle.border,
+          borderWidth: variantStyle.border ? 1 : 0,
+        },
+        pressed && { opacity: 0.6 },
+      ]}
+    >
+      <IconSet name={icon} size={Math.round(size * 0.42)} color={variantStyle.text} />
+    </Pressable>
+  );
+}
+
+// Bandeira por idioma de origem da carta (códigos presentes no índice local:
+// ver app/assets/catalog-index.json). "pt" no TCGdex é português genérico
+// (sem distinguir PT/BR), mas pedido explícito: usar a bandeira do Brasil.
+// Um idioma fora desta lista some sem bandeira, nunca mostra uma errada.
+const LANGUAGE_FLAGS = {
+  en: "🇺🇸",
+  pt: "🇧🇷",
+  fr: "🇫🇷",
+  de: "🇩🇪",
+  ja: "🇯🇵",
+  es: "🇪🇸",
+  it: "🇮🇹",
+  ko: "🇰🇷",
+  zh: "🇨🇳",
+};
+
+function LanguageTag({ code }) {
+  if (!code) return null;
+  const flag = LANGUAGE_FLAGS[code.toLowerCase()];
+  return (
+    <Text style={styles.candidateMeta}>
+      {flag ? `${flag} ` : ""}
+      {code.toUpperCase()}
+    </Text>
+  );
+}
+
+/** Badge colorido de confiança a partir do score (0-1) do matching. */
+function ScoreBadge({ score }) {
+  const level = score >= 0.8 ? "alta" : score >= 0.6 ? "média" : "baixa";
+  const palette =
+    level === "alta"
+      ? { bg: COLORS.successBg, text: COLORS.successText }
+      : level === "média"
+        ? { bg: COLORS.warningBg, text: COLORS.warningText }
+        : { bg: COLORS.dangerBg, text: COLORS.dangerText };
+  return (
+    <View style={[styles.badge, { backgroundColor: palette.bg }]}>
+      <Text style={[styles.badgeText, { color: palette.text }]}>confiança {level} · {Math.round(score * 100)}%</Text>
+    </View>
+  );
+}
+
 function CandidateRow({ candidate, onConfirm, onExpandImage }) {
   const { record, score, reasons } = candidate;
   const thumbUrl = resolveImageUrl(record, "low");
   return (
-    <View style={{ flexDirection: "row", gap: 10, paddingVertical: 8, borderBottomWidth: 1, borderColor: "#eee" }}>
-      {thumbUrl ? (
-        <TouchableOpacity onPress={() => onExpandImage(record)} accessibilityLabel={`Ampliar imagem de ${record.name || "carta"}`}>
-          <Image source={{ uri: thumbUrl }} style={{ width: 48, height: 67, borderRadius: 4 }} resizeMode="contain" />
-        </TouchableOpacity>
-      ) : (
-        <View style={{ width: 48, height: 67, backgroundColor: "#ddd", borderRadius: 4, alignItems: "center", justifyContent: "center" }}>
-          <Text style={{ fontSize: 10, textAlign: "center" }}>sem{"\n"}imagem</Text>
+    <View style={styles.candidateCard}>
+      <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+        {thumbUrl ? (
+          <TouchableOpacity onPress={() => onExpandImage(record)} accessibilityLabel={`Ampliar imagem de ${record.name || "carta"}`}>
+            <Image source={{ uri: thumbUrl }} style={styles.candidateThumb} resizeMode="contain" />
+          </TouchableOpacity>
+        ) : (
+          <View style={[styles.candidateThumb, styles.candidateThumbPlaceholder]}>
+            <Text style={{ fontSize: 10, color: COLORS.textMuted, textAlign: "center" }}>sem{"\n"}imagem</Text>
+          </View>
+        )}
+        <View style={{ flex: 1, gap: 4 }}>
+          <Text style={styles.candidateName}>{record.name || "(sem nome)"}</Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+            <Text style={styles.candidateMeta}>
+              {record.setName || record.setId} · #{record.localId} ·
+            </Text>
+            <LanguageTag code={record.sourceLanguage} />
+          </View>
+          <ScoreBadge score={score} />
+          <Text style={styles.candidateReasons}>{reasons.join(" · ")}</Text>
         </View>
-      )}
-      <View style={{ flex: 1 }}>
-        <Text style={{ fontWeight: "bold" }}>{record.name || "(sem nome)"}</Text>
-        <Text style={{ fontSize: 12, color: "#555" }}>
-          {record.setName || record.setId} · #{record.localId} · {record.sourceLanguage}
-        </Text>
-        <Text style={{ fontSize: 11, color: "#888" }}>
-          score {score.toFixed(2)} — {reasons.join(", ")}
-        </Text>
-        <Button title="Confirmar esta carta" onPress={() => onConfirm(record)} />
+        <AppButton title="Confirmar" variant="outline" compact onPress={() => onConfirm(record)} />
       </View>
     </View>
   );
@@ -60,6 +190,11 @@ function CandidateRow({ candidate, onConfirm, onExpandImage }) {
 export default function ScannerPocScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
+  // Achado real: <Image> com width/height em "%" dentro de um container
+  // flex centralizado às vezes não renderiza no modal de ampliação
+  // (pegadinha conhecida do RN) — usa dimensões em pixel calculadas a
+  // partir do tamanho real da tela em vez de porcentagem.
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
 
   // "permission" | "ready" | "preview" | "processing" | "result" | "manual" | "confirmed"
   const [phase, setPhase] = useState("ready");
@@ -74,6 +209,25 @@ export default function ScannerPocScreen() {
   // Pedido real de quem testou o app: poder ampliar a imagem da carta pra
   // ler o texto nela, em vez de só a miniatura pequena da lista.
   const [expandedRecord, setExpandedRecord] = useState(null);
+  // TCGdex só tem "low" (245x337) e "high" (600x825) — não existe um nível
+  // "médio" na API (confirmado na documentação oficial). A "high" pode
+  // demorar bastante dependendo da rede, então o modal abre com a "low"
+  // (instantânea, já em cache) e só carrega a "high" se o usuário pedir.
+  const [showHighQuality, setShowHighQuality] = useState(false);
+  const [highQualityLoading, setHighQualityLoading] = useState(false);
+  const handleExpandImage = useCallback((record) => {
+    setShowHighQuality(false);
+    setHighQualityLoading(false);
+    setExpandedRecord(record);
+  }, []);
+  const handleLoadHighQuality = useCallback(() => {
+    setShowHighQuality(true);
+    setHighQualityLoading(true);
+  }, []);
+
+  // Pedido explícito: o texto bruto do OCR não precisa ficar sempre visível
+  // — fica atrás de um botão flutuante que abre um modal com o texto.
+  const [showRawTextModal, setShowRawTextModal] = useState(false);
 
   const resetToReady = useCallback(() => {
     setPhase("ready");
@@ -94,6 +248,23 @@ export default function ScannerPocScreen() {
       setErrorMessage(err.message || String(err));
     }
   }, []);
+
+  // Detecção automática de rotação por EXIF se mostrou pouco confiável em
+  // dispositivo físico real (ver src/scanner/rotateImage.js) — por isso o
+  // ajuste fica manual: cada toque gira a prévia 90° até ficar em pé.
+  // degrees positivo = sentido horário (ver rotateImage.js).
+  const handleRotate = useCallback(
+    async (degrees) => {
+      if (!capturedPhoto) return;
+      try {
+        const rotated = await rotateImage(capturedPhoto.uri, degrees);
+        setCapturedPhoto((prev) => (prev ? { ...prev, ...rotated } : prev));
+      } catch (err) {
+        setErrorMessage(err.message || String(err));
+      }
+    },
+    [capturedPhoto]
+  );
 
   const handleRetake = useCallback(() => {
     setCapturedPhoto(null);
@@ -157,52 +328,119 @@ export default function ScannerPocScreen() {
 
   const imageModal = (
     <Modal visible={Boolean(expandedRecord)} transparent animationType="fade" onRequestClose={() => setExpandedRecord(null)}>
-      <TouchableOpacity
-        style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.85)", alignItems: "center", justifyContent: "center" }}
-        activeOpacity={1}
-        onPress={() => setExpandedRecord(null)}
-        accessibilityLabel="Fechar imagem ampliada"
-      >
+      <View style={styles.modalOverlay}>
+        {/* Fundo e conteúdo são IRMÃOS, não um dentro do outro — achado
+            real: botão dentro de um TouchableOpacity que fecha ao toque
+            disparava os dois ao mesmo tempo (toque no botão também fechava
+            o modal). O fundo cobre a tela inteira por trás; o conteúdo fica
+            por cima, sem fechar ao ser tocado. */}
+        <Pressable
+          style={StyleSheet.absoluteFillObject}
+          onPress={() => setExpandedRecord(null)}
+          accessibilityLabel="Fechar imagem ampliada"
+        />
         {expandedRecord && (
-          <>
-            <Image
-              source={{ uri: resolveImageUrl(expandedRecord, "high") || resolveImageUrl(expandedRecord, "low") }}
-              style={{ width: "90%", height: "70%" }}
-              resizeMode="contain"
-            />
-            <Text style={{ color: "#fff", marginTop: 12, textAlign: "center", paddingHorizontal: 16 }}>
-              {expandedRecord.name} — {expandedRecord.setName} #{expandedRecord.localId} ({expandedRecord.sourceLanguage})
+          <View pointerEvents="box-none" style={{ alignItems: "center", gap: 10 }}>
+            {/* Achado real: a versão "high" demorava 30s+ pra chegar na rede
+                do usuário (bem fora do normal pra um arquivo de ~48KB — CDN
+                lento nessa rede específica, não o tamanho do arquivo). Abre
+                sempre com a "low" (mesma imagem já usada na miniatura da
+                lista, já em cache, instantânea) e só busca a "high" se o
+                usuário pedir explicitamente pelo botão abaixo. */}
+            {/* Achado real: Image com style={StyleSheet.absoluteFillObject}
+                (top/left/right/bottom:0, sem width/height explícitos) não
+                renderizava de forma confiável aqui — mesma classe do bug
+                original desta tela (dimensão implícita/porcentagem falhava
+                no modal). width/height explícitos em pixel resolveram da
+                primeira vez; usa o mesmo valor explícito nas duas imagens
+                empilhadas em vez do atalho de absoluteFillObject. */}
+            <View style={{ width: windowWidth * 0.9, height: windowHeight * 0.7 }}>
+              <Image
+                source={{ uri: resolveImageUrl(expandedRecord, "low") }}
+                style={{ position: "absolute", width: windowWidth * 0.9, height: windowHeight * 0.7 }}
+                resizeMode="contain"
+              />
+              {showHighQuality && (
+                <Image
+                  source={{ uri: resolveImageUrl(expandedRecord, "high") }}
+                  style={{ position: "absolute", width: windowWidth * 0.9, height: windowHeight * 0.7 }}
+                  resizeMode="contain"
+                  onLoadEnd={() => setHighQualityLoading(false)}
+                  onError={() => setHighQualityLoading(false)}
+                />
+              )}
+              {highQualityLoading && (
+                <ActivityIndicator
+                  style={{ position: "absolute", width: windowWidth * 0.9, height: windowHeight * 0.7 }}
+                  color={COLORS.primary}
+                />
+              )}
+            </View>
+            {!showHighQuality && (
+              <AppButton title="Carregar em alta qualidade" variant="outline" compact onPress={handleLoadHighQuality} />
+            )}
+            <Text style={styles.modalCaption}>
+              {expandedRecord.name} — {expandedRecord.setName} #{expandedRecord.localId} (
+              {LANGUAGE_FLAGS[expandedRecord.sourceLanguage?.toLowerCase()] ?? ""} {expandedRecord.sourceLanguage?.toUpperCase()})
             </Text>
-            <Text style={{ color: "#ccc", marginTop: 8 }}>Toque em qualquer lugar para fechar</Text>
-          </>
+            <AppButton title="Fechar" variant="outline" compact onPress={() => setExpandedRecord(null)} />
+          </View>
         )}
-      </TouchableOpacity>
+      </View>
+    </Modal>
+  );
+
+  const rawTextModal = (
+    <Modal visible={showRawTextModal} transparent animationType="fade" onRequestClose={() => setShowRawTextModal(false)}>
+      <View style={styles.modalOverlay}>
+        <Pressable
+          style={StyleSheet.absoluteFillObject}
+          onPress={() => setShowRawTextModal(false)}
+          accessibilityLabel="Fechar texto reconhecido"
+        />
+        <View pointerEvents="box-none" style={{ width: windowWidth * 0.88, maxHeight: windowHeight * 0.7, gap: 10 }}>
+          <View style={styles.rawTextCard}>
+            <Text style={styles.sectionTitle}>Texto reconhecido (bruto)</Text>
+            <ScrollView>
+              <Text style={styles.rawText} selectable>
+                {ocrResult?.parsed?.rawText || "(nenhum texto reconhecido)"}
+              </Text>
+            </ScrollView>
+          </View>
+          <AppButton title="Fechar" variant="outline" compact onPress={() => setShowRawTextModal(false)} />
+        </View>
+      </View>
     </Modal>
   );
 
   if (!permission) {
-    return <ActivityIndicator style={{ flex: 1 }} />;
+    return (
+      <View style={[styles.screen, { alignItems: "center", justifyContent: "center" }]}>
+        <ActivityIndicator color={COLORS.primary} />
+      </View>
+    );
   }
 
   const manualSearchBlock = (
-    <View style={{ padding: 16, borderTopWidth: 1, borderColor: "#ddd", gap: 8 }}>
-      <Text style={{ fontWeight: "bold" }}>Busca manual (sempre disponível)</Text>
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Busca manual</Text>
       <TextInput
         value={manualQuery}
         onChangeText={setManualQuery}
         placeholder="Nome da carta e/ou número (ex.: Bulbasaur 001)"
-        style={{ borderWidth: 1, borderColor: "#ccc", borderRadius: 6, padding: 8 }}
+        placeholderTextColor={COLORS.textMuted}
+        style={styles.input}
       />
-      <Button title="Buscar no índice local" onPress={handleManualSearch} />
+      <AppButton title="Buscar no índice local" onPress={handleManualSearch} />
       {manualResult && (
-        <View>
-          {manualResult.candidates.length === 0 && <Text>Nenhum resultado encontrado no índice local.</Text>}
+        <View style={{ gap: 10 }}>
+          {manualResult.candidates.length === 0 && <Text style={styles.bodyText}>Nenhum resultado encontrado no índice local.</Text>}
           {manualResult.candidates.map((c, idx) => (
             <CandidateRow
               key={`${c.record.sourceCardId}-${idx}`}
               candidate={c}
               onConfirm={handleConfirmCandidate}
-              onExpandImage={setExpandedRecord}
+              onExpandImage={handleExpandImage}
             />
           ))}
         </View>
@@ -212,13 +450,13 @@ export default function ScannerPocScreen() {
 
   if (!permission.granted) {
     return (
-      <ScrollView style={{ flex: 1 }}>
-        <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
-          <Text style={{ textAlign: "center", marginBottom: 12 }}>
-            Sem acesso à câmera. A busca manual continua disponível abaixo (ver especificação, seção 16.4:
-            permissão negada nunca bloqueia a pesquisa manual).
+      <ScrollView style={styles.screen}>
+        <View style={{ alignItems: "center", justifyContent: "center", padding: 24, gap: 12 }}>
+          <Text style={[styles.bodyText, { textAlign: "center" }]}>
+            Sem acesso à câmera. A busca manual continua disponível abaixo (permissão negada nunca bloqueia a
+            pesquisa manual).
           </Text>
-          <Button title="Permitir câmera" onPress={requestPermission} />
+          <AppButton title="Permitir câmera" onPress={requestPermission} />
         </View>
         {manualSearchBlock}
         {imageModal}
@@ -227,89 +465,299 @@ export default function ScannerPocScreen() {
   }
 
   return (
-    <ScrollView style={{ flex: 1 }}>
-      {(phase === "ready" || phase === "preview") && (
-        <View style={{ height: 420 }}>
-          {phase === "ready" && <CameraView ref={cameraRef} style={{ flex: 1 }} />}
-          {phase === "preview" && capturedPhoto && (
-            <Image source={{ uri: capturedPhoto.uri }} style={{ flex: 1 }} resizeMode="contain" />
+    <View style={styles.screen}>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>DexBinder</Text>
+        </View>
+
+        {(phase === "ready" || phase === "preview") && (
+          <View style={styles.cameraFrame}>
+            {phase === "ready" && <CameraView ref={cameraRef} style={{ flex: 1 }} />}
+            {phase === "preview" && capturedPhoto && (
+              <Image source={{ uri: capturedPhoto.uri }} style={{ flex: 1 }} resizeMode="contain" />
+            )}
+          </View>
+        )}
+
+        <View style={styles.section}>
+          {phase === "ready" && <AppButton title="Capturar carta" onPress={handleCapture} />}
+
+          {phase === "preview" && (
+            <View style={{ flexDirection: "row", gap: 14, justifyContent: "center" }}>
+              {/* Achado real: tentativas de ícone com "90°" embutido (glifo
+                  MaterialIcons/MaterialCommunityIcons ausente, depois ícone+
+                  texto "90°" abaixo, achado feio/grande demais) — ficou só o
+                  ícone de girar (Feather rotate-ccw/cw), confirmado
+                  funcionando, sem tentar embutir o "90°" visualmente. */}
+              <IconButton icon="rotate-ccw" variant="outline" accessibilityLabel="Girar 90° à esquerda" onPress={() => handleRotate(-90)} />
+              <IconButton icon="rotate-cw" variant="outline" accessibilityLabel="Girar 90° à direita" onPress={() => handleRotate(90)} />
+              <IconButton icon="camera" variant="outline" accessibilityLabel="Tirar outra foto" onPress={handleRetake} />
+              <IconButton icon="check" variant="primary" accessibilityLabel="Usar esta foto" onPress={handleUsePhoto} />
+            </View>
           )}
+
+          {phase === "processing" && (
+            <View style={{ alignItems: "center", gap: 10, paddingVertical: 12 }}>
+              <ActivityIndicator color={COLORS.primary} />
+              <Text style={styles.bodyText}>Processando OCR e buscando candidatos no índice local...</Text>
+            </View>
+          )}
+
+          {errorMessage && (
+            <View style={[styles.alertBox, { backgroundColor: COLORS.dangerBg }]}>
+              <Text style={[styles.alertText, { color: COLORS.dangerText }]}>Erro: {errorMessage}</Text>
+            </View>
+          )}
+
+          {phase === "result" && ocrResult && (
+            <View style={{ gap: 10 }}>
+              {ocrResult.needsManualConfirmation && (
+                <View style={[styles.alertBox, { backgroundColor: COLORS.warningBg }]}>
+                  <Text style={[styles.alertText, { color: COLORS.warningText }]}>
+                    Confirme manualmente — identificação ambígua ou pouco confiável.
+                  </Text>
+                </View>
+              )}
+
+              {ocrResult.candidates.length === 0 ? (
+                <Text style={styles.bodyText}>{noneMatchMessage}</Text>
+              ) : (
+                <View style={{ gap: 10 }}>
+                  {ocrResult.candidates.map((c, idx) => (
+                    <CandidateRow
+                      key={`${c.record.sourceCardId}-${idx}`}
+                      candidate={c}
+                      onConfirm={handleConfirmCandidate}
+                      onExpandImage={handleExpandImage}
+                    />
+                  ))}
+                </View>
+              )}
+            </View>
+          )}
+
+          {phase === "manual" && (
+            <View style={{ gap: 10 }}>
+              <Text style={styles.bodyText}>{noneMatchMessage}</Text>
+              <AppButton title="Nova captura" onPress={resetToReady} />
+            </View>
+          )}
+
+          {phase === "confirmed" && confirmedRecord && (
+            <View style={{ gap: 10 }}>
+              <View style={[styles.alertBox, { backgroundColor: COLORS.successBg }]}>
+                <Text style={[styles.alertText, { color: COLORS.successText }]}>Identificação confirmada pelo usuário:</Text>
+              </View>
+              <Text style={styles.candidateName}>
+                {confirmedRecord.name} — {confirmedRecord.setName} #{confirmedRecord.localId} (
+                {LANGUAGE_FLAGS[confirmedRecord.sourceLanguage?.toLowerCase()] ?? ""} {confirmedRecord.sourceLanguage?.toUpperCase()})
+              </Text>
+              <Text style={styles.captionText}>
+                Este protótipo não grava nada em inventário/checklist — a confirmação aqui serve só para a
+                avaliação da PoC. Isso é escopo do app final.
+              </Text>
+              <AppButton title="Nova captura" onPress={resetToReady} />
+            </View>
+          )}
+        </View>
+
+        {manualSearchBlock}
+      </ScrollView>
+
+      {phase === "result" && ocrResult && (
+        <View style={styles.fab}>
+          <IconButton
+            icon="search"
+            variant="primary"
+            size={52}
+            accessibilityLabel="Nenhum candidato corresponde"
+            onPress={() => setPhase("manual")}
+          />
+          <IconButton
+            icon="camera-retake-outline"
+            iconSet={MaterialCommunityIcons}
+            variant="success"
+            size={52}
+            accessibilityLabel="Nova captura"
+            onPress={resetToReady}
+          />
+          <IconButton
+            icon="file-text"
+            variant="warning"
+            size={56}
+            accessibilityLabel="Ver texto reconhecido"
+            onPress={() => setShowRawTextModal(true)}
+          />
         </View>
       )}
 
-      <View style={{ padding: 16, gap: 8 }}>
-        {phase === "ready" && <Button title="Capturar carta" onPress={handleCapture} />}
-
-        {phase === "preview" && (
-          <View style={{ gap: 8 }}>
-            <Text>Confira o enquadramento antes de processar.</Text>
-            <Button title="Usar esta foto" onPress={handleUsePhoto} />
-            <Button title="Tirar outra foto" onPress={handleRetake} color="#A15C00" />
-          </View>
-        )}
-
-        {phase === "processing" && (
-          <View style={{ alignItems: "center", gap: 8 }}>
-            <ActivityIndicator />
-            <Text>Processando OCR e buscando candidatos no índice local...</Text>
-          </View>
-        )}
-
-        {errorMessage && <Text style={{ color: "#B42318" }}>Erro: {errorMessage}</Text>}
-
-        {phase === "result" && ocrResult && (
-          <View style={{ gap: 8 }}>
-            <Text style={{ fontWeight: "bold" }}>Texto reconhecido (bruto):</Text>
-            <Text selectable>{ocrResult.parsed.rawText || "(nenhum texto reconhecido)"}</Text>
-
-            {ocrResult.needsManualConfirmation && (
-              <Text style={{ color: "#A15C00", fontWeight: "bold" }}>
-                Confirme manualmente — identificação ambígua ou pouco confiável.
-              </Text>
-            )}
-
-            {ocrResult.candidates.length === 0 ? (
-              <Text>{noneMatchMessage}</Text>
-            ) : (
-              ocrResult.candidates.map((c, idx) => (
-                <CandidateRow
-                  key={`${c.record.sourceCardId}-${idx}`}
-                  candidate={c}
-                  onConfirm={handleConfirmCandidate}
-                  onExpandImage={setExpandedRecord}
-                />
-              ))
-            )}
-
-            <Button title="Nenhum candidato corresponde" onPress={() => setPhase("manual")} color="#A15C00" />
-            <Button title="Nova captura" onPress={resetToReady} />
-          </View>
-        )}
-
-        {phase === "manual" && (
-          <View style={{ gap: 8 }}>
-            <Text>{noneMatchMessage}</Text>
-            <Button title="Nova captura" onPress={resetToReady} />
-          </View>
-        )}
-
-        {phase === "confirmed" && confirmedRecord && (
-          <View style={{ gap: 8 }}>
-            <Text style={{ color: "#17824B", fontWeight: "bold" }}>Identificação confirmada pelo usuário:</Text>
-            <Text>
-              {confirmedRecord.name} — {confirmedRecord.setName} #{confirmedRecord.localId} ({confirmedRecord.sourceLanguage})
-            </Text>
-            <Text style={{ fontSize: 12, color: "#667085" }}>
-              Este protótipo não grava nada em inventário/checklist — a confirmação aqui serve só para a
-              avaliação da PoC. Isso é escopo do app final.
-            </Text>
-            <Button title="Nova captura" onPress={resetToReady} />
-          </View>
-        )}
-      </View>
-
-      {manualSearchBlock}
       {imageModal}
-    </ScrollView>
+      {rawTextModal}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: COLORS.bg,
+  },
+  header: {
+    paddingHorizontal: 16,
+    paddingTop: 18,
+    paddingBottom: 10,
+  },
+  headerTitle: {
+    color: COLORS.textPrimary,
+    fontSize: 22,
+    fontWeight: "700",
+  },
+  cameraFrame: {
+    height: 420,
+    marginHorizontal: 16,
+    borderRadius: 16,
+    overflow: "hidden",
+    backgroundColor: COLORS.surface,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  iconButton: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  fab: {
+    position: "absolute",
+    right: 20,
+    bottom: 24,
+    alignItems: "center",
+    gap: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  section: {
+    padding: 16,
+    gap: 10,
+  },
+  sectionTitle: {
+    color: COLORS.textPrimary,
+    fontWeight: "700",
+    fontSize: 14,
+  },
+  bodyText: {
+    color: COLORS.textSecondary,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  captionText: {
+    color: COLORS.textMuted,
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  button: {
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonCompact: {
+    paddingVertical: 9,
+    paddingHorizontal: 12,
+    flexShrink: 0,
+  },
+  buttonText: {
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  buttonTextCompact: {
+    fontSize: 13,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.surface,
+    color: COLORS.textPrimary,
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 14,
+  },
+  alertBox: {
+    borderRadius: 12,
+    padding: 14,
+  },
+  alertText: {
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  rawTextCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    padding: 14,
+    gap: 6,
+  },
+  rawText: {
+    color: COLORS.textSecondary,
+    fontSize: 12,
+    fontFamily: "monospace",
+    lineHeight: 17,
+  },
+  candidateCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    padding: 12,
+  },
+  candidateThumb: {
+    width: 76,
+    height: 106,
+    borderRadius: 8,
+  },
+  candidateThumbPlaceholder: {
+    backgroundColor: COLORS.surfaceAlt,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  candidateName: {
+    color: COLORS.textPrimary,
+    fontWeight: "700",
+    fontSize: 15,
+  },
+  candidateMeta: {
+    color: COLORS.textSecondary,
+    fontSize: 12,
+  },
+  candidateReasons: {
+    color: COLORS.textMuted,
+    fontSize: 11,
+  },
+  badge: {
+    alignSelf: "flex-start",
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  badgeText: {
+    fontSize: 11,
+    fontWeight: "600",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.9)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalCaption: {
+    color: COLORS.textPrimary,
+    marginTop: 14,
+    textAlign: "center",
+    paddingHorizontal: 20,
+    fontSize: 14,
+  },
+});
