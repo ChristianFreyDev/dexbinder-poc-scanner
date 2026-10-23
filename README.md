@@ -83,7 +83,7 @@ Ambos têm modo de amostra pequena por padrão (sem `--full`) — seguros de rod
 
 **Repositório público**: tornado público em 23/10/2026 (ver `reports/decision.md`, seção 11.3) porque o app precisa baixar os assets da Release `catalog-data` sem autenticação — um app publicado não pode ter um token do GitHub embutido só pra isso. Histórico conferido antes: nenhum segredo encontrado.
 
-**`src/storage/catalogSync.js`** (novo, não conectado ainda à tela do scanner): implementa o lado do app que baixa e instala o banco publicado (`checkForUpdate()`, `downloadAndInstallCatalog()`, `syncCatalogIfNeeded()`, `openSyncedCatalogDb()`), usando `expo-file-system` + `expo-sqlite`. Completa, junto com `src/storage/catalogIndex.js`, a arquitetura descrita na seção 11 de `reports/decision.md` — ligar isso à tela real é decisão de Entrega 1.
+**`src/storage/catalogSync.js`** (novo, não conectado ainda à tela do scanner): implementa o lado do app que baixa e instala o banco publicado (`checkForUpdate()`, `downloadAndInstallCatalog()`, `syncCatalogIfNeeded()`, `openSyncedCatalogDb()`), usando `expo-file-system` + `expo-sqlite`. Completa, junto com `src/storage/catalogIndex.js`, a arquitetura descrita na seção 11 de `reports/decision.md` — ligar isso à tela real é decisão de Entrega 1. A regra de "quando baixar de novo" (comparar checksum, não data) foi extraída para `src/storage/catalogSyncDecision.js`, sem dependência de Expo, e tem 4 testes automatizados reais (`npm run test:catalog-sync`).
 
 ## Estrutura
 
@@ -109,6 +109,7 @@ scripts/export-index-bundle.js   # gera app/assets/catalog-index.json (fixtures 
 scripts/sync-full-catalog.js     # gera/atualiza o banco SQLite do catálogo completo (todos os sets/idiomas), retomável em lotes
 scripts/build-thumbnails.js      # gera miniaturas pequenas pré-empacotadas a partir do banco acima
 scripts/run-matching-tests.js    # 36 testes automatizados reais (node:test), incluindo regressões com OCR real
+scripts/run-catalog-sync-tests.js # 4 testes reais da lógica de decisão de sincronização (src/storage/catalogSyncDecision.js)
 scripts/check-jsx-syntax.js      # valida sintaxe JSX real com @babel/parser
 fixtures/cards/*.json            # 31 respostas REAIS da API TCGdex, salvas pela auditoria
 fixtures/catalog/set-series-map.json  # mapa real set->série (220 sets, 21 séries)

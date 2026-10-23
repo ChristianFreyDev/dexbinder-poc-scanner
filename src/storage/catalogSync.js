@@ -29,6 +29,7 @@
 
 const { File } = require("expo-file-system");
 const { defaultDatabaseDirectory, openDatabaseAsync } = require("expo-sqlite");
+const { shouldUpdate } = require("./catalogSyncDecision");
 
 const GITHUB_OWNER = "ChristianFreyDev";
 const GITHUB_REPO = "dexbinder-poc-scanner";
@@ -78,7 +79,7 @@ async function fetchRemoteManifest() {
  */
 async function checkForUpdate() {
   const [localManifest, remoteManifest] = await Promise.all([getLocalManifest(), fetchRemoteManifest()]);
-  const updateAvailable = !localManifest || localManifest.dbSha256 !== remoteManifest.dbSha256;
+  const updateAvailable = shouldUpdate(localManifest, remoteManifest);
   return { updateAvailable, localManifest, remoteManifest };
 }
 
