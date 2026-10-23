@@ -11,6 +11,7 @@
     "build:series-map": "node scripts/build-series-map.js",
     "build:index-bundle": "node scripts/export-index-bundle.js",
     "sync:full-catalog": "node scripts/sync-full-catalog.js",
+    "sync:thumbnails": "node scripts/sync-thumbnails.js",
     "test:matching": "node --test scripts/run-matching-tests.js",
     "test:catalog-sync": "node --test scripts/run-catalog-sync-tests.js",
     "test:cron-switch": "node --test scripts/run-cron-switch-tests.js",

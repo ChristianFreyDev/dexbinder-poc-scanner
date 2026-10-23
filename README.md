@@ -77,9 +77,16 @@ npm run sync:full-catalog -- --full --resume --batch=25
 
 # Gera miniaturas pequenas pré-empacotadas (dist/catalog/thumbnails/), a partir do banco acima
 node scripts/build-thumbnails.js --limit=20   # amostra; use --full para todas (download pesado, combinar antes)
+
+# Versão resumível/automatizável do mesmo processo (usada pelo workflow sync-thumbnails.yml):
+# empacota as miniaturas como BLOBs num único banco SQLite (dist/catalog/thumbnails.db),
+# uma por IDIOMA IMPRESSO de cada carta, em lotes, retomando de onde parou.
+node scripts/sync-thumbnails.js --resume --batch=40
 ```
 
-Ambos têm modo de amostra pequena por padrão (sem `--full`) — seguros de rodar localmente para testar sem varrer o catálogo inteiro.
+Todos têm modo de amostra pequena por padrão (sem `--full`/`--batch`) — seguros de rodar localmente para testar sem varrer o catálogo inteiro.
+
+**Miniaturas (`.github/workflows/sync-thumbnails.yml`, novo)**: roda de hora em hora, mas só baixa imagem de verdade DEPOIS que o banco de metadados completar o primeiro ciclo inteiro (checa o manifesto publicado por `sync-catalog.yml` antes de fazer qualquer coisa — enquanto não completar, cada execução só faz essa checagem e não baixa nenhuma imagem). Publica o progresso como assets da Release `catalog-thumbnails` deste repositório, mesmo padrão resumível/idempotente do sync de metadados.
 
 **CI automático**: `.github/workflows/test.yml` roda `npm test` (hoje 44 testes + checagem JSX) a cada push/PR em `master`.
 
@@ -111,7 +118,8 @@ scripts/run-catalog-audit.js     # roda a auditoria real do catálogo (ver repor
 scripts/build-series-map.js      # consulta real a /series e /series/{id}; gera o mapa set->série
 scripts/export-index-bundle.js   # gera app/assets/catalog-index.json (fixtures + filtro tcgp) — só para esta PoC
 scripts/sync-full-catalog.js     # gera/atualiza o banco SQLite do catálogo completo (todos os sets/idiomas), retomável em lotes
-scripts/build-thumbnails.js      # gera miniaturas pequenas pré-empacotadas a partir do banco acima
+scripts/build-thumbnails.js      # gera miniaturas pequenas pré-empacotadas a partir do banco acima (amostra manual, arquivos soltos)
+scripts/sync-thumbnails.js       # versão resumível/automatizável do mesmo processo (BLOBs num único banco), usada pelo workflow
 scripts/run-matching-tests.js    # 36 testes automatizados reais (node:test), incluindo regressões com OCR real
 scripts/run-catalog-sync-tests.js # 4 testes reais da lógica de decisão de sincronização (src/storage/catalogSyncDecision.js)
 scripts/maybe-slow-down-cron.js  # reduz sozinho o cron do sync-catalog.yml quando o catálogo completa (chamado pelo próprio workflow)
@@ -125,6 +133,8 @@ reports/ocr-test-results.csv     # 3 linhas informais reais (ver decision.md 3.1
 .github/workflows/build-android.yml      # APK standalone (release), build automático a cada push
 .github/workflows/build-android-dev.yml  # APK de dev-client (debug), manual — só quando dependência nativa muda
 .github/workflows/sync-catalog.yml       # sincronização automática do catálogo completo, de hora em hora, ver seção acima
+.github/workflows/sync-thumbnails.yml    # sincronização automática das miniaturas (só ativa depois que o catálogo completar)
+.github/workflows/test.yml               # roda npm test a cada push/PR em master
 ```
 
 ## Versões (verificadas no registro npm/Expo em 22/10/2026, não copiadas de tutorial)

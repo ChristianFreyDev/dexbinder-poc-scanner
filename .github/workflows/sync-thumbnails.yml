@@ -1,0 +1,86 @@
+name: Sync Thumbnails
+
+# Terceira parte da arquitetura de catálogo completo (Entrega 1, ver
+# reports/decision.md, seção 11): gera miniaturas reais (uma por IDIOMA
+# IMPRESSO de cada carta, não uma por carta só — decisão real, 23/10/2026)
+# a partir do banco de metadados publicado por sync-catalog.yml, em lotes,
+# retomando de onde parou — scripts/sync-thumbnails.js.
+#
+# Decisão real: só começa a baixar imagem de verdade DEPOIS que o banco de
+# metadados completar o primeiro ciclo inteiro (ver step "Checar..." abaixo,
+# que lê o manifesto publicado por sync-catalog.yml). Antes disso, cada
+# execução agendada só faz essa checagem rápida e não faz mais nada — zero
+# downloads de imagem, de propósito, pra não competir com a sincronização
+# de metadados ainda em andamento.
+#
+# BATCH_SIZE controla quantas miniaturas (carta × idioma) são baixadas e
+# processadas por execução.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "37 * * * *" # de hora em hora (minuto 37, diferente do sync de metadados pra não competir no mesmo minuto)
+
+env:
+  BATCH_SIZE: 40
+  METADATA_RELEASE_TAG: catalog-data
+  THUMBS_RELEASE_TAG: catalog-thumbnails
+
+permissions:
+  contents: write
+
+jobs:
+  thumbnails:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Baixar manifesto e banco de metadados publicados
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p dist/catalog
+          gh release download "$METADATA_RELEASE_TAG" --dir dist/catalog --clobber
+
+      - name: Checar se os metadados já completaram o primeiro ciclo
+        id: gate
+        run: |
+          COMPLETE=$(node -e "console.log(require('./dist/catalog/catalog-version.json').complete === true)")
+          echo "complete=$COMPLETE" >> "$GITHUB_OUTPUT"
+          if [ "$COMPLETE" != "true" ]; then
+            echo "Metadados ainda não completaram o primeiro ciclo — miniaturas aguardam, nenhum download de imagem nesta execução."
+          fi
+
+      - name: Baixar progresso anterior de miniaturas (se existir)
+        if: steps.gate.outputs.complete == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release download "$THUMBS_RELEASE_TAG" --dir dist/catalog --clobber || echo "Nenhuma release anterior de miniaturas encontrada — começando do zero."
+
+      - name: Gerar um lote de miniaturas
+        if: steps.gate.outputs.complete == 'true'
+        run: node scripts/sync-thumbnails.js --resume --batch=$BATCH_SIZE
+
+      - name: Mostrar progresso
+        if: steps.gate.outputs.complete == 'true'
+        run: cat dist/catalog/thumbnails-version.json
+
+      - name: Publicar progresso na Release
+        if: steps.gate.outputs.complete == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "$THUMBS_RELEASE_TAG" >/dev/null 2>&1 || gh release create "$THUMBS_RELEASE_TAG" \
+            --title "Catalog thumbnails (sincronização em andamento)" \
+            --notes "Banco SQLite de miniaturas (BLOBs WebP 60x84) + manifesto de progresso, gerados automaticamente por scripts/sync-thumbnails.js. Ver reports/decision.md, seção 11."
+          gh release upload "$THUMBS_RELEASE_TAG" dist/catalog/thumbnails.db dist/catalog/thumbnails-version.json --clobber
