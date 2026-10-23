@@ -81,6 +81,10 @@ node scripts/build-thumbnails.js --limit=20   # amostra; use --full para todas (
 
 Ambos têm modo de amostra pequena por padrão (sem `--full`) — seguros de rodar localmente para testar sem varrer o catálogo inteiro.
 
+**Repositório público**: tornado público em 23/10/2026 (ver `reports/decision.md`, seção 11.3) porque o app precisa baixar os assets da Release `catalog-data` sem autenticação — um app publicado não pode ter um token do GitHub embutido só pra isso. Histórico conferido antes: nenhum segredo encontrado.
+
+**`src/storage/catalogSync.js`** (novo, não conectado ainda à tela do scanner): implementa o lado do app que baixa e instala o banco publicado (`checkForUpdate()`, `downloadAndInstallCatalog()`, `syncCatalogIfNeeded()`, `openSyncedCatalogDb()`), usando `expo-file-system` + `expo-sqlite`. Completa, junto com `src/storage/catalogIndex.js`, a arquitetura descrita na seção 11 de `reports/decision.md` — ligar isso à tela real é decisão de Entrega 1.
+
 ## Estrutura
 
 ```text
