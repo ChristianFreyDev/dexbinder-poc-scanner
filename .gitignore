@@ -14,3 +14,6 @@ dist/
 
 # Config local do servidor de dev (caminho absoluto específico desta máquina)
 .claude/
+
+# APK baixado temporariamente pra entregar ao usuário (artefato de build, não código-fonte)
+.apk-download/
