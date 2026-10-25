@@ -11,3 +11,6 @@ ios/build/
 *.log
 .expo/
 dist/
+
+# Config local do servidor de dev (caminho absoluto específico desta máquina)
+.claude/

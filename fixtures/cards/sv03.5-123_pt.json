@@ -1,0 +1,205 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-123",
+  "illustrator": "Hideki Ishikawa",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/123",
+  "localId": "123",
+  "name": "Scyther",
+  "rarity": "Incomum",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Normal",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733718,
+        "tcgplayer": 516686,
+        "cardtrader": 261215
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733718,
+          "avg": 0.1,
+          "low": 0.02,
+          "trend": 0.13,
+          "avg1": 0.09,
+          "avg7": 0.12,
+          "avg30": 0.1,
+          "avg-holo": 2.52,
+          "low-holo": 0.35,
+          "trend-holo": 1.64,
+          "avg1-holo": 1.15,
+          "avg7-holo": 1.14,
+          "avg30-holo": 2.16
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516686,
+            "lowPrice": 1,
+            "midPrice": 2.19,
+            "highPrice": 100,
+            "marketPrice": 2.07,
+            "directLowPrice": 2.18
+          },
+          "normal": {
+            "productId": 516686,
+            "lowPrice": 0.02,
+            "midPrice": 0.24,
+            "highPrice": 19.8,
+            "marketPrice": 0.24,
+            "directLowPrice": 0.04
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733718,
+        "tcgplayer": 516686,
+        "cardtrader": 261215
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733718,
+          "avg": 0.1,
+          "low": 0.02,
+          "trend": 0.13,
+          "avg1": 0.09,
+          "avg7": 0.12,
+          "avg30": 0.1,
+          "avg-holo": 2.52,
+          "low-holo": 0.35,
+          "trend-holo": 1.64,
+          "avg1-holo": 1.15,
+          "avg7-holo": 1.14,
+          "avg30-holo": 2.16
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516686,
+            "lowPrice": 1,
+            "midPrice": 2.19,
+            "highPrice": 100,
+            "marketPrice": 2.07,
+            "directLowPrice": 2.18
+          },
+          "normal": {
+            "productId": 516686,
+            "lowPrice": 0.02,
+            "midPrice": 0.24,
+            "highPrice": 19.8,
+            "marketPrice": 0.24,
+            "directLowPrice": 0.04
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    123
+  ],
+  "hp": 70,
+  "types": [
+    "Planta"
+  ],
+  "stage": "Básico",
+  "attacks": [
+    {
+      "cost": [
+        "Planta"
+      ],
+      "name": "Talho de Apoio",
+      "effect": "Ligue uma carta de Energia {G} Básica da sua pilha de descarte a 1 dos seus Pokémon no Banco.",
+      "damage": 20
+    },
+    {
+      "cost": [
+        "Planta",
+        "Incolor",
+        "Incolor"
+      ],
+      "name": "Lâmina Fatiante",
+      "damage": 70
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Fogo",
+      "value": "×2"
+    }
+  ],
+  "retreat": 0,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.798Z",
+      "unit": "EUR",
+      "idProduct": 733718,
+      "avg": 0.1,
+      "low": 0.02,
+      "trend": 0.13,
+      "avg1": 0.09,
+      "avg7": 0.12,
+      "avg30": 0.1,
+      "avg-holo": 2.52,
+      "low-holo": 0.35,
+      "trend-holo": 1.64,
+      "avg1-holo": 1.15,
+      "avg7-holo": 1.14,
+      "avg30-holo": 2.16
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "reverse-holofoil": {
+        "productId": 516686,
+        "lowPrice": 1,
+        "midPrice": 2.19,
+        "highPrice": 100,
+        "marketPrice": 2.07,
+        "directLowPrice": 2.18
+      },
+      "normal": {
+        "productId": 516686,
+        "lowPrice": 0.02,
+        "midPrice": 0.24,
+        "highPrice": 19.8,
+        "marketPrice": 0.24,
+        "directLowPrice": 0.04
+      }
+    }
+  }
+}

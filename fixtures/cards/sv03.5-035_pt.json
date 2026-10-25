@@ -1,0 +1,203 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-035",
+  "illustrator": "ryoma uratsuka",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/035",
+  "localId": "035",
+  "name": "Clefairy",
+  "rarity": "Comum",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Normal",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733630,
+        "tcgplayer": 516030,
+        "cardtrader": 261107
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.816Z",
+          "unit": "EUR",
+          "idProduct": 733630,
+          "avg": 0.05,
+          "low": 0.02,
+          "trend": 0.07,
+          "avg1": 0.08,
+          "avg7": 0.08,
+          "avg30": 0.06,
+          "avg-holo": 0.22,
+          "low-holo": 0.02,
+          "trend-holo": 0.22,
+          "avg1-holo": 0.15,
+          "avg7-holo": 0.22,
+          "avg30-holo": 0.23
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516030,
+            "lowPrice": 0.09,
+            "midPrice": 0.32,
+            "highPrice": 36,
+            "marketPrice": 0.31,
+            "directLowPrice": 0.3
+          },
+          "normal": {
+            "productId": 516030,
+            "lowPrice": 0.01,
+            "midPrice": 0.22,
+            "highPrice": 19.36,
+            "marketPrice": 0.21,
+            "directLowPrice": 0.01
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733630,
+        "tcgplayer": 516030,
+        "cardtrader": 261107
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.816Z",
+          "unit": "EUR",
+          "idProduct": 733630,
+          "avg": 0.05,
+          "low": 0.02,
+          "trend": 0.07,
+          "avg1": 0.08,
+          "avg7": 0.08,
+          "avg30": 0.06,
+          "avg-holo": 0.22,
+          "low-holo": 0.02,
+          "trend-holo": 0.22,
+          "avg1-holo": 0.15,
+          "avg7-holo": 0.22,
+          "avg30-holo": 0.23
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516030,
+            "lowPrice": 0.09,
+            "midPrice": 0.32,
+            "highPrice": 36,
+            "marketPrice": 0.31,
+            "directLowPrice": 0.3
+          },
+          "normal": {
+            "productId": 516030,
+            "lowPrice": 0.01,
+            "midPrice": 0.22,
+            "highPrice": 19.36,
+            "marketPrice": 0.21,
+            "directLowPrice": 0.01
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    35
+  ],
+  "hp": 60,
+  "types": [
+    "Psíquico"
+  ],
+  "stage": "Básico",
+  "attacks": [
+    {
+      "cost": [
+        "Psíquico"
+      ],
+      "name": "Convite Lunar",
+      "effect": "Procure por até 3 Clefairy no seu baralho e coloque-os no seu Banco. Em seguida, embaralhe o seu baralho."
+    },
+    {
+      "cost": [
+        "Psíquico",
+        "Incolor"
+      ],
+      "name": "Estalo",
+      "damage": 20
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Metal",
+      "value": "×2"
+    }
+  ],
+  "retreat": 1,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.816Z",
+      "unit": "EUR",
+      "idProduct": 733630,
+      "avg": 0.05,
+      "low": 0.02,
+      "trend": 0.07,
+      "avg1": 0.08,
+      "avg7": 0.08,
+      "avg30": 0.06,
+      "avg-holo": 0.22,
+      "low-holo": 0.02,
+      "trend-holo": 0.22,
+      "avg1-holo": 0.15,
+      "avg7-holo": 0.22,
+      "avg30-holo": 0.23
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "reverse-holofoil": {
+        "productId": 516030,
+        "lowPrice": 0.09,
+        "midPrice": 0.32,
+        "highPrice": 36,
+        "marketPrice": 0.31,
+        "directLowPrice": 0.3
+      },
+      "normal": {
+        "productId": 516030,
+        "lowPrice": 0.01,
+        "midPrice": 0.22,
+        "highPrice": 19.36,
+        "marketPrice": 0.21,
+        "directLowPrice": 0.01
+      }
+    }
+  }
+}

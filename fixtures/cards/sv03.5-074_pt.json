@@ -1,0 +1,203 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-074",
+  "illustrator": "Uta",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/074",
+  "localId": "074",
+  "name": "Geodude",
+  "rarity": "Comum",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Normal",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733669,
+        "tcgplayer": 516569,
+        "cardtrader": 261119
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.816Z",
+          "unit": "EUR",
+          "idProduct": 733669,
+          "avg": 0.06,
+          "low": 0.02,
+          "trend": 0.06,
+          "avg1": 0.05,
+          "avg7": 0.06,
+          "avg30": 0.06,
+          "avg-holo": 0.23,
+          "low-holo": 0.02,
+          "trend-holo": 0.23,
+          "avg1-holo": 0.21,
+          "avg7-holo": 0.22,
+          "avg30-holo": 0.23
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 516569,
+            "lowPrice": 0.01,
+            "midPrice": 0.2,
+            "highPrice": 19.8,
+            "marketPrice": 0.16,
+            "directLowPrice": 0.01
+          },
+          "reverse-holofoil": {
+            "productId": 516569,
+            "lowPrice": 0.01,
+            "midPrice": 0.26,
+            "highPrice": 40,
+            "marketPrice": 0.25,
+            "directLowPrice": 0.15
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733669,
+        "tcgplayer": 516569,
+        "cardtrader": 261119
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.816Z",
+          "unit": "EUR",
+          "idProduct": 733669,
+          "avg": 0.06,
+          "low": 0.02,
+          "trend": 0.06,
+          "avg1": 0.05,
+          "avg7": 0.06,
+          "avg30": 0.06,
+          "avg-holo": 0.23,
+          "low-holo": 0.02,
+          "trend-holo": 0.23,
+          "avg1-holo": 0.21,
+          "avg7-holo": 0.22,
+          "avg30-holo": 0.23
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 516569,
+            "lowPrice": 0.01,
+            "midPrice": 0.2,
+            "highPrice": 19.8,
+            "marketPrice": 0.16,
+            "directLowPrice": 0.01
+          },
+          "reverse-holofoil": {
+            "productId": 516569,
+            "lowPrice": 0.01,
+            "midPrice": 0.26,
+            "highPrice": 40,
+            "marketPrice": 0.25,
+            "directLowPrice": 0.15
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    74
+  ],
+  "hp": 80,
+  "types": [
+    "Lutador"
+  ],
+  "stage": "Básico",
+  "attacks": [
+    {
+      "cost": [
+        "Lutador"
+      ],
+      "name": "Fortificar",
+      "effect": "Durante o próximo turno do seu oponente, este Pokémon receberá 30 pontos de dano a menos de ataques (depois de aplicar Fraqueza e Resistência)."
+    },
+    {
+      "cost": [
+        "Lutador",
+        "Incolor"
+      ],
+      "name": "Soco com Punho",
+      "damage": 20
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Planta",
+      "value": "×2"
+    }
+  ],
+  "retreat": 2,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.816Z",
+      "unit": "EUR",
+      "idProduct": 733669,
+      "avg": 0.06,
+      "low": 0.02,
+      "trend": 0.06,
+      "avg1": 0.05,
+      "avg7": 0.06,
+      "avg30": 0.06,
+      "avg-holo": 0.23,
+      "low-holo": 0.02,
+      "trend-holo": 0.23,
+      "avg1-holo": 0.21,
+      "avg7-holo": 0.22,
+      "avg30-holo": 0.23
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "normal": {
+        "productId": 516569,
+        "lowPrice": 0.01,
+        "midPrice": 0.2,
+        "highPrice": 19.8,
+        "marketPrice": 0.16,
+        "directLowPrice": 0.01
+      },
+      "reverse-holofoil": {
+        "productId": 516569,
+        "lowPrice": 0.01,
+        "midPrice": 0.26,
+        "highPrice": 40,
+        "marketPrice": 0.25,
+        "directLowPrice": 0.15
+      }
+    }
+  }
+}

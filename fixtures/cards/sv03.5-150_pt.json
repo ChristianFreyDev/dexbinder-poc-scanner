@@ -1,0 +1,213 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-150",
+  "illustrator": "AKIRA EGAWA",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/150",
+  "localId": "150",
+  "name": "Mewtwo",
+  "rarity": "Rara",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Holo",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733745,
+        "tcgplayer": 516713,
+        "cardtrader": 261235
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733745,
+          "avg": 1,
+          "low": 0.06,
+          "trend": 0.93,
+          "avg1": 1.06,
+          "avg7": 1,
+          "avg30": 0.92,
+          "avg-holo": 4.59,
+          "low-holo": 0.49,
+          "trend-holo": 4.54,
+          "avg1-holo": 3.88,
+          "avg7-holo": 4.14,
+          "avg30-holo": 4.34
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516713,
+            "lowPrice": 2.49,
+            "midPrice": 4.43,
+            "highPrice": 203862.68,
+            "marketPrice": 3.91,
+            "directLowPrice": 4.21
+          },
+          "holofoil": {
+            "productId": 516713,
+            "lowPrice": 0.75,
+            "midPrice": 2.49,
+            "highPrice": 348,
+            "marketPrice": 2.08,
+            "directLowPrice": null
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733745,
+        "tcgplayer": 516713,
+        "cardtrader": 261235
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733745,
+          "avg": 1,
+          "low": 0.06,
+          "trend": 0.93,
+          "avg1": 1.06,
+          "avg7": 1,
+          "avg30": 0.92,
+          "avg-holo": 4.59,
+          "low-holo": 0.49,
+          "trend-holo": 4.54,
+          "avg1-holo": 3.88,
+          "avg7-holo": 4.14,
+          "avg30-holo": 4.34
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516713,
+            "lowPrice": 2.49,
+            "midPrice": 4.43,
+            "highPrice": 203862.68,
+            "marketPrice": 3.91,
+            "directLowPrice": 4.21
+          },
+          "holofoil": {
+            "productId": 516713,
+            "lowPrice": 0.75,
+            "midPrice": 2.49,
+            "highPrice": 348,
+            "marketPrice": 2.08,
+            "directLowPrice": null
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    150
+  ],
+  "hp": 130,
+  "types": [
+    "Psíquico"
+  ],
+  "stage": "Básico",
+  "attacks": [
+    {
+      "cost": [
+        "Incolor",
+        "Incolor"
+      ],
+      "name": "Barreira Reflexiva",
+      "effect": "Durante o próximo turno do seu oponente, se este Pokémon for danificado por um ataque (mesmo que ele seja Nocauteado), coloque contadores de dano no Pokémon Atacante equivalentes ao dano causado a este Pokémon.",
+      "damage": 20
+    },
+    {
+      "cost": [
+        "Psíquico",
+        "Psíquico",
+        "Incolor"
+      ],
+      "name": "Pancada Psíquica",
+      "effect": "Descarte 2 Energias deste Pokémon.",
+      "damage": 130
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Sombrio",
+      "value": "×2"
+    }
+  ],
+  "resistances": [
+    {
+      "type": "Lutador",
+      "value": "-30"
+    }
+  ],
+  "retreat": 2,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.798Z",
+      "unit": "EUR",
+      "idProduct": 733745,
+      "avg": 1,
+      "low": 0.06,
+      "trend": 0.93,
+      "avg1": 1.06,
+      "avg7": 1,
+      "avg30": 0.92,
+      "avg-holo": 4.59,
+      "low-holo": 0.49,
+      "trend-holo": 4.54,
+      "avg1-holo": 3.88,
+      "avg7-holo": 4.14,
+      "avg30-holo": 4.34
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "reverse-holofoil": {
+        "productId": 516713,
+        "lowPrice": 2.49,
+        "midPrice": 4.43,
+        "highPrice": 203862.68,
+        "marketPrice": 3.91,
+        "directLowPrice": 4.21
+      },
+      "holofoil": {
+        "productId": 516713,
+        "lowPrice": 0.75,
+        "midPrice": 2.49,
+        "highPrice": 348,
+        "marketPrice": 2.08,
+        "directLowPrice": null
+      }
+    }
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "category": "Treinador",
+  "id": "sv03.5-160",
+  "illustrator": "saino misaki",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/160",
+  "localId": "160",
+  "name": "Convite da Érica",
+  "rarity": "Incomum",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Normal",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733755,
+        "tcgplayer": 516722,
+        "cardtrader": 261173
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733755,
+          "avg": 0.07,
+          "low": 0.02,
+          "trend": 0.08,
+          "avg1": 0.1,
+          "avg7": 0.08,
+          "avg30": 0.08,
+          "avg-holo": 1.43,
+          "low-holo": 0.05,
+          "trend-holo": 0.9,
+          "avg1-holo": 0.61,
+          "avg7-holo": 0.85,
+          "avg30-holo": 1.25
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 516722,
+            "lowPrice": 0.02,
+            "midPrice": 0.21,
+            "highPrice": 16.88,
+            "marketPrice": 0.19,
+            "directLowPrice": 0.03
+          },
+          "reverse-holofoil": {
+            "productId": 516722,
+            "lowPrice": 0.45,
+            "midPrice": 0.99,
+            "highPrice": 7.95,
+            "marketPrice": 0.95,
+            "directLowPrice": 0.9
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733755,
+        "tcgplayer": 516722,
+        "cardtrader": 261173
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733755,
+          "avg": 0.07,
+          "low": 0.02,
+          "trend": 0.08,
+          "avg1": 0.1,
+          "avg7": 0.08,
+          "avg30": 0.08,
+          "avg-holo": 1.43,
+          "low-holo": 0.05,
+          "trend-holo": 0.9,
+          "avg1-holo": 0.61,
+          "avg7-holo": 0.85,
+          "avg30-holo": 1.25
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 516722,
+            "lowPrice": 0.02,
+            "midPrice": 0.21,
+            "highPrice": 16.88,
+            "marketPrice": 0.19,
+            "directLowPrice": 0.03
+          },
+          "reverse-holofoil": {
+            "productId": 516722,
+            "lowPrice": 0.45,
+            "midPrice": 0.99,
+            "highPrice": 7.95,
+            "marketPrice": 0.95,
+            "directLowPrice": 0.9
+          }
+        }
+      }
+    }
+  ],
+  "effect": "Seu oponente revela a mão dele, e você coloca um Pokémon Básico que encontrar lá no Banco do seu oponente. Se você colocar um Pokémon no Banco dele desta forma, mande aquele Pokémon para o Campo Ativo.",
+  "trainerType": "Apoiador",
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.798Z",
+      "unit": "EUR",
+      "idProduct": 733755,
+      "avg": 0.07,
+      "low": 0.02,
+      "trend": 0.08,
+      "avg1": 0.1,
+      "avg7": 0.08,
+      "avg30": 0.08,
+      "avg-holo": 1.43,
+      "low-holo": 0.05,
+      "trend-holo": 0.9,
+      "avg1-holo": 0.61,
+      "avg7-holo": 0.85,
+      "avg30-holo": 1.25
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "normal": {
+        "productId": 516722,
+        "lowPrice": 0.02,
+        "midPrice": 0.21,
+        "highPrice": 16.88,
+        "marketPrice": 0.19,
+        "directLowPrice": 0.03
+      },
+      "reverse-holofoil": {
+        "productId": 516722,
+        "lowPrice": 0.45,
+        "midPrice": 0.99,
+        "highPrice": 7.95,
+        "marketPrice": 0.95,
+        "directLowPrice": 0.9
+      }
+    }
+  }
+}

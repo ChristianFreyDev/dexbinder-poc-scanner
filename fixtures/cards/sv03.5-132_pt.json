@@ -1,0 +1,202 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-132",
+  "illustrator": "KIYOTAKA OSHIYAMA",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/132",
+  "localId": "132",
+  "name": "Ditto",
+  "rarity": "Rara",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Holo",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733727,
+        "tcgplayer": 516695,
+        "cardtrader": 261226
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733727,
+          "avg": 0.4,
+          "low": 0.02,
+          "trend": 0.38,
+          "avg1": 0.54,
+          "avg7": 0.46,
+          "avg30": 0.36,
+          "avg-holo": 2.1,
+          "low-holo": 0.05,
+          "trend-holo": 2.1,
+          "avg1-holo": 2.15,
+          "avg7-holo": 1.87,
+          "avg30-holo": 2.04
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516695,
+            "lowPrice": 0.83,
+            "midPrice": 2.03,
+            "highPrice": 85,
+            "marketPrice": 2,
+            "directLowPrice": null
+          },
+          "holofoil": {
+            "productId": 516695,
+            "lowPrice": 0.14,
+            "midPrice": 0.8,
+            "highPrice": 69,
+            "marketPrice": 0.66,
+            "directLowPrice": 0.67
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733727,
+        "tcgplayer": 516695,
+        "cardtrader": 261226
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733727,
+          "avg": 0.4,
+          "low": 0.02,
+          "trend": 0.38,
+          "avg1": 0.54,
+          "avg7": 0.46,
+          "avg30": 0.36,
+          "avg-holo": 2.1,
+          "low-holo": 0.05,
+          "trend-holo": 2.1,
+          "avg1-holo": 2.15,
+          "avg7-holo": 1.87,
+          "avg30-holo": 2.04
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516695,
+            "lowPrice": 0.83,
+            "midPrice": 2.03,
+            "highPrice": 85,
+            "marketPrice": 2,
+            "directLowPrice": null
+          },
+          "holofoil": {
+            "productId": 516695,
+            "lowPrice": 0.14,
+            "midPrice": 0.8,
+            "highPrice": 69,
+            "marketPrice": 0.66,
+            "directLowPrice": 0.67
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    132
+  ],
+  "hp": 60,
+  "types": [
+    "Incolor"
+  ],
+  "stage": "Básico",
+  "abilities": [
+    {
+      "type": "Habilidade",
+      "name": "Transformação Inicial",
+      "effect": "Uma vez durante o seu primeiro turno, se este Pokémon estiver no Campo Ativo, você poderá procurar no seu baralho e escolher um Pokémon Básico que encontrar lá, exceto por quaisquer Ditto. Se fizer isto, descarte este Pokémon e todas as cartas ligadas a ele, e coloque o Pokémon escolhido em seu lugar. Em seguida, embaralhe o seu baralho."
+    }
+  ],
+  "attacks": [
+    {
+      "cost": [
+        "Incolor"
+      ],
+      "name": "Splup",
+      "damage": 10
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Lutador",
+      "value": "×2"
+    }
+  ],
+  "retreat": 1,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.798Z",
+      "unit": "EUR",
+      "idProduct": 733727,
+      "avg": 0.4,
+      "low": 0.02,
+      "trend": 0.38,
+      "avg1": 0.54,
+      "avg7": 0.46,
+      "avg30": 0.36,
+      "avg-holo": 2.1,
+      "low-holo": 0.05,
+      "trend-holo": 2.1,
+      "avg1-holo": 2.15,
+      "avg7-holo": 1.87,
+      "avg30-holo": 2.04
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "reverse-holofoil": {
+        "productId": 516695,
+        "lowPrice": 0.83,
+        "midPrice": 2.03,
+        "highPrice": 85,
+        "marketPrice": 2,
+        "directLowPrice": null
+      },
+      "holofoil": {
+        "productId": 516695,
+        "lowPrice": 0.14,
+        "midPrice": 0.8,
+        "highPrice": 69,
+        "marketPrice": 0.66,
+        "directLowPrice": 0.67
+      }
+    }
+  }
+}

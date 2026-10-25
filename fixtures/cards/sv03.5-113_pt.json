@@ -1,0 +1,204 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-113",
+  "illustrator": "Taiga Kayama",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/113",
+  "localId": "113",
+  "name": "Chansey",
+  "rarity": "Rara",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Holo",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733708,
+        "tcgplayer": 516575,
+        "cardtrader": 261068
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.816Z",
+          "unit": "EUR",
+          "idProduct": 733708,
+          "avg": 0.24,
+          "low": 0.02,
+          "trend": 0.26,
+          "avg1": 0.31,
+          "avg7": 0.3,
+          "avg30": 0.26,
+          "avg-holo": 1.75,
+          "low-holo": 0.02,
+          "trend-holo": 1.28,
+          "avg1-holo": 1.27,
+          "avg7-holo": 1.37,
+          "avg30-holo": 1.65
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 516575,
+            "lowPrice": 0.07,
+            "midPrice": 0.35,
+            "highPrice": 60,
+            "marketPrice": 0.35,
+            "directLowPrice": 0.25
+          },
+          "reverse-holofoil": {
+            "productId": 516575,
+            "lowPrice": 0.35,
+            "midPrice": 1.5,
+            "highPrice": 15.58,
+            "marketPrice": 1.46,
+            "directLowPrice": 1.43
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733708,
+        "tcgplayer": 516575,
+        "cardtrader": 261068
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.816Z",
+          "unit": "EUR",
+          "idProduct": 733708,
+          "avg": 0.24,
+          "low": 0.02,
+          "trend": 0.26,
+          "avg1": 0.31,
+          "avg7": 0.3,
+          "avg30": 0.26,
+          "avg-holo": 1.75,
+          "low-holo": 0.02,
+          "trend-holo": 1.28,
+          "avg1-holo": 1.27,
+          "avg7-holo": 1.37,
+          "avg30-holo": 1.65
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 516575,
+            "lowPrice": 0.07,
+            "midPrice": 0.35,
+            "highPrice": 60,
+            "marketPrice": 0.35,
+            "directLowPrice": 0.25
+          },
+          "reverse-holofoil": {
+            "productId": 516575,
+            "lowPrice": 0.35,
+            "midPrice": 1.5,
+            "highPrice": 15.58,
+            "marketPrice": 1.46,
+            "directLowPrice": 1.43
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    113
+  ],
+  "hp": 110,
+  "types": [
+    "Incolor"
+  ],
+  "stage": "Básico",
+  "abilities": [
+    {
+      "type": "Habilidade",
+      "name": "Bônus da Sorte",
+      "effect": "Se você pegou este Pokémon como uma carta de Prêmio virada para baixo durante o seu turno e o seu Banco não estiver cheio, antes de colocá-lo na sua mão, você poderá colocá-lo no seu Banco. Se você colocar este Pokémon no seu Banco desta forma, jogue uma moeda. Se sair cara, pegue 1 carta de Prêmio a mais."
+    }
+  ],
+  "attacks": [
+    {
+      "cost": [
+        "Incolor",
+        "Incolor",
+        "Incolor"
+      ],
+      "name": "Tapinha",
+      "damage": 70
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Lutador",
+      "value": "×2"
+    }
+  ],
+  "retreat": 2,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.816Z",
+      "unit": "EUR",
+      "idProduct": 733708,
+      "avg": 0.24,
+      "low": 0.02,
+      "trend": 0.26,
+      "avg1": 0.31,
+      "avg7": 0.3,
+      "avg30": 0.26,
+      "avg-holo": 1.75,
+      "low-holo": 0.02,
+      "trend-holo": 1.28,
+      "avg1-holo": 1.27,
+      "avg7-holo": 1.37,
+      "avg30-holo": 1.65
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "holofoil": {
+        "productId": 516575,
+        "lowPrice": 0.07,
+        "midPrice": 0.35,
+        "highPrice": 60,
+        "marketPrice": 0.35,
+        "directLowPrice": 0.25
+      },
+      "reverse-holofoil": {
+        "productId": 516575,
+        "lowPrice": 0.35,
+        "midPrice": 1.5,
+        "highPrice": 15.58,
+        "marketPrice": 1.46,
+        "directLowPrice": 1.43
+      }
+    }
+  }
+}

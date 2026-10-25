@@ -1,0 +1,202 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-054",
+  "illustrator": "Taira Akitsu",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/054",
+  "localId": "054",
+  "name": "Psyduck",
+  "rarity": "Comum",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Normal",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733649,
+        "tcgplayer": 516231,
+        "cardtrader": 261144
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.833Z",
+          "unit": "EUR",
+          "idProduct": 733649,
+          "avg": 0.1,
+          "low": 0.02,
+          "trend": 0.1,
+          "avg1": 0.07,
+          "avg7": 0.08,
+          "avg30": 0.1,
+          "avg-holo": 0.32,
+          "low-holo": 0.02,
+          "trend-holo": 0.44,
+          "avg1-holo": 0.47,
+          "avg7-holo": 0.39,
+          "avg30-holo": 0.36
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516231,
+            "lowPrice": 0.15,
+            "midPrice": 0.58,
+            "highPrice": 18.56,
+            "marketPrice": 0.58,
+            "directLowPrice": null
+          },
+          "normal": {
+            "productId": 516231,
+            "lowPrice": 0.03,
+            "midPrice": 0.25,
+            "highPrice": 18.66,
+            "marketPrice": 0.2,
+            "directLowPrice": null
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733649,
+        "tcgplayer": 516231,
+        "cardtrader": 261144
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.833Z",
+          "unit": "EUR",
+          "idProduct": 733649,
+          "avg": 0.1,
+          "low": 0.02,
+          "trend": 0.1,
+          "avg1": 0.07,
+          "avg7": 0.08,
+          "avg30": 0.1,
+          "avg-holo": 0.32,
+          "low-holo": 0.02,
+          "trend-holo": 0.44,
+          "avg1-holo": 0.47,
+          "avg7-holo": 0.39,
+          "avg30-holo": 0.36
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "reverse-holofoil": {
+            "productId": 516231,
+            "lowPrice": 0.15,
+            "midPrice": 0.58,
+            "highPrice": 18.56,
+            "marketPrice": 0.58,
+            "directLowPrice": null
+          },
+          "normal": {
+            "productId": 516231,
+            "lowPrice": 0.03,
+            "midPrice": 0.25,
+            "highPrice": 18.66,
+            "marketPrice": 0.2,
+            "directLowPrice": null
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    54
+  ],
+  "hp": 70,
+  "types": [
+    "Água"
+  ],
+  "stage": "Básico",
+  "attacks": [
+    {
+      "cost": [
+        "Incolor"
+      ],
+      "name": "Fundir a Cuca",
+      "effect": "Durante o próximo turno do seu oponente, sempre que ele jogar uma moeda, trate-a como coroa."
+    },
+    {
+      "cost": [
+        "Água"
+      ],
+      "name": "Revólver d'Água",
+      "damage": 10
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Elétrico",
+      "value": "×2"
+    }
+  ],
+  "retreat": 1,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.833Z",
+      "unit": "EUR",
+      "idProduct": 733649,
+      "avg": 0.1,
+      "low": 0.02,
+      "trend": 0.1,
+      "avg1": 0.07,
+      "avg7": 0.08,
+      "avg30": 0.1,
+      "avg-holo": 0.32,
+      "low-holo": 0.02,
+      "trend-holo": 0.44,
+      "avg1-holo": 0.47,
+      "avg7-holo": 0.39,
+      "avg30-holo": 0.36
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "reverse-holofoil": {
+        "productId": 516231,
+        "lowPrice": 0.15,
+        "midPrice": 0.58,
+        "highPrice": 18.56,
+        "marketPrice": 0.58,
+        "directLowPrice": null
+      },
+      "normal": {
+        "productId": 516231,
+        "lowPrice": 0.03,
+        "midPrice": 0.25,
+        "highPrice": 18.66,
+        "marketPrice": 0.2,
+        "directLowPrice": null
+      }
+    }
+  }
+}

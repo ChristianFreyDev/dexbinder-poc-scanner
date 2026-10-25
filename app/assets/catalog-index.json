@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-22T23:25:07.375Z",
-  "totalRecords": 30,
+  "generatedAt": "2026-10-25T13:13:31.171Z",
+  "totalRecords": 58,
   "removedDigitalOnlyRecords": 1,
   "records": [
     {
@@ -40,6 +40,46 @@
       "dexIds": [],
       "hasImage": true,
       "imageBaseUrl": "https://assets.tcgdex.net/en/me/30th/005"
+    },
+    {
+      "sourceCardId": "SV2a-001",
+      "sourceLanguage": "ja",
+      "sourceFile": "SV2a-001_ja.json",
+      "name": "フシギダネ",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "001",
+      "setId": "SV2a",
+      "setName": "ポケモンカード151",
+      "setPrintedCode": null,
+      "setSerieId": null,
+      "setOfficial": 165,
+      "setTotal": 210,
+      "dexIds": [
+        1
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/ja/SV/SV2a/001"
+    },
+    {
+      "sourceCardId": "SV2a-025",
+      "sourceLanguage": "ja",
+      "sourceFile": "SV2a-025_ja.json",
+      "name": "ピカチュウ",
+      "category": "Pokemon",
+      "rarity": "Common",
+      "localId": "025",
+      "setId": "SV2a",
+      "setName": "ポケモンカード151",
+      "setPrintedCode": null,
+      "setSerieId": null,
+      "setOfficial": 165,
+      "setTotal": 210,
+      "dexIds": [
+        25
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/ja/SV/SV2a/025"
     },
     {
       "sourceCardId": "base1-58",
@@ -305,6 +345,86 @@
       "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/003"
     },
     {
+      "sourceCardId": "sv03.5-004",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-004_pt.json",
+      "name": "Charmander",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "004",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        4
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/004"
+    },
+    {
+      "sourceCardId": "sv03.5-007",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-007_pt.json",
+      "name": "Squirtle",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "007",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        7
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/007"
+    },
+    {
+      "sourceCardId": "sv03.5-012",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-012_pt.json",
+      "name": "Butterfree",
+      "category": "Pokémon",
+      "rarity": "Incomum",
+      "localId": "012",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        12
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/012"
+    },
+    {
+      "sourceCardId": "sv03.5-016",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-016_pt.json",
+      "name": "Pidgey",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "016",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        16
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/016"
+    },
+    {
       "sourceCardId": "sv03.5-025",
       "sourceLanguage": "en",
       "sourceFile": "sv03.5-025_en.json",
@@ -323,6 +443,480 @@
       ],
       "hasImage": true,
       "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/025"
+    },
+    {
+      "sourceCardId": "sv03.5-035",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-035_pt.json",
+      "name": "Clefairy",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "035",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        35
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/035"
+    },
+    {
+      "sourceCardId": "sv03.5-039",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-039_pt.json",
+      "name": "Jigglypuff",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "039",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        39
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/039"
+    },
+    {
+      "sourceCardId": "sv03.5-052",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-052_pt.json",
+      "name": "Meowth",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "052",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        52
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/052"
+    },
+    {
+      "sourceCardId": "sv03.5-054",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-054_pt.json",
+      "name": "Psyduck",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "054",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        54
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/054"
+    },
+    {
+      "sourceCardId": "sv03.5-058",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-058_pt.json",
+      "name": "Growlithe",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "058",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        58
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/058"
+    },
+    {
+      "sourceCardId": "sv03.5-063",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-063_pt.json",
+      "name": "Abra",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "063",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        63
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/063"
+    },
+    {
+      "sourceCardId": "sv03.5-066",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-066_pt.json",
+      "name": "Machop",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "066",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        66
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/066"
+    },
+    {
+      "sourceCardId": "sv03.5-074",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-074_pt.json",
+      "name": "Geodude",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "074",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        74
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/074"
+    },
+    {
+      "sourceCardId": "sv03.5-077",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-077_pt.json",
+      "name": "Ponyta",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "077",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        77
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/077"
+    },
+    {
+      "sourceCardId": "sv03.5-081",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-081_pt.json",
+      "name": "Magnemite",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "081",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        81
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/081"
+    },
+    {
+      "sourceCardId": "sv03.5-092",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-092_pt.json",
+      "name": "Gastly",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "092",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        92
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/092"
+    },
+    {
+      "sourceCardId": "sv03.5-094",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-094_pt.json",
+      "name": "Gengar",
+      "category": "Pokémon",
+      "rarity": "Rara",
+      "localId": "094",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        94
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/094"
+    },
+    {
+      "sourceCardId": "sv03.5-104",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-104_pt.json",
+      "name": "Cubone",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "104",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        104
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/104"
+    },
+    {
+      "sourceCardId": "sv03.5-113",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-113_pt.json",
+      "name": "Chansey",
+      "category": "Pokémon",
+      "rarity": "Rara",
+      "localId": "113",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        113
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/113"
+    },
+    {
+      "sourceCardId": "sv03.5-123",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-123_pt.json",
+      "name": "Scyther",
+      "category": "Pokémon",
+      "rarity": "Incomum",
+      "localId": "123",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        123
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/123"
+    },
+    {
+      "sourceCardId": "sv03.5-131",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-131_pt.json",
+      "name": "Lapras",
+      "category": "Pokémon",
+      "rarity": "Incomum",
+      "localId": "131",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        131
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/131"
+    },
+    {
+      "sourceCardId": "sv03.5-132",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-132_pt.json",
+      "name": "Ditto",
+      "category": "Pokémon",
+      "rarity": "Rara",
+      "localId": "132",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        132
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/132"
+    },
+    {
+      "sourceCardId": "sv03.5-133",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-133_pt.json",
+      "name": "Eevee",
+      "category": "Pokémon",
+      "rarity": "Comum",
+      "localId": "133",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        133
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/133"
+    },
+    {
+      "sourceCardId": "sv03.5-143",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-143_pt.json",
+      "name": "Snorlax",
+      "category": "Pokémon",
+      "rarity": "Incomum",
+      "localId": "143",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        143
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/143"
+    },
+    {
+      "sourceCardId": "sv03.5-144",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-144_pt.json",
+      "name": "Articuno",
+      "category": "Pokémon",
+      "rarity": "Rara",
+      "localId": "144",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        144
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/144"
+    },
+    {
+      "sourceCardId": "sv03.5-150",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-150_pt.json",
+      "name": "Mewtwo",
+      "category": "Pokémon",
+      "rarity": "Rara",
+      "localId": "150",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [
+        150
+      ],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/150"
+    },
+    {
+      "sourceCardId": "sv03.5-160",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-160_pt.json",
+      "name": "Convite da Érica",
+      "category": "Treinador",
+      "rarity": "Incomum",
+      "localId": "160",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/160"
+    },
+    {
+      "sourceCardId": "sv03.5-161",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-161_pt.json",
+      "name": "Carisma do Giovanni",
+      "category": "Treinador",
+      "rarity": "Incomum",
+      "localId": "161",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/161"
+    },
+    {
+      "sourceCardId": "sv03.5-163",
+      "sourceLanguage": "pt",
+      "sourceFile": "sv03.5-163_pt.json",
+      "name": "Sobras",
+      "category": "Treinador",
+      "rarity": "Incomum",
+      "localId": "163",
+      "setId": "sv03.5",
+      "setName": "151",
+      "setPrintedCode": "MEW",
+      "setSerieId": "sv",
+      "setOfficial": 165,
+      "setTotal": 207,
+      "dexIds": [],
+      "hasImage": true,
+      "imageBaseUrl": "https://assets.tcgdex.net/pt/sv/sv03.5/163"
     },
     {
       "sourceCardId": "sv03.5-165",
@@ -437,46 +1031,6 @@
       "dexIds": [],
       "hasImage": true,
       "imageBaseUrl": "https://assets.tcgdex.net/en/sv/sv03.5/207"
-    },
-    {
-      "sourceCardId": "SV2a-001",
-      "sourceLanguage": "ja",
-      "sourceFile": "SV2a-001_ja.json",
-      "name": "フシギダネ",
-      "category": "Pokemon",
-      "rarity": "Common",
-      "localId": "001",
-      "setId": "SV2a",
-      "setName": "ポケモンカード151",
-      "setPrintedCode": null,
-      "setSerieId": null,
-      "setOfficial": 165,
-      "setTotal": 210,
-      "dexIds": [
-        1
-      ],
-      "hasImage": true,
-      "imageBaseUrl": "https://assets.tcgdex.net/ja/SV/SV2a/001"
-    },
-    {
-      "sourceCardId": "SV2a-025",
-      "sourceLanguage": "ja",
-      "sourceFile": "SV2a-025_ja.json",
-      "name": "ピカチュウ",
-      "category": "Pokemon",
-      "rarity": "Common",
-      "localId": "025",
-      "setId": "SV2a",
-      "setName": "ポケモンカード151",
-      "setPrintedCode": null,
-      "setSerieId": null,
-      "setOfficial": 165,
-      "setTotal": 210,
-      "dexIds": [
-        25
-      ],
-      "hasImage": true,
-      "imageBaseUrl": "https://assets.tcgdex.net/ja/SV/SV2a/025"
     },
     {
       "sourceCardId": "svp-004",

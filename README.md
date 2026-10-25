@@ -69,7 +69,7 @@ Para completar o protocolo formal da especificação (dataset de 60 fotos/30 imp
 
 ## Catálogo completo (base da Entrega 1, rodando automaticamente)
 
-Além do bundle estático de 30 cartas desta PoC, já existe a base real da arquitetura de catálogo completo (ver `reports/decision.md`, seções 11/11.1/11.2): um workflow (`.github/workflows/sync-catalog.yml`) roda de hora em hora, buscando um lote do catálogo completo (todos os sets, todos os idiomas) direto da API do TCGdex, retomando de onde parou a cada execução, e publicando o progresso como assets da Release `catalog-data` deste repositório. Scripts por trás disso:
+Além do bundle estático de 58 cartas desta PoC, já existe a base real da arquitetura de catálogo completo (ver `reports/decision.md`, seções 11/11.1/11.2): um workflow (`.github/workflows/sync-catalog.yml`) roda de hora em hora, buscando um lote do catálogo completo (todos os sets, todos os idiomas) direto da API do TCGdex, retomando de onde parou a cada execução, e publicando o progresso como assets da Release `catalog-data` deste repositório. Scripts por trás disso:
 
 ```bash
 # Gera/atualiza o banco SQLite do catálogo completo (dist/catalog/catalog.db)
@@ -117,6 +117,7 @@ src/storage/catalogIndex.js      # índice local em SQLite (expo-sqlite) — bas
 scripts/run-catalog-audit.js     # roda a auditoria real do catálogo (ver reports/catalog-audit.md)
 scripts/build-series-map.js      # consulta real a /series e /series/{id}; gera o mapa set->série
 scripts/export-index-bundle.js   # gera app/assets/catalog-index.json (fixtures + filtro tcgp) — só para esta PoC
+scripts/add-more-151-cards.js    # busca mais fixtures reais do set "151" (sv03.5), pra ampliar o bundle de teste
 scripts/sync-full-catalog.js     # gera/atualiza o banco SQLite do catálogo completo (todos os sets/idiomas), retomável em lotes
 scripts/build-thumbnails.js      # gera miniaturas pequenas pré-empacotadas a partir do banco acima (amostra manual, arquivos soltos)
 scripts/sync-thumbnails.js       # versão resumível/automatizável do mesmo processo (BLOBs num único banco), usada pelo workflow
@@ -125,7 +126,7 @@ scripts/run-catalog-sync-tests.js # 4 testes reais da lógica de decisão de sin
 scripts/maybe-slow-down-cron.js  # reduz sozinho o cron do sync-catalog.yml quando o catálogo completa (chamado pelo próprio workflow)
 scripts/run-cron-switch-tests.js # 4 testes reais da lógica acima (src/automation/cronSwitch.js)
 scripts/check-jsx-syntax.js      # valida sintaxe JSX real com @babel/parser
-fixtures/cards/*.json            # 31 respostas REAIS da API TCGdex, salvas pela auditoria
+fixtures/cards/*.json            # 59 respostas REAIS da API TCGdex (31 da auditoria original + 28 do set 151, ver scripts/add-more-151-cards.js)
 fixtures/catalog/set-series-map.json  # mapa real set->série (220 sets, 21 séries)
 reports/catalog-audit.md         # relatório da PoC A (catálogo) — achados reais, com evidência
 reports/decision.md              # relatório final — PoC A + PoC B, GO/GO COM LIMITAÇÕES/NÃO EXECUTADO

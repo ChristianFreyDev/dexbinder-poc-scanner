@@ -1,0 +1,173 @@
+{
+  "category": "Treinador",
+  "id": "sv03.5-161",
+  "illustrator": "hncl",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/161",
+  "localId": "161",
+  "name": "Carisma do Giovanni",
+  "rarity": "Incomum",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Normal",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733756,
+        "tcgplayer": 516723,
+        "cardtrader": 261174
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.827Z",
+          "unit": "EUR",
+          "idProduct": 733756,
+          "avg": 0.08,
+          "low": 0.02,
+          "trend": 0.1,
+          "avg1": 0.16,
+          "avg7": 0.08,
+          "avg30": 0.09,
+          "avg-holo": 1.27,
+          "low-holo": 0.02,
+          "trend-holo": 1.11,
+          "avg1-holo": 1.25,
+          "avg7-holo": 1.14,
+          "avg30-holo": 1.29
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 516723,
+            "lowPrice": 0.01,
+            "midPrice": 0.21,
+            "highPrice": 18.84,
+            "marketPrice": 0.21,
+            "directLowPrice": 0.01
+          },
+          "reverse-holofoil": {
+            "productId": 516723,
+            "lowPrice": 0.5,
+            "midPrice": 1.08,
+            "highPrice": 25,
+            "marketPrice": 0.98,
+            "directLowPrice": 1.02
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733756,
+        "tcgplayer": 516723,
+        "cardtrader": 261174
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.827Z",
+          "unit": "EUR",
+          "idProduct": 733756,
+          "avg": 0.08,
+          "low": 0.02,
+          "trend": 0.1,
+          "avg1": 0.16,
+          "avg7": 0.08,
+          "avg30": 0.09,
+          "avg-holo": 1.27,
+          "low-holo": 0.02,
+          "trend-holo": 1.11,
+          "avg1-holo": 1.25,
+          "avg7-holo": 1.14,
+          "avg30-holo": 1.29
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 516723,
+            "lowPrice": 0.01,
+            "midPrice": 0.21,
+            "highPrice": 18.84,
+            "marketPrice": 0.21,
+            "directLowPrice": 0.01
+          },
+          "reverse-holofoil": {
+            "productId": 516723,
+            "lowPrice": 0.5,
+            "midPrice": 1.08,
+            "highPrice": 25,
+            "marketPrice": 0.98,
+            "directLowPrice": 1.02
+          }
+        }
+      }
+    }
+  ],
+  "effect": "Coloque uma Energia ligada ao Pokémon Ativo do seu oponente na mão dele. Se fizer isto, ligue uma carta de Energia da sua mão ao seu Pokémon Ativo.",
+  "trainerType": "Apoiador",
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.827Z",
+      "unit": "EUR",
+      "idProduct": 733756,
+      "avg": 0.08,
+      "low": 0.02,
+      "trend": 0.1,
+      "avg1": 0.16,
+      "avg7": 0.08,
+      "avg30": 0.09,
+      "avg-holo": 1.27,
+      "low-holo": 0.02,
+      "trend-holo": 1.11,
+      "avg1-holo": 1.25,
+      "avg7-holo": 1.14,
+      "avg30-holo": 1.29
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "normal": {
+        "productId": 516723,
+        "lowPrice": 0.01,
+        "midPrice": 0.21,
+        "highPrice": 18.84,
+        "marketPrice": 0.21,
+        "directLowPrice": 0.01
+      },
+      "reverse-holofoil": {
+        "productId": 516723,
+        "lowPrice": 0.5,
+        "midPrice": 1.08,
+        "highPrice": 25,
+        "marketPrice": 0.98,
+        "directLowPrice": 1.02
+      }
+    }
+  }
+}

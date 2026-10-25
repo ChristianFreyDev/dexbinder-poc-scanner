@@ -1,0 +1,241 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-094",
+  "illustrator": "Tomokazu Komiya",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/094",
+  "localId": "094",
+  "name": "Gengar",
+  "rarity": "Rara",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Holo",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733689,
+        "tcgplayer": 516663,
+        "cardtrader": 261231
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733689,
+          "avg": 2.08,
+          "low": 0.1,
+          "trend": 2.67,
+          "avg1": 2.09,
+          "avg7": 3.08,
+          "avg30": 2.44,
+          "avg-holo": 8.97,
+          "low-holo": 2,
+          "trend-holo": 7.98,
+          "avg1-holo": 9.6,
+          "avg7-holo": 8.85,
+          "avg30-holo": 8.55
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 516663,
+            "lowPrice": 1,
+            "midPrice": 3.25,
+            "highPrice": 9999,
+            "marketPrice": 3.26,
+            "directLowPrice": 5.99
+          },
+          "reverse-holofoil": {
+            "productId": 516663,
+            "lowPrice": 5.99,
+            "midPrice": 9,
+            "highPrice": 96.95,
+            "marketPrice": 8.66,
+            "directLowPrice": 8.64
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733689,
+        "tcgplayer": 516663,
+        "cardtrader": 261231
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733689,
+          "avg": 2.08,
+          "low": 0.1,
+          "trend": 2.67,
+          "avg1": 2.09,
+          "avg7": 3.08,
+          "avg30": 2.44,
+          "avg-holo": 8.97,
+          "low-holo": 2,
+          "trend-holo": 7.98,
+          "avg1-holo": 9.6,
+          "avg7-holo": 8.85,
+          "avg30-holo": 8.55
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 516663,
+            "lowPrice": 1,
+            "midPrice": 3.25,
+            "highPrice": 9999,
+            "marketPrice": 3.26,
+            "directLowPrice": 5.99
+          },
+          "reverse-holofoil": {
+            "productId": 516663,
+            "lowPrice": 5.99,
+            "midPrice": 9,
+            "highPrice": 96.95,
+            "marketPrice": 8.66,
+            "directLowPrice": 8.64
+          }
+        }
+      }
+    },
+    {
+      "type": "Holo",
+      "size": "Padrão",
+      "foil": "Galáxia",
+      "thirdParty": {
+        "cardmarket": 861151
+      },
+      "variantId": "677yasikk9iggi3g0o8t",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 861151,
+          "avg": 49.05,
+          "low": 34.95,
+          "trend": 44.03,
+          "avg1": 48,
+          "avg7": 45.59,
+          "avg30": 52.37,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    }
+  ],
+  "dexId": [
+    94
+  ],
+  "hp": 130,
+  "types": [
+    "Psíquico"
+  ],
+  "evolveFrom": "Haunter",
+  "stage": "Estágio 2",
+  "attacks": [
+    {
+      "cost": [
+        "Psíquico"
+      ],
+      "name": "Poltergeist",
+      "effect": "Seu oponente revela a mão dele. Este ataque causa 50 pontos de dano para cada carta de Treinador que encontrar lá.",
+      "damage": "50×"
+    },
+    {
+      "cost": [
+        "Psíquico",
+        "Incolor"
+      ],
+      "name": "Mergulho Oco",
+      "effect": "Coloque 3 contadores de dano nos Pokémon no Banco do seu oponente como desejar.",
+      "damage": 110
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Sombrio",
+      "value": "×2"
+    }
+  ],
+  "resistances": [
+    {
+      "type": "Lutador",
+      "value": "-30"
+    }
+  ],
+  "retreat": 0,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.798Z",
+      "unit": "EUR",
+      "idProduct": 733689,
+      "avg": 2.08,
+      "low": 0.1,
+      "trend": 2.67,
+      "avg1": 2.09,
+      "avg7": 3.08,
+      "avg30": 2.44,
+      "avg-holo": 8.97,
+      "low-holo": 2,
+      "trend-holo": 7.98,
+      "avg1-holo": 9.6,
+      "avg7-holo": 8.85,
+      "avg30-holo": 8.55
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "holofoil": {
+        "productId": 516663,
+        "lowPrice": 1,
+        "midPrice": 3.25,
+        "highPrice": 9999,
+        "marketPrice": 3.26,
+        "directLowPrice": 5.99
+      },
+      "reverse-holofoil": {
+        "productId": 516663,
+        "lowPrice": 5.99,
+        "midPrice": 9,
+        "highPrice": 96.95,
+        "marketPrice": 8.66,
+        "directLowPrice": 8.64
+      }
+    }
+  }
+}

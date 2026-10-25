@@ -1,0 +1,211 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-144",
+  "illustrator": "chibi",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/144",
+  "localId": "144",
+  "name": "Articuno",
+  "rarity": "Rara",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Holo",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733739,
+        "tcgplayer": 516707,
+        "cardtrader": 261225
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.806Z",
+          "unit": "EUR",
+          "idProduct": 733739,
+          "avg": 0.38,
+          "low": 0.04,
+          "trend": 0.37,
+          "avg1": 0.37,
+          "avg7": 0.34,
+          "avg30": 0.38,
+          "avg-holo": 2.21,
+          "low-holo": 0.05,
+          "trend-holo": 1.86,
+          "avg1-holo": 2.09,
+          "avg7-holo": 1.89,
+          "avg30-holo": 2.15
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 516707,
+            "lowPrice": 0.05,
+            "midPrice": 0.35,
+            "highPrice": 17.46,
+            "marketPrice": 0.33,
+            "directLowPrice": 0.25
+          },
+          "reverse-holofoil": {
+            "productId": 516707,
+            "lowPrice": 0.68,
+            "midPrice": 1.34,
+            "highPrice": 15.08,
+            "marketPrice": 1.35,
+            "directLowPrice": null
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733739,
+        "tcgplayer": 516707,
+        "cardtrader": 261225
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.806Z",
+          "unit": "EUR",
+          "idProduct": 733739,
+          "avg": 0.38,
+          "low": 0.04,
+          "trend": 0.37,
+          "avg1": 0.37,
+          "avg7": 0.34,
+          "avg30": 0.38,
+          "avg-holo": 2.21,
+          "low-holo": 0.05,
+          "trend-holo": 1.86,
+          "avg1-holo": 2.09,
+          "avg7-holo": 1.89,
+          "avg30-holo": 2.15
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "holofoil": {
+            "productId": 516707,
+            "lowPrice": 0.05,
+            "midPrice": 0.35,
+            "highPrice": 17.46,
+            "marketPrice": 0.33,
+            "directLowPrice": 0.25
+          },
+          "reverse-holofoil": {
+            "productId": 516707,
+            "lowPrice": 0.68,
+            "midPrice": 1.34,
+            "highPrice": 15.08,
+            "marketPrice": 1.35,
+            "directLowPrice": null
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    144
+  ],
+  "hp": 120,
+  "types": [
+    "Água"
+  ],
+  "stage": "Básico",
+  "abilities": [
+    {
+      "type": "Habilidade",
+      "name": "Gelo à Deriva",
+      "effect": "Se este Pokémon tiver alguma Energia {W} ligada a ele, não terá custo de Recuo."
+    }
+  ],
+  "attacks": [
+    {
+      "cost": [
+        "Água",
+        "Água",
+        "Água"
+      ],
+      "name": "Nevasca",
+      "effect": "Este ataque também causa 10 pontos de dano a cada um dos Pokémon no Banco do seu oponente. (Não aplique Fraqueza e Resistência aos Pokémon no Banco.)",
+      "damage": 110
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Elétrico",
+      "value": "×2"
+    }
+  ],
+  "resistances": [
+    {
+      "type": "Lutador",
+      "value": "-30"
+    }
+  ],
+  "retreat": 2,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.806Z",
+      "unit": "EUR",
+      "idProduct": 733739,
+      "avg": 0.38,
+      "low": 0.04,
+      "trend": 0.37,
+      "avg1": 0.37,
+      "avg7": 0.34,
+      "avg30": 0.38,
+      "avg-holo": 2.21,
+      "low-holo": 0.05,
+      "trend-holo": 1.86,
+      "avg1-holo": 2.09,
+      "avg7-holo": 1.89,
+      "avg30-holo": 2.15
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "holofoil": {
+        "productId": 516707,
+        "lowPrice": 0.05,
+        "midPrice": 0.35,
+        "highPrice": 17.46,
+        "marketPrice": 0.33,
+        "directLowPrice": 0.25
+      },
+      "reverse-holofoil": {
+        "productId": 516707,
+        "lowPrice": 0.68,
+        "midPrice": 1.34,
+        "highPrice": 15.08,
+        "marketPrice": 1.35,
+        "directLowPrice": null
+      }
+    }
+  }
+}

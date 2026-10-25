@@ -1,6 +1,6 @@
 /**
  * Testes automatizados REAIS (node:test) para a lógica de correspondência
- * (parseCardText.js + rankCandidates.js), usando os 31 registros REAIS
+ * (parseCardText.js + rankCandidates.js), usando os 59 registros REAIS
  * coletados pela auditoria de catálogo (fixtures/cards/*.json).
  *
  * IMPORTANTE — o que isto prova e o que NÃO prova:
@@ -29,8 +29,12 @@ const { resolveImageUrl } = require("../src/scanner/resolveImageUrl");
 
 const allRecords = loadFixtureCards();
 
-test("auditoria carregou os 31 registros reais esperados", () => {
-  assert.equal(allRecords.length, 31, "esperado 31 fixtures reais salvas pela auditoria de catálogo");
+test("auditoria carregou os 59 registros reais esperados", () => {
+  // 31 da auditoria original (Entrega 0) + 28 cartas reais do set "151"
+  // (sv03.5, pt) adicionadas depois, a pedido do usuário (24-25/10/2026),
+  // pra cobrir mais números da coleção básica dele (1-165) — ver
+  // scripts/add-more-151-cards.js.
+  assert.equal(allRecords.length, 59, "esperado 59 fixtures reais (31 da auditoria original + 28 do set 151 adicionadas depois)");
 });
 
 function findRecord(sourceCardId, sourceLanguage) {

@@ -1,0 +1,203 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-104",
+  "illustrator": "Shinya Komatsu",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/104",
+  "localId": "104",
+  "name": "Cubone",
+  "rarity": "Comum",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Normal",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733699,
+        "tcgplayer": 516673,
+        "cardtrader": 261628
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.816Z",
+          "unit": "EUR",
+          "idProduct": 733699,
+          "avg": 0.06,
+          "low": 0.02,
+          "trend": 0.07,
+          "avg1": 0.05,
+          "avg7": 0.07,
+          "avg30": 0.06,
+          "avg-holo": 0.25,
+          "low-holo": 0.02,
+          "trend-holo": 0.28,
+          "avg1-holo": 0.28,
+          "avg7-holo": 0.25,
+          "avg30-holo": 0.26
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 516673,
+            "lowPrice": 0.03,
+            "midPrice": 0.22,
+            "highPrice": 20,
+            "marketPrice": 0.21,
+            "directLowPrice": null
+          },
+          "reverse-holofoil": {
+            "productId": 516673,
+            "lowPrice": 0.1,
+            "midPrice": 0.34,
+            "highPrice": 20,
+            "marketPrice": 0.34,
+            "directLowPrice": 0.2
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733699,
+        "tcgplayer": 516673,
+        "cardtrader": 261628
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.816Z",
+          "unit": "EUR",
+          "idProduct": 733699,
+          "avg": 0.06,
+          "low": 0.02,
+          "trend": 0.07,
+          "avg1": 0.05,
+          "avg7": 0.07,
+          "avg30": 0.06,
+          "avg-holo": 0.25,
+          "low-holo": 0.02,
+          "trend-holo": 0.28,
+          "avg1-holo": 0.28,
+          "avg7-holo": 0.25,
+          "avg30-holo": 0.26
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 516673,
+            "lowPrice": 0.03,
+            "midPrice": 0.22,
+            "highPrice": 20,
+            "marketPrice": 0.21,
+            "directLowPrice": null
+          },
+          "reverse-holofoil": {
+            "productId": 516673,
+            "lowPrice": 0.1,
+            "midPrice": 0.34,
+            "highPrice": 20,
+            "marketPrice": 0.34,
+            "directLowPrice": 0.2
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    104
+  ],
+  "hp": 70,
+  "types": [
+    "Lutador"
+  ],
+  "stage": "Básico",
+  "abilities": [
+    {
+      "type": "Habilidade",
+      "name": "Osso Empolgante",
+      "effect": "Enquanto este Pokémon estiver no seu Banco, os ataques usados por seu Marowak causarão 30 pontos de dano a mais ao Pokémon Ativo do seu oponente (antes de aplicar Fraqueza e Resistência)."
+    }
+  ],
+  "attacks": [
+    {
+      "cost": [
+        "Lutador"
+      ],
+      "name": "Batida Dupla",
+      "effect": "Jogue 2 moedas. Este ataque causa 10 pontos de dano para cada cara.",
+      "damage": "10×"
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Planta",
+      "value": "×2"
+    }
+  ],
+  "retreat": 1,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.816Z",
+      "unit": "EUR",
+      "idProduct": 733699,
+      "avg": 0.06,
+      "low": 0.02,
+      "trend": 0.07,
+      "avg1": 0.05,
+      "avg7": 0.07,
+      "avg30": 0.06,
+      "avg-holo": 0.25,
+      "low-holo": 0.02,
+      "trend-holo": 0.28,
+      "avg1-holo": 0.28,
+      "avg7-holo": 0.25,
+      "avg30-holo": 0.26
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "normal": {
+        "productId": 516673,
+        "lowPrice": 0.03,
+        "midPrice": 0.22,
+        "highPrice": 20,
+        "marketPrice": 0.21,
+        "directLowPrice": null
+      },
+      "reverse-holofoil": {
+        "productId": 516673,
+        "lowPrice": 0.1,
+        "midPrice": 0.34,
+        "highPrice": 20,
+        "marketPrice": 0.34,
+        "directLowPrice": 0.2
+      }
+    }
+  }
+}

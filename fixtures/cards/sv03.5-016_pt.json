@@ -1,0 +1,209 @@
+{
+  "category": "Pokémon",
+  "id": "sv03.5-016",
+  "illustrator": "Oswaldo KATO",
+  "image": "https://assets.tcgdex.net/pt/sv/sv03.5/016",
+  "localId": "016",
+  "name": "Pidgey",
+  "rarity": "Comum",
+  "set": {
+    "cardCount": {
+      "official": 165,
+      "total": 207
+    },
+    "id": "sv03.5",
+    "logo": "https://assets.tcgdex.net/pt/sv/sv03.5/logo",
+    "name": "151",
+    "symbol": "https://assets.tcgdex.net/univ/sv/sv03.5/symbol"
+  },
+  "variants": {
+    "firstEdition": false,
+    "holo": false,
+    "normal": true,
+    "reverse": true,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Normal",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733611,
+        "tcgplayer": 502565,
+        "cardtrader": 261139
+      },
+      "variantId": "endfynwn4n10gzq",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733611,
+          "avg": 0.14,
+          "low": 0.02,
+          "trend": 0.08,
+          "avg1": 0.06,
+          "avg7": 0.09,
+          "avg30": 0.08,
+          "avg-holo": 0.28,
+          "low-holo": 0.02,
+          "trend-holo": 0.3,
+          "avg1-holo": 0.16,
+          "avg7-holo": 0.25,
+          "avg30-holo": 0.27
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 502565,
+            "lowPrice": 0.01,
+            "midPrice": 0.23,
+            "highPrice": 19.4,
+            "marketPrice": 0.2,
+            "directLowPrice": 0.01
+          },
+          "reverse-holofoil": {
+            "productId": 502565,
+            "lowPrice": 0.05,
+            "midPrice": 0.35,
+            "highPrice": 19.28,
+            "marketPrice": 0.35,
+            "directLowPrice": 0.24
+          }
+        }
+      }
+    },
+    {
+      "type": "Reverse",
+      "size": "Padrão",
+      "thirdParty": {
+        "cardmarket": 733611,
+        "tcgplayer": 502565,
+        "cardtrader": 261139
+      },
+      "variantId": "cm4kqul3x1bwlz1f",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-24T22:54:32.798Z",
+          "unit": "EUR",
+          "idProduct": 733611,
+          "avg": 0.14,
+          "low": 0.02,
+          "trend": 0.08,
+          "avg1": 0.06,
+          "avg7": 0.09,
+          "avg30": 0.08,
+          "avg-holo": 0.28,
+          "low-holo": 0.02,
+          "trend-holo": 0.3,
+          "avg1-holo": 0.16,
+          "avg7-holo": 0.25,
+          "avg30-holo": 0.27
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-14T22:55:09.651Z",
+          "normal": {
+            "productId": 502565,
+            "lowPrice": 0.01,
+            "midPrice": 0.23,
+            "highPrice": 19.4,
+            "marketPrice": 0.2,
+            "directLowPrice": 0.01
+          },
+          "reverse-holofoil": {
+            "productId": 502565,
+            "lowPrice": 0.05,
+            "midPrice": 0.35,
+            "highPrice": 19.28,
+            "marketPrice": 0.35,
+            "directLowPrice": 0.24
+          }
+        }
+      }
+    }
+  ],
+  "dexId": [
+    16
+  ],
+  "hp": 50,
+  "types": [
+    "Incolor"
+  ],
+  "stage": "Básico",
+  "attacks": [
+    {
+      "cost": [
+        "Incolor"
+      ],
+      "name": "Chamar a Família",
+      "effect": "Procure por até 2 Pokémon Básicos no seu baralho e coloque-os no seu Banco. Em seguida, embaralhe o seu baralho."
+    },
+    {
+      "cost": [
+        "Incolor",
+        "Incolor"
+      ],
+      "name": "Investida",
+      "damage": 20
+    }
+  ],
+  "weaknesses": [
+    {
+      "type": "Elétrico",
+      "value": "×2"
+    }
+  ],
+  "resistances": [
+    {
+      "type": "Lutador",
+      "value": "-30"
+    }
+  ],
+  "retreat": 1,
+  "regulationMark": "G",
+  "legal": {
+    "standard": false,
+    "expanded": true
+  },
+  "updated": "2026-08-14T19:11:56+01:00",
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-24T22:54:32.798Z",
+      "unit": "EUR",
+      "idProduct": 733611,
+      "avg": 0.14,
+      "low": 0.02,
+      "trend": 0.08,
+      "avg1": 0.06,
+      "avg7": 0.09,
+      "avg30": 0.08,
+      "avg-holo": 0.28,
+      "low-holo": 0.02,
+      "trend-holo": 0.3,
+      "avg1-holo": 0.16,
+      "avg7-holo": 0.25,
+      "avg30-holo": 0.27
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-14T22:55:09.651Z",
+      "normal": {
+        "productId": 502565,
+        "lowPrice": 0.01,
+        "midPrice": 0.23,
+        "highPrice": 19.4,
+        "marketPrice": 0.2,
+        "directLowPrice": 0.01
+      },
+      "reverse-holofoil": {
+        "productId": 502565,
+        "lowPrice": 0.05,
+        "midPrice": 0.35,
+        "highPrice": 19.28,
+        "marketPrice": 0.35,
+        "directLowPrice": 0.24
+      }
+    }
+  }
+}
