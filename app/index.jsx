@@ -126,6 +126,14 @@ function CandidateRow({ candidate, onConfirm, onExpandImage }) {
   // o catálogo completo terminar — ver reports/decision.md, seção 11.3).
   // Por ora, só mostra claramente que está carregando em vez de parecer
   // travado.
+  //
+  // Achado real (25/10/2026, regressão própria): usei StyleSheet.
+  // absoluteFillObject (dimensão implícita) na miniatura e a imagem parou
+  // de carregar — EXATAMENTE a mesma classe de bug já documentada no modal
+  // de imagem ampliada desta tela (ver imageModal, abaixo): <Image> com
+  // dimensão implícita/em "%" não renderiza de forma confiável neste RN/
+  // Android. Corrigido com width/height explícitos (mesmos valores de
+  // styles.candidateThumb), igual o modal já fazia.
   const [imageLoading, setImageLoading] = useState(Boolean(thumbUrl));
   return (
     <View style={styles.candidateCard}>
@@ -135,12 +143,18 @@ function CandidateRow({ candidate, onConfirm, onExpandImage }) {
             <View style={styles.candidateThumb}>
               <Image
                 source={{ uri: thumbUrl }}
-                style={StyleSheet.absoluteFillObject}
+                style={{ width: 76, height: 106, borderRadius: 8 }}
                 resizeMode="contain"
                 onLoadEnd={() => setImageLoading(false)}
                 onError={() => setImageLoading(false)}
               />
-              {imageLoading && <ActivityIndicator style={StyleSheet.absoluteFillObject} color={COLORS.primary} size="small" />}
+              {imageLoading && (
+                <ActivityIndicator
+                  style={{ position: "absolute", width: 76, height: 106 }}
+                  color={COLORS.primary}
+                  size="small"
+                />
+              )}
             </View>
           </TouchableOpacity>
         ) : (
