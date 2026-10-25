@@ -17,6 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { catalogRepository } from "../../src/catalog/catalogRepository";
 import { COLORS } from "../theme";
 import { CatalogStatusBanner } from "../components/CatalogStatusBanner";
+import { ScreenHeader } from "../components/ScreenHeader";
 
 export default function HomeScreen() {
   const [status, setStatus] = useState("checking");
@@ -37,9 +38,8 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView edges={["top"]} style={styles.screen}>
-      <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }}>
-        <Text style={styles.title}>DexBinder</Text>
-
+      <ScreenHeader title="DexBinder" />
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 20, gap: 16 }}>
         <CatalogStatusBanner status={status} error={error} manifest={manifest} onRetry={sync} />
 
         <View style={styles.statRow}>
@@ -73,7 +73,6 @@ function StatCard({ label, value, note }) {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: COLORS.bg },
-  title: { color: COLORS.textPrimary, fontSize: 24, fontWeight: "700" },
   statRow: { flexDirection: "row", gap: 12 },
   statCard: {
     flex: 1,

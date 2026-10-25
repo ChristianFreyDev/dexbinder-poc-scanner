@@ -14,6 +14,7 @@ import { useMemo, useState } from "react";
 import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../theme";
+import { ScreenHeader } from "../components/ScreenHeader";
 import nationalDex from "../assets/data/national-dex.json";
 
 export default function PokedexScreen() {
@@ -29,37 +30,38 @@ export default function PokedexScreen() {
 
   return (
     <SafeAreaView edges={["top"]} style={styles.screen}>
-      <Text style={styles.title}>Pokédex Nacional</Text>
-      <Text style={styles.subtitle}>
-        {nationalDex.totalSpecies} espécies · fonte: PokeAPI ({new Date(nationalDex.generatedAt).toLocaleDateString("pt-BR")})
-      </Text>
-      <TextInput
-        value={query}
-        onChangeText={setQuery}
-        placeholder="Buscar por nome ou número"
-        placeholderTextColor={COLORS.textMuted}
-        style={styles.input}
+      <ScreenHeader
+        title="Pokédex Nacional"
+        subtitle={`${nationalDex.totalSpecies} espécies · fonte: PokeAPI (${new Date(nationalDex.generatedAt).toLocaleDateString("pt-BR")})`}
       />
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => String(item.nationalNumber)}
-        renderItem={({ item }) => (
-          <View style={styles.row}>
-            <Text style={styles.rowNumber}>#{String(item.nationalNumber).padStart(4, "0")}</Text>
-            <Text style={styles.rowName}>{item.names.en || item.slug}</Text>
-          </View>
-        )}
-        ListEmptyComponent={<Text style={styles.body}>Nenhuma espécie encontrada.</Text>}
-        style={{ flex: 1 }}
-      />
+      <View style={styles.content}>
+        <TextInput
+          value={query}
+          onChangeText={setQuery}
+          placeholder="Buscar por nome ou número"
+          placeholderTextColor={COLORS.textMuted}
+          style={styles.input}
+        />
+        <FlatList
+          data={filtered}
+          keyExtractor={(item) => String(item.nationalNumber)}
+          renderItem={({ item }) => (
+            <View style={styles.row}>
+              <Text style={styles.rowNumber}>#{String(item.nationalNumber).padStart(4, "0")}</Text>
+              <Text style={styles.rowName}>{item.names.en || item.slug}</Text>
+            </View>
+          )}
+          ListEmptyComponent={<Text style={styles.body}>Nenhuma espécie encontrada.</Text>}
+          style={{ flex: 1 }}
+        />
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: COLORS.bg, padding: 20, gap: 12 },
-  title: { color: COLORS.textPrimary, fontSize: 20, fontWeight: "700" },
-  subtitle: { color: COLORS.textMuted, fontSize: 12 },
+  screen: { flex: 1, backgroundColor: COLORS.bg },
+  content: { flex: 1, paddingHorizontal: 20, paddingBottom: 20, gap: 12 },
   input: {
     borderWidth: 1,
     borderColor: COLORS.border,

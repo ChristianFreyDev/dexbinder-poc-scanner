@@ -46,6 +46,7 @@ import { catalogRepository } from "../src/catalog/catalogRepository";
 import { COLORS } from "./theme";
 import { AppButton, BUTTON_VARIANTS } from "./components/AppButton";
 import { CatalogStatusBanner } from "./components/CatalogStatusBanner";
+import { ScreenHeader } from "./components/ScreenHeader";
 
 /** Botão circular com ícone vetorial (Feather/MaterialIcons), para ações compactas lado a lado. */
 function IconButton({ icon, iconSet: IconSet = Feather, onPress, variant = "outline", accessibilityLabel, size = 52 }) {
@@ -448,7 +449,7 @@ export default function ScannerPocScreen() {
   if (!catalogUsable) {
     return (
       <SafeAreaView edges={["top"]} style={[styles.screen, { alignItems: "center", justifyContent: "center", padding: 24, gap: 16 }]}>
-        <Text style={styles.headerTitle}>DexBinder</Text>
+        <ScreenHeader title="DexBinder" />
         <CatalogStatusBanner status={catalogStatus} error={catalogError} manifest={catalogManifest} onRetry={syncCatalog} />
       </SafeAreaView>
     );
@@ -502,9 +503,7 @@ export default function ScannerPocScreen() {
   return (
     <SafeAreaView edges={["top"]} style={styles.screen}>
       <ScrollView style={{ flex: 1 }}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>DexBinder</Text>
-        </View>
+        <ScreenHeader title="DexBinder" />
 
         {(phase === "ready" || phase === "preview") && (
           <View style={styles.cameraFrame}>
@@ -637,16 +636,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: COLORS.bg,
-  },
-  header: {
-    paddingHorizontal: 16,
-    paddingTop: 18,
-    paddingBottom: 10,
-  },
-  headerTitle: {
-    color: COLORS.textPrimary,
-    fontSize: 22,
-    fontWeight: "700",
   },
   cameraFrame: {
     height: 420,

@@ -16,6 +16,7 @@ const FILES_TO_CHECK = [
   path.join(__dirname, "..", "app", "Navigation.jsx"),
   path.join(__dirname, "..", "app", "components", "AppButton.jsx"),
   path.join(__dirname, "..", "app", "components", "CatalogStatusBanner.jsx"),
+  path.join(__dirname, "..", "app", "components", "ScreenHeader.jsx"),
   path.join(__dirname, "..", "app", "screens", "HomeScreen.jsx"),
   path.join(__dirname, "..", "app", "screens", "FichariosScreen.jsx"),
   path.join(__dirname, "..", "app", "screens", "PokedexScreen.jsx"),
