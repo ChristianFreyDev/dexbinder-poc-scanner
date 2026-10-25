@@ -198,7 +198,12 @@ async function main() {
   const pendingPairs = allTargetPairs.filter(
     (p) => !alreadySynced.has(`${p.setId}::${p.lang}`) && !knownNotFound.has(`${p.setId}::${p.lang}`)
   );
-  const pairsThisRun = args.batch ? pendingPairs.slice(0, args.batch) : pendingPairs;
+  // Achado real (25/10/2026): `args.batch ? ... : ...` tratava `--batch=0`
+  // como "sem limite" (0 é falsy em JS), não como "zero pares nesta
+  // execução" — rodou os 706 pares pendentes inteiros sem querer ao
+  // recalcular o manifesto com `--batch=0`. Corrigido comparando com
+  // `null` explicitamente.
+  const pairsThisRun = args.batch != null ? pendingPairs.slice(0, args.batch) : pendingPairs;
 
   console.log(
     `Alvo total: ${allTargetPairs.length} pares set×idioma. Já sincronizados: ${alreadySynced.size}. ` +
