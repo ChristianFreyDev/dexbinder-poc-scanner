@@ -50,6 +50,7 @@ const { classifyPhysical, isConfirmedPhysical, PHYSICAL, DIGITAL, UNCONFIRMED } 
 const { rankCandidates } = require("../scanner/rankCandidates");
 const { resolveImageUrl } = require("../scanner/resolveImageUrl");
 const { extractCandidateSearchTerms } = require("./scannerCandidateSearch");
+const { preferLanguageOnTie } = require("./candidateOrdering");
 
 // Teto por consulta SQL de pré-filtro — generoso o bastante pra não cortar
 // candidatos legítimos (ex.: número "1" existe em ~220 sets × 5 idiomas),
@@ -223,9 +224,12 @@ class CatalogRepository {
   async getScannerCandidates(parsed, { topN = 5 } = {}) {
     const records = await this.getScannerCandidateRecords(parsed);
     const t0 = Date.now();
-    const result = rankCandidates(parsed, records, { topN });
+    const { candidates, needsManualConfirmation } = rankCandidates(parsed, records, { topN });
     console.log(`[timing] rankCandidates sobre ${records.length} cartas (pré-filtradas): ${Date.now() - t0}ms`);
-    return result;
+    // Pedido real do usuário (25/10/2026): em empate de confiança, prioriza
+    // a impressão em português — rankCandidates() em si fica sem alteração
+    // (reordenação pura aplicada só no resultado final, ver candidateOrdering.js).
+    return { candidates: preferLanguageOnTie(candidates), needsManualConfirmation };
   }
 }
 

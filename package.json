@@ -24,8 +24,9 @@
     "test:national-dex": "node --test scripts/run-national-dex-tests.js",
     "test:path-utils": "node --test scripts/run-path-utils-tests.js",
     "test:scanner-candidate-search": "node --test scripts/run-scanner-candidate-search-tests.js",
+    "test:candidate-ordering": "node --test scripts/run-candidate-ordering-tests.js",
     "check:jsx": "node scripts/check-jsx-syntax.js",
-    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run test:national-dex && npm run test:path-utils && npm run test:scanner-candidate-search && npm run check:jsx"
+    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run test:national-dex && npm run test:path-utils && npm run test:scanner-candidate-search && npm run test:candidate-ordering && npm run check:jsx"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",

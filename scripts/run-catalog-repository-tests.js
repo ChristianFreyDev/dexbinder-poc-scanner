@@ -199,6 +199,36 @@ test("getScannerCandidateRecords: sem número nem nome legível -> cai pro catá
   assert.equal(records.length, 2001); // 2000 ruído + Pikachu, nada filtrado
 });
 
+test("getScannerCandidates: em empate de confiança, português vem primeiro (pedido real do usuário, 25/10/2026)", async () => {
+  const raw = new Database(":memory:");
+  raw.exec(`
+    CREATE TABLE card_index (
+      source_card_id TEXT NOT NULL, source_language TEXT NOT NULL, name TEXT,
+      local_id TEXT, set_id TEXT, set_name TEXT, set_serie_id TEXT,
+      set_official INTEGER, set_total INTEGER, set_printed_code TEXT,
+      has_image INTEGER, image_base_url TEXT,
+      PRIMARY KEY (source_card_id, source_language)
+    );
+  `);
+  const insert = raw.prepare(`INSERT INTO card_index VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`);
+  // Mesma carta, 4 idiomas, dados reais (sv03.5-001) — empate genuíno de
+  // score já documentado em reports/decision.md (nome idêntico em en/pt,
+  // número/total idênticos nos 4). "en" inserido PRIMEIRO de propósito
+  // (mesma ordem real de scripts/sync-full-catalog.js, DEFAULT_LANGS
+  // começando com "en") pra provar que a prioridade por idioma realmente
+  // sobrepõe a ordem de inserção/consulta, não só coincide com ela.
+  insert.run("sv03.5-001", "en", "Bulbasaur", "001", "sv03.5", "151", "sv", 165, 207, "MEW", 1, "https://assets.tcgdex.net/en/sv/sv03.5/001");
+  insert.run("sv03.5-001", "de", "Bisasam", "001", "sv03.5", "151", "sv", 165, 207, "MEW", 1, "https://assets.tcgdex.net/de/sv/sv03.5/001");
+  insert.run("sv03.5-001", "pt", "Bulbasaur", "001", "sv03.5", "151", "sv", 165, 207, "MEW", 1, "https://assets.tcgdex.net/pt/sv/sv03.5/001");
+  insert.run("sv03.5-001", "fr", "Bulbizarre", "001", "sv03.5", "151", "sv", 165, 207, "MEW", 1, "https://assets.tcgdex.net/fr/sv/sv03.5/001");
+
+  const repo = new CatalogRepository();
+  repo._db = wrapDb(raw);
+  const parsed = parseCardText(["Bulbasaur", "001/165"]);
+  const { candidates } = await repo.getScannerCandidates(parsed, { topN: 5 });
+  assert.equal(candidates[0].record.sourceLanguage, "pt");
+});
+
 test("listSets / listLanguages: não filtram por física (são metadados informativos do banco instalado)", async () => {
   const repo = buildRepoWithTestDb();
   const sets = await repo.listSets();
