@@ -16,6 +16,11 @@
  * (ver src/scanner/rotateImage.js) — por isso a foto é devolvida como veio
  * da câmera, e a correção de orientação fica a cargo do botão "Girar"
  * manual na tela de prévia (app/index.jsx).
+ *
+ * `shutterSound: false` (opção real de `CameraPictureOptions`, confirmada em
+ * node_modules/expo-camera — Android nativo via `Options.kt`, default `true`
+ * na lib) desliga o som do obturador ao capturar, pedido real do usuário
+ * (25/10/2026).
  * @param {import('expo-camera').CameraView} cameraRef
  * @param {{ torch?: boolean }} [options]
  */
@@ -28,6 +33,7 @@ async function captureStillPhoto(cameraRef, { torch = false } = {}) {
     base64: false,
     exif: false,
     skipProcessing: false,
+    shutterSound: false,
   });
 
   return {
