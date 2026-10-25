@@ -1,10 +1,15 @@
 /**
- * Ponto de entrada do protótipo isolado (Entrega 0). Este app NÃO usa
- * Expo Router de propósito — é um protótipo descartável de uma única
- * tela (ver especificação, seção 16.6), não a base do aplicativo final.
+ * Ponto de entrada do app. Entrega 1: passou a renderizar a navegação
+ * principal (./app/Navigation.jsx — cinco áreas, especificação seção 4.8)
+ * em vez de ir direto pra tela de scanner. O scanner (Entrega 0, validado
+ * em dispositivo físico) virou o conteúdo da aba "Garimpo", sem alteração
+ * na sua lógica interna — ver app/index.jsx.
+ *
+ * Continua sem Expo Router de propósito (ver app/Navigation.jsx para a
+ * justificativa) — a navegação por abas é construída à mão.
  */
-import ScannerPocScreen from "./app/index";
+import Navigation from "./app/Navigation";
 
 export default function App() {
-  return <ScannerPocScreen />;
+  return <Navigation />;
 }

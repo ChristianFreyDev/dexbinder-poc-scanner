@@ -1,19 +1,23 @@
 /**
- * Tela única do protótipo (Entrega 0 / PoC B): permissão de câmera →
- * captura → prévia com opção de refazer → OCR → candidatos com
- * confirmação manual obrigatória → busca manual sempre disponível.
+ * Tela de scanner — conteúdo da aba "Garimpo" da navegação principal
+ * (especificação da Entrega 1, seção 4.8). Fluxo original da Entrega 0
+ * preservado sem alterações: permissão de câmera → captura → prévia com
+ * opção de refazer → OCR → candidatos com confirmação manual obrigatória
+ * → busca manual sempre disponível. NUNCA grava nada em inventário/
+ * checklist — só identifica e exibe (especificação, seção 4.5).
  *
- * O índice local vem de um bundle único (app/assets/catalog-index.json),
- * gerado por scripts/export-index-bundle.js a partir das fixtures reais
- * da auditoria + do mapa real set->série (já filtra o Pokémon TCG Pocket).
- * Reexecute esse script sempre que as fixtures ou o mapa de séries mudarem.
- *
- * Este arquivo cuida só da lógica e do fluxo. A aparência (cores, botões,
- * cards) fica isolada em COLORS/styles/AppButton logo abaixo, pra não
- * misturar estilo com as regras de negócio nos handlers.
+ * Mudança real da Entrega 1: o índice local deixou de ser o bundle estático
+ * de 58 cartas (app/assets/catalog-index.json, usado só pela Entrega 0) e
+ * passou a vir do catálogo completo sincronizado via
+ * src/catalog/catalogRepository.js — a tela bloqueia o scanner/busca manual
+ * até o catálogo estar "ready" ou "offline_using_local" (nunca finge que
+ * carregou, ver CatalogStatusBanner). COLORS/AppButton foram extraídos pra
+ * app/theme.js e app/components/AppButton.jsx (reutilizados pelas outras
+ * abas); o resto do visual (styles, cards, modais) continua aqui, sem
+ * alteração do que já foi validado em dispositivo físico.
  */
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -30,62 +34,16 @@ import {
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
-import indexBundle from "./assets/catalog-index.json";
 import { captureStillPhoto } from "../src/scanner/cameraCapture";
 import { generateCardCrops } from "../src/scanner/cropImage";
 import { rotateImage } from "../src/scanner/rotateImage";
 import { recognizeCardText } from "../src/scanner/ocrAdapter";
 import { parseCardText } from "../src/scanner/parseCardText";
-import { rankCandidates } from "../src/scanner/rankCandidates";
 import { resolveImageUrl } from "../src/scanner/resolveImageUrl";
-
-const LOCAL_INDEX = indexBundle.records;
-
-const COLORS = {
-  bg: "#0F1115",
-  surface: "#1A1D24",
-  surfaceAlt: "#20242C",
-  border: "#2A2E37",
-  textPrimary: "#F2F3F5",
-  textSecondary: "#9AA1AC",
-  textMuted: "#6B7280",
-  primary: "#3B82F6",
-  warning: "#D97706",
-  warningBg: "rgba(217,119,6,0.14)",
-  warningText: "#F2B872",
-  success: "#16A34A",
-  successBg: "rgba(22,163,74,0.14)",
-  successText: "#6FD79A",
-  dangerBg: "rgba(220,38,38,0.14)",
-  dangerText: "#F29494",
-};
-
-/** Botão customizado único (substitui o <Button> nativo cru em toda a tela). */
-function AppButton({ title, onPress, variant = "primary", compact = false, disabled = false }) {
-  const variantStyle = BUTTON_VARIANTS[variant] || BUTTON_VARIANTS.primary;
-  return (
-    <Pressable
-      onPress={onPress}
-      disabled={disabled}
-      style={({ pressed }) => [
-        styles.button,
-        compact && styles.buttonCompact,
-        { backgroundColor: variantStyle.bg, borderColor: variantStyle.border, borderWidth: variantStyle.border ? 1 : 0 },
-        pressed && !disabled && { opacity: 0.8 },
-        disabled && { opacity: 0.4 },
-      ]}
-    >
-      <Text style={[styles.buttonText, compact && styles.buttonTextCompact, { color: variantStyle.text }]}>{title}</Text>
-    </Pressable>
-  );
-}
-
-const BUTTON_VARIANTS = {
-  primary: { bg: COLORS.primary, text: "#FFFFFF" },
-  outline: { bg: "transparent", border: COLORS.border, text: COLORS.textPrimary },
-  warning: { bg: COLORS.warning, text: "#FFFFFF" },
-  success: { bg: COLORS.success, text: "#FFFFFF" },
-};
+import { catalogRepository } from "../src/catalog/catalogRepository";
+import { COLORS } from "./theme";
+import { AppButton, BUTTON_VARIANTS } from "./components/AppButton";
+import { CatalogStatusBanner } from "./components/CatalogStatusBanner";
 
 /** Botão circular com ícone vetorial (Feather/MaterialIcons), para ações compactas lado a lado. */
 function IconButton({ icon, iconSet: IconSet = Feather, onPress, variant = "outline", accessibilityLabel, size = 52 }) {
@@ -190,6 +148,28 @@ function CandidateRow({ candidate, onConfirm, onExpandImage }) {
 export default function ScannerPocScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
+
+  // Estado real de sincronização do catálogo completo (especificação,
+  // seção 4.2, item 10) — o scanner só fica utilizável depois que o
+  // catálogo estiver "ready" ou "offline_using_local" (há banco local
+  // íntegro utilizável mesmo sem rede). Nunca finge que carregou.
+  const [catalogStatus, setCatalogStatus] = useState("checking");
+  const [catalogError, setCatalogError] = useState(null);
+  const [catalogManifest, setCatalogManifest] = useState(null);
+
+  const syncCatalog = useCallback(async () => {
+    setCatalogError(null);
+    const result = await catalogRepository.ensureReady({ onStatusChange: setCatalogStatus });
+    setCatalogStatus(result.status);
+    setCatalogManifest(result.manifest);
+    setCatalogError(result.error);
+  }, []);
+
+  useEffect(() => {
+    syncCatalog();
+  }, [syncCatalog]);
+
+  const catalogUsable = catalogStatus === "ready" || catalogStatus === "offline_using_local";
   // Achado real: <Image> com width/height em "%" dentro de um container
   // flex centralizado às vezes não renderiza no modal de ampliação
   // (pegadinha conhecida do RN) — usa dimensões em pixel calculadas a
@@ -291,7 +271,7 @@ export default function ScannerPocScreen() {
       const footerBlocks = await recognizeCardText(crops.footerUri, { provider: "rn-mlkit-ocr" }).catch(() => []);
       const textBlocks = [...headerBlocks, ...fullBlocks, ...footerBlocks];
       const parsed = parseCardText(textBlocks);
-      const { candidates, needsManualConfirmation } = rankCandidates(parsed, LOCAL_INDEX, { topN: 5 });
+      const { candidates, needsManualConfirmation } = await catalogRepository.getScannerCandidates(parsed, { topN: 5 });
 
       setOcrResult({ parsed, candidates, needsManualConfirmation });
       setPhase("result");
@@ -302,14 +282,14 @@ export default function ScannerPocScreen() {
     }
   }, [capturedPhoto]);
 
-  const handleManualSearch = useCallback(() => {
+  const handleManualSearch = useCallback(async () => {
     const query = manualQuery.trim();
     if (!query) {
       setManualResult(null);
       return;
     }
     const parsed = parseCardText(query.split(/\n|,/).map((s) => s.trim()).filter(Boolean));
-    const { candidates, needsManualConfirmation } = rankCandidates(parsed, LOCAL_INDEX, { topN: 5 });
+    const { candidates, needsManualConfirmation } = await catalogRepository.getScannerCandidates(parsed, { topN: 5 });
     setManualResult({ parsed, candidates, needsManualConfirmation });
   }, [manualQuery]);
 
@@ -417,6 +397,19 @@ export default function ScannerPocScreen() {
     return (
       <View style={[styles.screen, { alignItems: "center", justifyContent: "center" }]}>
         <ActivityIndicator color={COLORS.primary} />
+      </View>
+    );
+  }
+
+  // Especificação, seção 4.2, item 12: sem catálogo local e sem internet,
+  // mostra mensagem clara — nunca finge que o catálogo carregou. Scanner e
+  // busca manual ficam bloqueados até "ready" ou "offline_using_local"
+  // (banco local íntegro, mesmo sem rede agora).
+  if (!catalogUsable) {
+    return (
+      <View style={[styles.screen, { alignItems: "center", justifyContent: "center", padding: 24, gap: 16 }]}>
+        <Text style={styles.headerTitle}>DexBinder</Text>
+        <CatalogStatusBanner status={catalogStatus} error={catalogError} manifest={catalogManifest} onRetry={syncCatalog} />
       </View>
     );
   }

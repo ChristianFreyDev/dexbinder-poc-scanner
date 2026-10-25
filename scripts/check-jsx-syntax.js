@@ -12,6 +12,14 @@ const { parse } = require("@babel/parser");
 const FILES_TO_CHECK = [
   path.join(__dirname, "..", "App.js"),
   path.join(__dirname, "..", "app", "index.jsx"),
+  path.join(__dirname, "..", "app", "theme.js"),
+  path.join(__dirname, "..", "app", "Navigation.jsx"),
+  path.join(__dirname, "..", "app", "components", "AppButton.jsx"),
+  path.join(__dirname, "..", "app", "components", "CatalogStatusBanner.jsx"),
+  path.join(__dirname, "..", "app", "screens", "HomeScreen.jsx"),
+  path.join(__dirname, "..", "app", "screens", "FichariosScreen.jsx"),
+  path.join(__dirname, "..", "app", "screens", "PokedexScreen.jsx"),
+  path.join(__dirname, "..", "app", "screens", "InventarioScreen.jsx"),
 ];
 
 let hadError = false;
