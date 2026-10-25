@@ -180,6 +180,17 @@ A interface também foi inteiramente redesenhada nesta sessão (tema escuro, bot
 
 **O que isso muda na avaliação:** a linha "OCR processando uma FOTO FÍSICA REAL" da tabela da seção 4 (abaixo) deixa de ser "NÃO EXECUTADO" — há evidência real, qualitativa, de reconhecimento correto em múltiplas cartas físicas distintas. O que **continua** pendente é o protocolo formal da especificação (seção 16.3): fotografar as 30 impressões/60 fotos em todas as condições especificadas (sem sleeve, com sleeve, reflexo/ângulo, tela de monitor) e calcular Top-1/Top-3/mediana/P95 — os testes reais desta sessão cobrem só um subconjunto informal (3 cartas, 1 set, condições de iluminação doméstica normais), não o dataset completo.
 
+### 3.13. Segunda rodada de testes reais em casa (24–25/10/2026) — 20 cartas físicas do set "151", ainda sem a condição adversa
+
+Depois de ampliar o bundle de teste (seção 11.4), o usuário fotografou mais 20 cartas físicas reais da coleção básica dele do set "151" (`sv03.5`, números 1–165), uma foto por carta (condição normal — ainda sem a condição "difícil"/reflexo pedida pelo protocolo formal). Resultado, transcrito dos prints reais da tela "Texto reconhecido (bruto)" do app (ver `scripts/append-ocr-test-round.js` e as 20 novas linhas `EXECUTADO_INFORMAL` em `reports/ocr-test-results.csv`):
+
+- **20/20 cartas identificadas corretamente como candidato #1** — nenhum erro de identificação nesta rodada.
+- 12 com confiança alta (100%, confirmação automática): Gastly, Ponyta, Machop, Abra, Growlithe, Geodude, Jigglypuff, Clefairy, Pikachu (impressão EN), Meowth, Pidgey, Charmander.
+- 5 com a confiança cortada pelo print (não visível, mas nome+número batendo exato): Cubone, Chansey, Magnemite, Butterfree, Squirtle.
+- 3 corretas mas sinalizadas para confirmação manual: Gengar (60%, número lido com ruído: "o91" em vez de "094"), Venusaur ex e Bulbasaur #001 (mesma ambiguidade de nome ruidoso / empate entre idiomas já documentada na seção 3.12 para essas duas cartas específicas).
+
+Continua faltando, pro protocolo formal da seção 16.3: a 2ª foto por carta em condição adversa (reflexo/ângulo/tela), e cartas de outros sets além do "151".
+
 ## 4. O que continua NÃO EXECUTADO (e por que)
 
 | Item | Por quê |

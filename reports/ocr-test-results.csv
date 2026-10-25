@@ -1,5 +1,5 @@
 status_execucao,id_esperado,origem,idioma,condicao_luz,sleeve_reflexo,texto_ocr_bruto,nome_extraido,numero_extraido,expansao_extraido,top1_id,top3_ids,resultado,tempo_captura_a_candidatos_ms,observacoes
-NAO_EXECUTADO,,,,,,,,,,,,,,"O dataset FORMAL da especificação (seção 16.3: mínimo 30 impressões, 60 fotos, todas as condições) ainda não foi preenchido. As 3 linhas EXECUTADO_INFORMAL abaixo são de uma sessão real de testes em casa (22-23/10/2026, celular físico do proprietário, cartas físicas reais) — servem como evidência qualitativa de que o pipeline funciona, mas não substituem o protocolo formal: cobrem só 1 set ('151'), 3 cartas, condição de luz doméstica normal, sem as condições adversas (sleeve/reflexo além do bolso de fichário, tela de monitor). Ver reports/decision.md, seção 3.12, e o runbook da seção 7."
+NAO_EXECUTADO,,,,,,,,,,,,,,"O dataset FORMAL da especificação (seção 16.3: mínimo 30 impressões, 60 fotos, todas as condições) ainda não foi preenchido. As 23 linhas EXECUTADO_INFORMAL abaixo são de duas sessões reais de testes em casa (22-23/10/2026 e 24-25/10/2026, celular físico do proprietário, cartas físicas reais) — servem como evidência qualitativa de que o pipeline funciona, mas não substituem o protocolo formal: cobrem só 1 set ('151'), 23 números de carta diferentes, condição de luz doméstica normal, sem as condições adversas (sleeve/reflexo além do bolso de fichário, tela de monitor) nem a 2ª foto por carta exigida pelo protocolo. Ver reports/decision.md, seção 3.12, e o runbook da seção 7."
 EXECUTADO_INFORMAL,sv03.5-025,coleção física do usuário (carta dentro de bolso plástico de fichário),pt,"luz ambiente de casa, sem flash","sim, dentro de bolso plástico de fichário","GME
 llust. N
 Fraque
@@ -68,3 +68,485 @@ HabilidadeFlOr Jerena
 Evolui de ysaur
 VenusaurX
 340 4","VenusaurX (leitura ruidosa de ""Venusaur ex"")",003/165,"MEW (achado via busca no texto bruto inteiro, não como campo isolado — ver setPrintedCode em catalogFixtures.js)",sv03.5-003 (en) — empatado com sv03.5-003 (pt),"sv03.5-003 (en); sv03.5-003 (pt); sv03.5-003 (xy, nome parcial)","correto, mas confirmação manual necessária — carta certa em 1º lugar (empatada EN/PT, mesma ambiguidade de idioma do caso anterior)",,Teste informal (não é o dataset formal da seção 16.3). Texto bruto transcrito literalmente do OCR real (ver REAL_VENUSAUR_EX_151_OCR_LINES em scripts/run-matching-tests.js).
+EXECUTADO_INFORMAL,sv03.5-104,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"ASICO Cubone
+„7
+BASICO
+Cubone
+N° 0104 Pokémon Solitário Altura: 0,4 m Peso: 6,5 kg
+labilidade) Osso Empolgante
+Enquanto este Pokémon estiver no seu Banco, os ataques
+usados por seu Marowak causarão 30 pontos de dano a
+mais ao Pokémon Ativo do seu oponente (antes de aplicar
+Froqueza e Resistência).
+10x
+Jogue 2 moedas. Este ataque causa 10 pontos de dano para cada cara.
+Fragueza Gx2Resistência
+Must. Shinya Kemalsu
+„70
+Batida Dupla
+GMEW104/165 @
+Recuo
+Este Pokémon usa o crânio de sua falecida mae.
+As vezes, os sonhos de Cubone o fazemn chorar, mas cada lágrima que derrama só o torna mais forte.
+Z023 Pokémon/Nintendo/Creatures/GAME FREAK
+Bust. Shinya Komatu
+GMEW 104/165 e
+As vezes, os sonhos de Cubone o fazem chorar mas cada lágrima que derrama só o torna mais forte.
+2023 Pokémon/Nintendo/Creatures/GAME FREAK",Cubone,104/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-104 (pt),sv03.5-104 (pt),"correto — Top-1 (confiança não visível no print, cortada pelo modal)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-094,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"MN2
+50-30
+do seu oponente como desejar.
+Coloque 3 contadores de dano nos Pokemon no Banco
+Mergulho Oco
+110
+encontrar la
+50 pontos de dano para cada carta de Treinador que
+Seu oponente revela a mao dele. Este ataque causa
+Poltergeist
+50x
+Evoluide Haunter
+CSTÁGIO2
+Gengar
+n130
+BA
+G2023 PokémonNintendo/Creatures/GAME FREAK
+GMEW F o91/ 165
+Must. Nelnal
+correntes intensas desenvolvem espinhos grandes e afiados em suas conchas.
+Cloyster que vivem em mares com
+Fraqueza 4x2
+Resistência
+Recuo
+***",Gengar,o91/165 (leitura ruidosa de 094),MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-094 (pt),"sv03.5-094 (pt); sv03.5-166 (en, 49%)","correto, mas confirmação manual necessária — confiança média (60%), número lido com ruído (""o91"" em vez de ""094"", 4 confundido com 1)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-113,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"Chansey
+PS
+11
+BASICO
+Chansey
+Habilidade Bônus da Sorte
+Fraqua x2
+N° 0113 Pokémon Ovo Altura: 1,1 m Peso: 34,6 ka
+Se você pegou este Pokémon como uma carta de Prêmio
+virada para baixo durante o seu turno eo seu Banco não
+estiver cheio, antes de colocá-lo na sua mão, você poderá
+colocá-lo no seu Banco. Se você colocar este Pokémon no
+seu Banco desta forma, jogue uma moeda. Se sair cara,
+pegue carta de Prêmio a mais.
+lust. Taigo Kayome
+113/16S
+Tapinha
+Reslstência
+1108
+Recuo
+C2021 Pokamon/tintendoCreaturesGAME FREAK
+70
+Este Pokémon gentil bota ovos bastante nutritivos e
+os compartilha comn pessoas ou Pokémon feridos.
+lust. Taigo Koyom
+GMEW
+oNEW 113/16s",Chansey,113/16S (leitura ruidosa de 165),MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-113 (pt),sv03.5-113 (pt),"correto — Top-1 (confiança não visível no print, cortada pelo modal)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-081,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"Fraqu
+Si
+Es
+m
+62023 Pokémon/Nintendo/Crsatures/GAME FREAR
+GMEW o81/165
+Mlust.
+Vulo Morl
+As
+ondaseletromagnéticas
+emitidas
+pelas unidaces
+nas laterais de sua cabeça geram
+antigravidade,
+9que faz com que ele possa thutua.
+Sraqus x2
+Resistêncda
+Recuo
+SI mesmo.
+Este Pokémon também causa 60 pontos de dano a
+Grande Explosão
+60
+Carga Pequenina
+10
+NO 0081 Pokéon Magnético Altura: 0,3 m Peso: 6,0 kg
+BASICO
+Magnemite
+„604
+63027 Pokemen/Nintendekreatures GAME FREAR
+odo barido",Magnemite,o81/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-081 (pt),sv03.5-081 (pt),"correto — Top-1 (confiança não visível no print, cortada pelo modal)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-092,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"2023
+Pokémon/Nintendo/CreaturevGAME FREAK
+GMEW
+Must. Tomokazu Komiye
+092/165
+eaenvenenando pelapele
+Envolve o
+oponente em seu corpo
+gasos
+entraquecendo sua presa lentamente
+Fraqueza x2
+Resistência -30
+Recuo
+Gás Asfixiante
+20
+N° O092 Pokémon Gás Altura: 1,3 m Peso: 0,1 kg
+BÂSIO
+Gastly
+H50",Gastly,092/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-092 (pt),sv03.5-092 (pt),"correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-077,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"2023
+Pokémon/Nintendo/Creatures/GAME FREAK
+G MEW
+llust. Nurikahe
+077/16S
+abrasadora deste Pokéon misteriosamente
+nao queimará ac ser tocada.
+Se voce foi aceito por Ponyta, a crina
+Fraqueza x2
+Resistência
+Recuo
+Baque
+30
+Compre uma carta.
+Coleta
+N° 0077 Pokémon Cavalo de Fogo Altura: 1,0 m Peso: 30,0 ka
+BASICO
+Ponyta
+„70
+2023 Pokémon/Nintendo/Creatures/GAME FREAK
+CSCaladoras.
+te",Ponyta,077/16S,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-077 (pt),"sv03.5-077 (pt); sv03.5-160 (pt, 49%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-066,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"BASICO
+Machop
+lust. Ryuto Fuse
+N 0066 Pokémon Superpoder Altura: 0,8 m Peso: 19,5 kg
+Fraqueza x2
+Descarte a carta de cima do baralho do seu oponente.
+GMEW P 066/165
+Esmagamento Montanhoso
+Soco
+„70
+Resistência
+Recuo
+2023 Pokémon/Nintendo/Creatures/GAME FREAK
+30
+Sempre cheio de energia, passa o tempo levantando
+pedras. Fazer isso o deixa ainda mais forte.
+lust. Ryula Fuse
+GMEW P
+066/165 @
+pedras. Fazer isso o deixa ainda mais forte.
+2023 Pokémon/NintendoCreatures/GAME FREAK",Machop,066/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-066 (pt),"sv03.5-066 (pt); sv03.5-012 (pt, 30%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-063,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"GMEW
+Sust. Miuhire Arito
+063/165
+2023
+Pokémon/hNintendoCreatures/GAME FREAK
+BOno for, mais distante ele se transpoctara
+Aparentemente, quanto mais protfundo seu
+Abra pode se teletransportar durante o sone
+raqueza x2
+Resistêncda -30
+Recue
+Tiro Psíquico
+20
+N° O063 Pokémon Psi Altura: 0,9 m Peso: 19,5 kg
+BASICO
+Abra
+M50
+2023 Pokemen/Nintendo/reatures/GAME FREAK
+MEWeT o60/165
+Ilust. Kurete Se
+que agemcomo ventosas de sucÇão.
+agarra-se a pedras com seus lábios carnudos,
+Em rios de correntezas fortes, este Pokénon",Abra,063/165 (e leitura ruidosa secundária o60/165),MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-063 (pt),sv03.5-063 (pt),"correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%; app usou a leitura correta do número entre as duas encontradas)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-058,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"lust.
+Fraqu
+OZ023 Pokémon/Nintendo/Creatures/GAME FREAK
+GMEWH o58/165
+lMust. Afsushi Furusawa
+5em medo adversarios maiores e mais fortes.
+Tem uma natureza corajosa e leal e enfrenta
+Fraqueza 6x2 Resistêncda
+Recuo
+oponente.
+Descarte uma Energia 6 do Pokémon Ativo do seu
+Evaporar
+10
+N° O058 Pokémon Filhote Altura: 0,7 m Peso: 19,0 kg
+BASICO
+Growlithe
+80
+wesrS ANE FREAR
+har",Growlithe,o58/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-058 (pt),"sv03.5-058 (pt); sv03.5-052 (pt, 35%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-074,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"Z023 Pokémon/Nintendo/Creatures/GAME FREAK
+G MEWP o74/16S O
+Must. Uta
+Ingremes. Certas pessoas que o veem em
+Usa as suas cduas mãos para escalar penhascOs
+açao resolvem se tornar escaladoras.
+Fraqueza x2
+Resistência
+Recuo
+Soco com Punho
+20
+de aplicar Fraqueza e Resistência).
+receberá 30 pontos de
+dano a menos de ataques (depois
+Durante o próximo turno do seu oponente, este
+Pokémon
+Fortificar
+N° 0074 Pokémon Pedra Altura: 0,4 m Peso: 20,0 ka
+BASIKO
+Geodude
+„80
+884
+n",Geodude,o74/16S,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-074 (pt),"sv03.5-074 (pt); sv03.5-058 (pt, 30%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-039,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"GMEW
+lust. saino misaki
+039/165
+92023 Pokémon/Nintenda/Creatures/GAME FREAK
+fazendo com que os inimigos adormeçam.
+canta uma melodia misteriosa e relaxante,
+Quando seus enormes olhos ficam pesados,
+Fraqueza x2Resistência
+Recuo
+cada cara.
+Jogue 2 moedas. Este ataque causa 20 pontos de dano para
+Pisada
+20x
+baralho.
+e cologue-a na sua mão. Em seguida, embaralhe o seu
+Procure por uma carta de Apoiador no seu baralho,
+revele-a
+Liderar
+N° 0039 Pokémon Balão Altura: 0,5 m Peso: 5,5 kg
+BASIO
+Jigglypuff
+M70%",Jigglypuff,039/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-039 (pt),"sv03.5-039 (pt); sv03.5-131 (pt, 34%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-035,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"so
+M60
+Clefairy
+BÁSICO
+N° 0035 Pokémon Fada Altura: 0,6 m Peso: 7,5 kg
+Convite Lunar
+Procure por até 3 Clefairy no seu baralhoe
+coloque-os
+no seu Banco. Em seguida, embaralhe o seu
+baralho.
+20
+Estalo
+Recuo
+Resistência
+Fraqueza x2
+Emuito popular devido ao seù gritinho e
+comportamento adoráveis. No entanto este
+Pokémon fofinho
+raramente éencnradg,
+2023 Pokémon/tNintendo/Creatures/GAME FREAK
+Bust. ryomo
+uralsuka
+G MEW P o35/165
+BA
+G",Clefairy,o35/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-035 (pt),"sv03.5-035 (pt); sv03.5-165 (en, 49%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-025,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",en,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"Must
+Fraq
+02021 Pokemon/Nintender/Creatures/GAME PREAK
+025/165
+Must. Naoyo Kimua
+energia armazenada nas bolsas emn suas
+bochechas.
+Quando está con raiva,
+descarrega imediatamente a
+Fraqueza Dx2 Reslstênca
+Recuo
+Soco Pikachu
+50
+baralho.
+e ligue-aa este Pokémon. Em seguida, embaralhe
+o seu
+Procure por uma carta de Energia 4 Básica no
+seu baralho
+Carga
+N° 0025 Pokémon Rato Altura: 0,4 m Peso: 6,0 kg
+BASKOO
+Pikachu
+60
+GMEWRl 022/165
+terestreG AME FREAK
+roubara comida em um instantel
+que este Pokémon",Pikachu,025/165 (e leitura ruidosa secundária 022/165),MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-025 (en),"sv03.5-025 (en); sv03.5-144 (pt, 38%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%; app usou a leitura correta do número entre as duas encontradas)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-052,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"BASIO
+Meowth
+„7C
+BÁSICO
+Meowth
+N° O052 Pokémon Arranha Gato Altura: 0,4 m Peso: 42 kg
+Fraqueza x2
+Jogue uma moeda. Se sair cara, mande I dos
+Pokémon no
+Banco do seu oponente para o Campo Ativo.
+lust. Naoki Saito
+Miaujude Aqui
+GMEW 052/165
+Fincar Garras
+Reslstência
+„70
+Recuo
+20
+Tudo o que este Pokémon faz é dormir
+02023 Pokemon/Nintendo/Creatures/GAME FREAK
+durante o dia. A noite, patrulha seu
+território com seus olhos brilhantes.
+lust. Naoki Saito
+GMEW o52/165e
+Tudo o que este Pokémon faz é dormir
+durante o dia. A noite, patrulha seu
+território com seus olhos brilhantes.
+02023 Pokemon/Nintendo/Creatures/GAME FREAK",Meowth,052/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-052 (pt),"sv03.5-052 (pt); sv03.5-001 (de, 34%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-012,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"130
+Butterfree
+STAGO2
+NO 0012 Pokémon Borboleta Altura: 1,1 m Peso: 32,0 ka
+60
+Mande o
+Pokémon Ativo do seu oponente para o Banco.
+(0 seu oponente escolhe o novo Pokémon Ativo.)
+Ataque de Vento
+Voo do Adeus
+Escolha I dos Pokémon no Banco do seu
+oponente. Embaralhe
+aquele Pokémone todas as cartas ligadas a ele
+no baralho
+dele e, em seguida, embaralhe este Pokémone
+todas as cartas
+ligadas a ele no seu baralho. Se o seu
+oponente não tiver
+Pokémon no Banco, este ataque não fará nada.
+Recuo
+Resistência
+Fraqueza x2
+Coleta mel todos os dias. Para transportá-lo até o
+seu ninho, esfrega mel no pelo de suas pernas.
+o12/165
+Wlust. Tika Matsuno
+GMEM
+2023 Pokémon/Nintenda/Creatures/GAME FREAK
+STAC
+Ma
+(0
+Esc
+dele",Butterfree,o12/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-012 (pt),sv03.5-012 (pt),"correto — Top-1 (confiança não visível no print, cortada pelo modal)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-007,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"BASICO
+Squirtle
+H60
+BASICO
+Squirtle
+llust. kantaro
+N° 0007 Pokémon Tartaruguinha Altura: 0,5 m Peso: 9,0 kg
+Fraqueza 42
+Jogue uma moeda. Se sair cara, durante o
+próximo turno
+do seu oponente, previna todo o dano causado a este
+Pokémon por ataques.
+Retirada
+GMEWP 007/165
+Quebra-crânio
+Resistência
+606
+Recuo
+2023 Pokémon/Nintendo/Creatures/GAME FREAK
+20
+Quando este Pokémon sente-se amneaçado, escondes
+dentro do seu casco e lança água pela boca
+lust. kantaro
+GMEW P 007/165
+Quando este Pokémon sente-se ameaçado, escondes
+dentro do seu casco e lança água pela boca
+2023 PokérnonNintenda/Creatures/GAME FREAK",Squirtle,007/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-007 (pt),sv03.5-007 (pt),"correto — Top-1 (confiança não visível no print, cortada pelo modal)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-016,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"no e
+seu
+20
+„50
+Pidgey
+BASISO
+N° 0016 Pokémon Passarinho Altura: 0,3 m Peso: 1,8 kg
+Chamar a Família
+Procure por até 2 Pokémon Básicos no seu
+baralho e
+coloque-os no seu Banco. Em seguida, embaralhe
+o seu
+baralho.
+20
+Investida
+Recuo
+Resdstênca -30
+Fraqueta x2
+épertubado, pode contra-atacar ferozmnente.
+Edócil e prefere evitar conflitos. No entanto,
+quando
+EWn o16/165
+Must. Ouwwaldo KATO
+MEWY
+CreaturesGAME FREAK",Pidgey,o16/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-016 (pt),"sv03.5-016 (pt); sv03.5-001 (pt, 30%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-003,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"AME FREAK
+GWEWn 003/165 a
+Wust, Sbon Graphics
+4Nocauteade, seu sponente pega 2 cartas de Prêmio.
+Quando seu Pokenon @
+Regra dos Pokenan ex
+Sraueax2
+Resistncla
+Recuo
+Envenenado.
+OPokémon Ativo do seu oponente agora está Confuso e
+43Chicotóxico Perigoso
+150
+dos seus Pokémon.
+Campo Ativo, você poderá curar 60 pontos de dano de
+Uma vez durante o seu turno, se este Pokémon estiver no
+Habilidade Flor
+Serena
+Aecehgsau
+VenusaurX340",Venusaur ex,003/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-003 (pt) — empatado com sv03.5-003 (en),"sv03.5-003 (pt); sv03.5-003 (en); sv03.5-143 (pt, 17%)","correto, mas confirmação manual necessária — nome lido com ruído (""VenusaurX340""), mesma ambiguidade de idioma já observada na sessão anterior",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-004,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"2023 Pokémon/Nintendo/Creatures/GAME FREAK
+G MEWn
+Must, GIDORA
+004/16S
+chama apagar sua vida tambem apaga
+Desde o momento em que nasce, uma chana
+queima na ponta da sua cauda. Sea sua
+fraqueza x2
+Resistêncla
+Recue
+Hálito de Fogo Constante 30
+Descarte um Estádio em jogo.
+Destruição Flamejante
+N° 0004 Pokémon Lagarto Altura: 0,6 m Peso: 8,5 kg
+BASIGO
+Charmander
+70
+a sua
+hama
+30",Charmander,004/16S,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-004 (pt),"sv03.5-004 (pt); sv03.5-133 (pt, 33%)","correto — Top-1 automático, sem necessidade de confirmação manual (confiança alta, 100%)",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
+EXECUTADO_INFORMAL,sv03.5-001,"coleção física do usuário (fichário, coleção básica do set 151, impressões 1-165)",pt,não especificada pelo usuário nesta rodada,não especificado — presumivelmente condição normal (não a condição difícil do protocolo),"GMEW P
+llust. Yuu
+Fraqueza
+Cure
+2023 Pokémon/Nintendo/Creatures/GAME FREAK
+GMEWPI 001/165
+llust. Yuu Nishida
+armazenados na semente emn suas costas para
+cresCe
+Durante sua
+juventude, usa os nutrientes
+Fraqueza x2
+Resistência
+Recuo
+Cure 20 pontos de dano deste Pokémon.
+Semente Sanguessuga
+20
+N° O001 Pokémon Semente Altura: 0,7 m Peso: 6,9 kg
+8ASIO
+Bulbasaur
+„70",Bulbasaur,GMEWPI 001/165,MEW (achado via busca no texto bruto inteiro — ver setPrintedCode em catalogFixtures.js),sv03.5-001 (en) — empatado com sv03.5-001 (de),"sv03.5-001 (en); sv03.5-001 (de, 75%); sv03.5-166 (en, 60%)","correto, mas confirmação manual necessária — empate entre impressões de idiomas diferentes (en/de/pt/fr todos indexados), mesmo achado documentado na sessão anterior para esta carta",,"Rodada real no celular físico (24-25/10/2026), 1 foto por carta (condição normal/boa) — ainda falta a condição difícil (reflexo/ângulo/tela) por carta, pedida pelo protocolo formal da seção 16.3. Texto bruto transcrito literalmente do print da tela ""Texto reconhecido (bruto)"" enviado pelo usuário."
