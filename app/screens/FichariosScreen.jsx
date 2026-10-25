@@ -5,17 +5,18 @@
  * checklist é explicitamente FORA do escopo desta entrega (seção 8).
  */
 import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../theme";
 
 export default function FichariosScreen() {
   return (
-    <View style={styles.screen}>
+    <SafeAreaView edges={["top"]} style={styles.screen}>
       <Text style={styles.title}>Fichários</Text>
       <Text style={styles.body}>
         Você ainda não tem fichários. Criar e gerenciar fichários (Pokédex Nacional, Escarlate e Violeta — 151,
         coleções personalizadas) é um recurso das próximas entregas.
       </Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

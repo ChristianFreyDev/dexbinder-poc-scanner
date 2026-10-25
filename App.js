@@ -7,9 +7,20 @@
  *
  * Continua sem Expo Router de propósito (ver app/Navigation.jsx para a
  * justificativa) — a navegação por abas é construída à mão.
+ *
+ * `SafeAreaProvider` (react-native-safe-area-context) envolve tudo:
+ * achado real em dispositivo físico (25/10/2026) — título colado na barra
+ * de status e abas coladas na barra de gestos do Android, porque o
+ * `SafeAreaView` do núcleo do React Native (usado antes) está depreciado e
+ * não respeitava as áreas seguras de verdade neste aparelho.
  */
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigation from "./app/Navigation";
 
 export default function App() {
-  return <Navigation />;
+  return (
+    <SafeAreaProvider>
+      <Navigation />
+    </SafeAreaProvider>
+  );
 }

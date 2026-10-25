@@ -34,12 +34,26 @@
  * qualquer pessoa poderia extrair esse token do app). Por isso o repositório
  * foi tornado público nesta sessão (conferido antes: nenhum segredo no
  * histórico do git) — ver reports/decision.md, seção 11.3.
+ *
+ * Achado real EM DISPOSITIVO FÍSICO (25/10/2026): `defaultDatabaseDirectory`
+ * (expo-sqlite) é um PATH CRU de sistema de arquivos (ex.:
+ * "/data/user/0/<pacote>/files/SQLite"), convenção interna do SQLite — não
+ * uma URI `file://`. Passar esse path cru direto pro construtor de `File`/
+ * `Directory` do expo-file-system (que EXIGE uma URI) quebrava de verdade
+ * no Android físico com `java.lang.IllegalArgumentException: URI is not
+ * absolute` ao checar `file.exists`. Corrigido: `DB_DIRECTORY_URI` abaixo é
+ * só pra uso com `File`/`Directory` (prefixo "file://"); `openDatabaseAsync`
+ * continua recebendo `defaultDatabaseDirectory` SEM alteração (é ele quem
+ * espera o path cru, confirmado em expo-sqlite/build/pathUtils.js).
  */
 
-const { File } = require("expo-file-system");
+const { File, Directory } = require("expo-file-system");
 const { defaultDatabaseDirectory, openDatabaseAsync } = require("expo-sqlite");
 const { shouldUpdate } = require("./catalogSyncDecision");
 const { decideInstall } = require("./catalogInstallDecision");
+const { toFileUri } = require("./pathUtils");
+
+const DB_DIRECTORY_URI = toFileUri(defaultDatabaseDirectory);
 
 const GITHUB_OWNER = "ChristianFreyDev";
 const GITHUB_REPO = "dexbinder-poc-scanner";
@@ -75,7 +89,7 @@ function notify(onStatusChange, status, extra) {
 /** Manifesto da última sincronização bem-sucedida NESTE aparelho, ou null se nunca sincronizou. */
 async function getLocalManifest() {
   try {
-    const file = new File(defaultDatabaseDirectory, LOCAL_MANIFEST_NAME);
+    const file = new File(DB_DIRECTORY_URI, LOCAL_MANIFEST_NAME);
     if (!file.exists) return null;
     const text = await file.text();
     return JSON.parse(text);
@@ -87,7 +101,7 @@ async function getLocalManifest() {
 }
 
 async function saveLocalManifest(manifest) {
-  const file = new File(defaultDatabaseDirectory, LOCAL_MANIFEST_NAME);
+  const file = new File(DB_DIRECTORY_URI, LOCAL_MANIFEST_NAME);
   await file.write(JSON.stringify(manifest));
 }
 
@@ -106,7 +120,7 @@ async function fetchRemoteManifest() {
  * verificar se já existe banco de catálogo local válido".)
  */
 function getInstalledCatalogInfo() {
-  const dbFile = new File(defaultDatabaseDirectory, LOCAL_DB_NAME);
+  const dbFile = new File(DB_DIRECTORY_URI, LOCAL_DB_NAME);
   return { installed: dbFile.exists, dbPath: dbFile.exists ? dbFile.uri : null };
 }
 
@@ -148,7 +162,15 @@ async function downloadAndInstallCatalog({ onStatusChange } = {}) {
   const remoteManifest = await fetchRemoteManifest();
 
   notify(onStatusChange, SYNC_STATUS.DOWNLOADING);
-  const tempFile = new File(defaultDatabaseDirectory, TEMP_DB_NAME);
+  // Achado real em dispositivo físico (app novo, 1ª instalação, 25/10/2026):
+  // o diretório "SQLite/" de defaultDatabaseDirectory só é criado de
+  // verdade quando o expo-sqlite abre/cria um banco nele pela 1ª vez — como
+  // o download acontece ANTES de qualquer openDatabaseAsync(), o diretório
+  // ainda não existia, e File.downloadFileAsync() falhava com
+  // "ENOENT: No such file or directory". Garantido aqui, idempotente (não
+  // erra se já existir).
+  new Directory(DB_DIRECTORY_URI).create({ intermediates: true, idempotent: true });
+  const tempFile = new File(DB_DIRECTORY_URI, TEMP_DB_NAME);
   if (tempFile.exists) tempFile.delete();
   await File.downloadFileAsync(DB_URL, tempFile, { idempotent: true });
 
@@ -169,7 +191,7 @@ async function downloadAndInstallCatalog({ onStatusChange } = {}) {
     return { installed: false, manifest: null, reason };
   }
 
-  const destination = new File(defaultDatabaseDirectory, LOCAL_DB_NAME);
+  const destination = new File(DB_DIRECTORY_URI, LOCAL_DB_NAME);
   await tempFile.move(destination, { overwrite: true });
   await saveLocalManifest(remoteManifest);
   return { installed: true, manifest: remoteManifest, reason };

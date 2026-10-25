@@ -32,6 +32,7 @@ import {
   View,
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { captureStillPhoto } from "../src/scanner/cameraCapture";
@@ -395,9 +396,9 @@ export default function ScannerPocScreen() {
 
   if (!permission) {
     return (
-      <View style={[styles.screen, { alignItems: "center", justifyContent: "center" }]}>
+      <SafeAreaView edges={["top"]} style={[styles.screen, { alignItems: "center", justifyContent: "center" }]}>
         <ActivityIndicator color={COLORS.primary} />
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -407,10 +408,10 @@ export default function ScannerPocScreen() {
   // (banco local íntegro, mesmo sem rede agora).
   if (!catalogUsable) {
     return (
-      <View style={[styles.screen, { alignItems: "center", justifyContent: "center", padding: 24, gap: 16 }]}>
+      <SafeAreaView edges={["top"]} style={[styles.screen, { alignItems: "center", justifyContent: "center", padding: 24, gap: 16 }]}>
         <Text style={styles.headerTitle}>DexBinder</Text>
         <CatalogStatusBanner status={catalogStatus} error={catalogError} manifest={catalogManifest} onRetry={syncCatalog} />
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -443,22 +444,24 @@ export default function ScannerPocScreen() {
 
   if (!permission.granted) {
     return (
-      <ScrollView style={styles.screen}>
-        <View style={{ alignItems: "center", justifyContent: "center", padding: 24, gap: 12 }}>
-          <Text style={[styles.bodyText, { textAlign: "center" }]}>
-            Sem acesso à câmera. A busca manual continua disponível abaixo (permissão negada nunca bloqueia a
-            pesquisa manual).
-          </Text>
-          <AppButton title="Permitir câmera" onPress={requestPermission} />
-        </View>
-        {manualSearchBlock}
-        {imageModal}
-      </ScrollView>
+      <SafeAreaView edges={["top"]} style={styles.screen}>
+        <ScrollView>
+          <View style={{ alignItems: "center", justifyContent: "center", padding: 24, gap: 12 }}>
+            <Text style={[styles.bodyText, { textAlign: "center" }]}>
+              Sem acesso à câmera. A busca manual continua disponível abaixo (permissão negada nunca bloqueia a
+              pesquisa manual).
+            </Text>
+            <AppButton title="Permitir câmera" onPress={requestPermission} />
+          </View>
+          {manualSearchBlock}
+          {imageModal}
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView edges={["top"]} style={styles.screen}>
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>DexBinder</Text>
@@ -587,7 +590,7 @@ export default function ScannerPocScreen() {
 
       {imageModal}
       {rawTextModal}
-    </View>
+    </SafeAreaView>
   );
 }
 

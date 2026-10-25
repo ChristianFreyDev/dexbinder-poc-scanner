@@ -6,17 +6,18 @@
  * grava nada aqui ainda (seção 4.5).
  */
 import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../theme";
 
 export default function InventarioScreen() {
   return (
-    <View style={styles.screen}>
+    <SafeAreaView edges={["top"]} style={styles.screen}>
       <Text style={styles.title}>Inventário</Text>
       <Text style={styles.body}>
         Seu inventário está vazio. O scanner (aba Garimpo) já identifica cartas no catálogo completo, mas ainda
         não salva exemplares aqui — isso é um recurso das próximas entregas.
       </Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

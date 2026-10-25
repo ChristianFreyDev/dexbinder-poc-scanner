@@ -13,6 +13,7 @@
  */
 import { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { catalogRepository } from "../../src/catalog/catalogRepository";
 import { COLORS } from "../theme";
 import { CatalogStatusBanner } from "../components/CatalogStatusBanner";
@@ -35,26 +36,28 @@ export default function HomeScreen() {
   }, [sync]);
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={{ padding: 20, gap: 16 }}>
-      <Text style={styles.title}>DexBinder</Text>
+    <SafeAreaView edges={["top"]} style={styles.screen}>
+      <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }}>
+        <Text style={styles.title}>DexBinder</Text>
 
-      <CatalogStatusBanner status={status} error={error} manifest={manifest} onRetry={sync} />
+        <CatalogStatusBanner status={status} error={error} manifest={manifest} onRetry={sync} />
 
-      <View style={styles.statRow}>
-        <StatCard
-          label="Fichários"
-          value="—"
-          note="Ainda não disponível nesta entrega"
-        />
-        <StatCard label="Inventário" value="—" note="Ainda não disponível nesta entrega" />
-      </View>
+        <View style={styles.statRow}>
+          <StatCard
+            label="Fichários"
+            value="—"
+            note="Ainda não disponível nesta entrega"
+          />
+          <StatCard label="Inventário" value="—" note="Ainda não disponível nesta entrega" />
+        </View>
 
-      <Text style={styles.sectionNote}>
-        A Entrega 1 conecta o catálogo completo e a Pokédex Nacional ao scanner (aba Garimpo). Fichários e
-        Inventário completos — com CRUD, posições físicas e checklist — ficam para as próximas entregas (ver
-        reports/delivery-1.md).
-      </Text>
-    </ScrollView>
+        <Text style={styles.sectionNote}>
+          A Entrega 1 conecta o catálogo completo e a Pokédex Nacional ao scanner (aba Garimpo). Fichários e
+          Inventário completos — com CRUD, posições físicas e checklist — ficam para as próximas entregas (ver
+          reports/delivery-1.md).
+        </Text>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

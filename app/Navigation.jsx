@@ -14,7 +14,8 @@
  * essa mesma escolha deliberada de não usar Expo Router neste protótipo.
  */
 import { useState } from "react";
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 
 import { COLORS } from "./theme";
@@ -42,7 +43,7 @@ export default function Navigation() {
       <View style={styles.content}>
         <ActiveComponent />
       </View>
-      <SafeAreaView style={styles.tabBarSafeArea}>
+      <SafeAreaView style={styles.tabBarSafeArea} edges={["bottom"]}>
         <View style={styles.tabBar}>
           {TABS.map((tab) => {
             const isActive = tab.key === active;

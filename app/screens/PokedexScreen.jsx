@@ -12,6 +12,7 @@
  */
 import { useMemo, useState } from "react";
 import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../theme";
 import nationalDex from "../assets/data/national-dex.json";
 
@@ -27,7 +28,7 @@ export default function PokedexScreen() {
   }, [query]);
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView edges={["top"]} style={styles.screen}>
       <Text style={styles.title}>Pokédex Nacional</Text>
       <Text style={styles.subtitle}>
         {nationalDex.totalSpecies} espécies · fonte: PokeAPI ({new Date(nationalDex.generatedAt).toLocaleDateString("pt-BR")})
@@ -51,7 +52,7 @@ export default function PokedexScreen() {
         ListEmptyComponent={<Text style={styles.body}>Nenhuma espécie encontrada.</Text>}
         style={{ flex: 1 }}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
