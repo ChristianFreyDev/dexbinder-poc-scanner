@@ -111,9 +111,33 @@ function ScoreBadge({ score }) {
         : { bg: COLORS.dangerBg, text: COLORS.dangerText };
   return (
     <View style={[styles.badge, { backgroundColor: palette.bg }]}>
-      <Text style={[styles.badgeText, { color: palette.text }]}>confiança {level} · {Math.round(score * 100)}%</Text>
+      <Text style={[styles.badgeText, { color: palette.text }]}>Confiança {level} · {Math.round(score * 100)}%</Text>
     </View>
   );
+}
+
+/**
+ * Só formatação de texto na tela — não mexe nos valores de
+ * src/scanner/rankCandidates.js (já validado, 36 testes), que continua
+ * devolvendo os motivos em minúsculo (ex.: "nome exato").
+ */
+function capitalizeFirst(text) {
+  if (!text) return text;
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/**
+ * Pedido real do usuário (25/10/2026): uma linha separada com código da
+ * expansão impresso na carta (ex.: "MEW" — só confirmado pro set "151" por
+ * ora, ver SET_PRINTED_CODES em catalogFixtures.js) + número/total impresso
+ * (ex.: "061/165"). Nunca inventa o código quando não está confirmado —
+ * só omite esse pedaço da linha.
+ */
+function buildCardCodeLine(record) {
+  const parts = [];
+  if (record.setPrintedCode) parts.push(record.setPrintedCode);
+  if (record.localId) parts.push(record.setTotal ? `${record.localId}/${record.setTotal}` : record.localId);
+  return parts.join(" · ");
 }
 
 function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true, onImageSettled }) {
@@ -188,14 +212,13 @@ function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true
         )}
         <View style={{ flex: 1, gap: 4 }}>
           <Text style={styles.candidateName}>{record.name || "(sem nome)"}</Text>
+          <Text style={styles.candidateSet}>{record.setName || record.setId || "Expansão desconhecida"}</Text>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-            <Text style={styles.candidateMeta}>
-              {record.setName || record.setId} · #{record.localId} ·
-            </Text>
+            <Text style={styles.candidateMeta}>{buildCardCodeLine(record)}</Text>
             <LanguageTag code={record.sourceLanguage} />
           </View>
           <ScoreBadge score={score} />
-          <Text style={styles.candidateReasons}>{reasons.join(" · ")}</Text>
+          <Text style={styles.candidateReasons}>{reasons.map(capitalizeFirst).join(" - ")}</Text>
         </View>
         <AppButton title="Confirmar" variant="outline" compact onPress={() => onConfirm(record)} />
       </View>
@@ -791,6 +814,10 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     fontWeight: "700",
     fontSize: 15,
+  },
+  candidateSet: {
+    color: COLORS.textSecondary,
+    fontSize: 13,
   },
   candidateMeta: {
     color: COLORS.textSecondary,
