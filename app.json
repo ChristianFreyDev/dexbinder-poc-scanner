@@ -20,10 +20,13 @@
       [
         "rn-mlkit-ocr",
         {
-          "ocrModels": ["latin"],
+          "ocrModels": [
+            "latin"
+          ],
           "ocrUseBundled": true
         }
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "eas": {
