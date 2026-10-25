@@ -40,6 +40,7 @@ import { generateCardCrops } from "../src/scanner/cropImage";
 import { rotateImage } from "../src/scanner/rotateImage";
 import { recognizeCardText } from "../src/scanner/ocrAdapter";
 import { parseCardText } from "../src/scanner/parseCardText";
+import { parseManualQuery } from "../src/scanner/parseManualQuery";
 import { resolveImageUrl } from "../src/scanner/resolveImageUrl";
 import { catalogRepository } from "../src/catalog/catalogRepository";
 import { COLORS } from "./theme";
@@ -322,7 +323,12 @@ export default function ScannerPocScreen() {
       setManualResult(null);
       return;
     }
-    const parsed = parseCardText(query.split(/\n|,/).map((s) => s.trim()).filter(Boolean));
+    // Achado real (25/10/2026): busca manual usava parseCardText() (feito
+    // pro texto ruidoso do OCR, que exige prefixo de letra num número
+    // solto pra não confundir com ruído) — buscar só "001" não achava
+    // nada. parseManualQuery() é um parser separado pra texto digitado de
+    // propósito, sem essa exigência (ver src/scanner/parseManualQuery.js).
+    const parsed = parseManualQuery(query);
     const { candidates, needsManualConfirmation } = await catalogRepository.getScannerCandidates(parsed, { topN: 5 });
     setManualResult({ parsed, candidates, needsManualConfirmation });
   }, [manualQuery]);
