@@ -12,6 +12,7 @@
     "build:index-bundle": "node scripts/export-index-bundle.js",
     "sync:full-catalog": "node scripts/sync-full-catalog.js",
     "sync:thumbnails": "node scripts/sync-thumbnails.js",
+    "build:national-dex": "node scripts/build-national-dex.js",
     "test:matching": "node --test scripts/run-matching-tests.js",
     "test:catalog-sync": "node --test scripts/run-catalog-sync-tests.js",
     "test:cron-switch": "node --test scripts/run-cron-switch-tests.js",
@@ -20,8 +21,9 @@
     "test:catalog-row-mapping": "node --test scripts/run-catalog-row-mapping-tests.js",
     "test:catalog-index-query": "node --test scripts/run-catalog-index-query-tests.js",
     "test:catalog-repository": "node --test scripts/run-catalog-repository-tests.js",
+    "test:national-dex": "node --test scripts/run-national-dex-tests.js",
     "check:jsx": "node scripts/check-jsx-syntax.js",
-    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run check:jsx"
+    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run test:national-dex && npm run check:jsx"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
