@@ -116,7 +116,7 @@ function ScoreBadge({ score }) {
   );
 }
 
-function CandidateRow({ candidate, onConfirm, onExpandImage }) {
+function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true, onImageSettled }) {
   const { record, score, reasons } = candidate;
   const thumbUrl = resolveImageUrl(record, "low");
   // Achado real (25/10/2026, medido em dispositivo físico): a miniatura
@@ -137,19 +137,41 @@ function CandidateRow({ candidate, onConfirm, onExpandImage }) {
   // Android. Corrigido com width/height explícitos (mesmos valores de
   // styles.candidateThumb), igual o modal já fazia.
   const [imageLoading, setImageLoading] = useState(Boolean(thumbUrl));
+
+  // Achado real do usuário (25/10/2026): as miniaturas de todas as cartas
+  // começavam a baixar em paralelo assim que a lista aparecia — a imagem
+  // de uma carta mais abaixo (ex.: a 2ª, em inglês) podia terminar de
+  // baixar antes da 1ª, dando a impressão de que a ordem de carregamento
+  // não batia com a ordem exibida. `canLoadImage` (controlado pelo
+  // CandidateList abaixo) só libera o <Image> desta linha depois que a
+  // anterior na lista já terminou (sucesso ou erro) — carrega sempre na
+  // mesma ordem mostrada ao usuário. Carta sem imagem (thumbUrl nulo)
+  // libera a próxima na hora, sem travar a fila esperando algo que nunca
+  // vai carregar.
+  useEffect(() => {
+    if (canLoadImage && !thumbUrl && onImageSettled) onImageSettled();
+  }, [canLoadImage, thumbUrl, onImageSettled]);
+
+  const handleImageSettled = () => {
+    setImageLoading(false);
+    if (onImageSettled) onImageSettled();
+  };
+
   return (
     <View style={styles.candidateCard}>
       <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
         {thumbUrl ? (
           <TouchableOpacity onPress={() => onExpandImage(record)} accessibilityLabel={`Ampliar imagem de ${record.name || "carta"}`}>
             <View style={styles.candidateThumb}>
-              <Image
-                source={{ uri: thumbUrl }}
-                style={{ width: 76, height: 106, borderRadius: 8 }}
-                resizeMode="contain"
-                onLoadEnd={() => setImageLoading(false)}
-                onError={() => setImageLoading(false)}
-              />
+              {canLoadImage && (
+                <Image
+                  source={{ uri: thumbUrl }}
+                  style={{ width: 76, height: 106, borderRadius: 8 }}
+                  resizeMode="contain"
+                  onLoadEnd={handleImageSettled}
+                  onError={handleImageSettled}
+                />
+              )}
               {imageLoading && (
                 <ActivityIndicator
                   style={{ position: "absolute", width: 76, height: 106 }}
@@ -177,6 +199,39 @@ function CandidateRow({ candidate, onConfirm, onExpandImage }) {
         </View>
         <AppButton title="Confirmar" variant="outline" compact onPress={() => onConfirm(record)} />
       </View>
+    </View>
+  );
+}
+
+/**
+ * Lista de candidatos com carregamento de miniatura SEQUENCIAL, na mesma
+ * ordem exibida (ver achado real documentado em CandidateRow acima). Usada
+ * nos dois lugares que listam candidatos (resultado do scanner e da busca
+ * manual) pra garantir o mesmo comportamento nos dois.
+ */
+function CandidateList({ candidates, onConfirm, onExpandImage }) {
+  const [readyIndex, setReadyIndex] = useState(0);
+
+  useEffect(() => {
+    setReadyIndex(0);
+  }, [candidates]);
+
+  const advancePast = useCallback((idx) => {
+    setReadyIndex((current) => (idx === current ? current + 1 : current));
+  }, []);
+
+  return (
+    <View style={{ gap: 10 }}>
+      {candidates.map((c, idx) => (
+        <CandidateRow
+          key={`${c.record.sourceCardId}-${idx}`}
+          candidate={c}
+          onConfirm={onConfirm}
+          onExpandImage={onExpandImage}
+          canLoadImage={idx <= readyIndex}
+          onImageSettled={() => advancePast(idx)}
+        />
+      ))}
     </View>
   );
 }
@@ -469,14 +524,7 @@ export default function ScannerPocScreen() {
       {manualResult && (
         <View style={{ gap: 10 }}>
           {manualResult.candidates.length === 0 && <Text style={styles.bodyText}>Nenhum resultado encontrado no índice local.</Text>}
-          {manualResult.candidates.map((c, idx) => (
-            <CandidateRow
-              key={`${c.record.sourceCardId}-${idx}`}
-              candidate={c}
-              onConfirm={handleConfirmCandidate}
-              onExpandImage={handleExpandImage}
-            />
-          ))}
+          <CandidateList candidates={manualResult.candidates} onConfirm={handleConfirmCandidate} onExpandImage={handleExpandImage} />
         </View>
       )}
     </View>
@@ -557,16 +605,7 @@ export default function ScannerPocScreen() {
               {ocrResult.candidates.length === 0 ? (
                 <Text style={styles.bodyText}>{noneMatchMessage}</Text>
               ) : (
-                <View style={{ gap: 10 }}>
-                  {ocrResult.candidates.map((c, idx) => (
-                    <CandidateRow
-                      key={`${c.record.sourceCardId}-${idx}`}
-                      candidate={c}
-                      onConfirm={handleConfirmCandidate}
-                      onExpandImage={handleExpandImage}
-                    />
-                  ))}
-                </View>
+                <CandidateList candidates={ocrResult.candidates} onConfirm={handleConfirmCandidate} onExpandImage={handleExpandImage} />
               )}
             </View>
           )}
