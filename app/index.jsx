@@ -117,12 +117,31 @@ function ScoreBadge({ score }) {
 function CandidateRow({ candidate, onConfirm, onExpandImage }) {
   const { record, score, reasons } = candidate;
   const thumbUrl = resolveImageUrl(record, "low");
+  // Achado real (25/10/2026, medido em dispositivo físico): a miniatura
+  // "low" do TCGdex pode levar de 3,5 a 34s pra carregar dependendo da
+  // rede do usuário (CDN responde rápido quando testado de outros lugares
+  // — throughput/sinal do lado do cliente, não um bug aqui). O sistema de
+  // miniaturas bem pequenas pré-empacotadas (scripts/sync-thumbnails.js,
+  // ~1KB cada) resolveria isso, mas ainda não está disponível (gated até
+  // o catálogo completo terminar — ver reports/decision.md, seção 11.3).
+  // Por ora, só mostra claramente que está carregando em vez de parecer
+  // travado.
+  const [imageLoading, setImageLoading] = useState(Boolean(thumbUrl));
   return (
     <View style={styles.candidateCard}>
       <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
         {thumbUrl ? (
           <TouchableOpacity onPress={() => onExpandImage(record)} accessibilityLabel={`Ampliar imagem de ${record.name || "carta"}`}>
-            <Image source={{ uri: thumbUrl }} style={styles.candidateThumb} resizeMode="contain" />
+            <View style={styles.candidateThumb}>
+              <Image
+                source={{ uri: thumbUrl }}
+                style={StyleSheet.absoluteFillObject}
+                resizeMode="contain"
+                onLoadEnd={() => setImageLoading(false)}
+                onError={() => setImageLoading(false)}
+              />
+              {imageLoading && <ActivityIndicator style={StyleSheet.absoluteFillObject} color={COLORS.primary} size="small" />}
+            </View>
           </TouchableOpacity>
         ) : (
           <View style={[styles.candidateThumb, styles.candidateThumbPlaceholder]}>
@@ -257,17 +276,7 @@ export default function ScannerPocScreen() {
     setPhase("processing");
     setErrorMessage(null);
     try {
-      // Instrumentação temporária (Entrega 1, 25/10/2026): usuário relatou
-      // lentidão perceptível após ligar o scanner ao catálogo completo
-      // (22 mil+ cartas) que não existia com o bundle de 58 cartas da
-      // Entrega 0. Benchmark em Node mostrou rankCandidates() rodando em
-      // ~76ms sobre o catálogo real — não deveria ser o gargalo sozinho.
-      // Medido aqui, de verdade, no dispositivo físico, pra achar o
-      // gargalo real em vez de adivinhar (ver logs do Metro). Remover
-      // depois de diagnosticado.
-      const tStart = Date.now();
       const crops = await generateCardCrops(capturedPhoto.uri, capturedPhoto);
-      const tCrops = Date.now();
       // Achado real: rodar o OCR só na foto inteira lia mal (ou não lia)
       // o número de coleção, que ocupa uma fração minúscula da imagem.
       // Roda o OCR também nos recortes de cabeçalho/rodapé (ampliados
@@ -280,15 +289,9 @@ export default function ScannerPocScreen() {
       const fullBlocks = await recognizeCardText(crops.fullUri, { provider: "rn-mlkit-ocr" });
       const headerBlocks = await recognizeCardText(crops.headerUri, { provider: "rn-mlkit-ocr" }).catch(() => []);
       const footerBlocks = await recognizeCardText(crops.footerUri, { provider: "rn-mlkit-ocr" }).catch(() => []);
-      const tOcr = Date.now();
       const textBlocks = [...headerBlocks, ...fullBlocks, ...footerBlocks];
       const parsed = parseCardText(textBlocks);
       const { candidates, needsManualConfirmation } = await catalogRepository.getScannerCandidates(parsed, { topN: 5 });
-      const tCandidates = Date.now();
-
-      console.log(
-        `[timing] recorte=${tCrops - tStart}ms ocr(3x)=${tOcr - tCrops}ms candidatos(catálogo)=${tCandidates - tOcr}ms total=${tCandidates - tStart}ms`
-      );
 
       setOcrResult({ parsed, candidates, needsManualConfirmation });
       setPhase("result");

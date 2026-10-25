@@ -2,7 +2,7 @@
 
 **Data:** 25/10/2026
 **Branch/commit inicial (baseline):** `master` @ `aa0e5587bc44a3d64825e5bba442074f901629ac`
-**Commits desta entrega:** `955d2db` → `56f01b8` (6 commits, ver seção 9)
+**Commits desta entrega:** `955d2db` → `faf6ceb` + testes em dispositivo real + correções pós-teste (12 commits, ver seção 9)
 
 ---
 
@@ -78,7 +78,7 @@ catalogUsable (status "ready" ou "offline_using_local")
 
 Pokédex Nacional é independente disso: `scripts/build-national-dex.js` (rodado uma vez, PokeAPI) gera `app/assets/data/national-dex.json`, consumido direto por `app/screens/PokedexScreen.jsx` — sem relação com o catálogo de cartas.
 
-## 3. Achados reais de bugs (3, todos corrigidos)
+## 3. Achados reais de bugs (7, todos corrigidos ou diagnosticados)
 
 ### 3.1. Schema divergente (achado por inspeção, antes de ligar à UI)
 Ver seção 1. `catalogIndex.js` foi reescrito para o schema real; a lógica de mapeamento de linha foi extraída para `src/storage/catalogRowMapping.js` (pura, testada com uma linha REAL do `catalog.db` publicado como fixture).
@@ -100,7 +100,19 @@ Call to function 'FileSystem.downloadFileAsync' has been rejected.
 Corrigido: `new Directory(DB_DIRECTORY_URI).create({ intermediates: true, idempotent: true })` antes do download.
 
 ### 3.4. UI: título colado na barra de status, abas coladas na barra de gestos (reportado pelo usuário, com prints reais)
-`SafeAreaView` do núcleo do React Native está depreciado e não respeitava as áreas seguras no aparelho de teste. **Decisão do usuário** (perguntado explicitamente: correção rápida sem dependência nova vs. solução oficial com rebuild): optou pela solução oficial. Instalado `react-native-safe-area-context` (padrão recomendado pelo próprio aviso de depreciação), aplicado em todas as telas e na barra de abas. Exige APK novo de dev-client (módulo nativo) — build disparado via `.github/workflows/build-android-dev.yml`, run `40210375798` (ver seção 6 para o resultado).
+`SafeAreaView` do núcleo do React Native está depreciado e não respeitava as áreas seguras no aparelho de teste. **Decisão do usuário** (perguntado explicitamente: correção rápida sem dependência nova vs. solução oficial com rebuild): optou pela solução oficial. Instalado `react-native-safe-area-context` (padrão recomendado pelo próprio aviso de depreciação), aplicado em todas as telas e na barra de abas. Exige APK novo de dev-client (módulo nativo) — build disparado via `.github/workflows/build-android-dev.yml`, run `40210375798` (ver seção 6 para o resultado). **Confirmado pelo usuário**: "a distância do cabeçalho e rodapé ficaram ótimas".
+
+### 3.5. "151" ainda não sincronizado + bug real de `--batch=0` (reportado pelo usuário escaneando cartas físicas)
+Usuário testou o scanner com cartas reais do "151" e nenhum candidato correto apareceu. Investigado: `sv03.5`/`SV2a` ainda não tinham sido alcançados pela sincronização automática (posição 181 de 220 sets, só ~399/1100 pares resolvidos) — fila natural, não um bug. Com consentimento do usuário, sincronizado manualmente (mesmo mecanismo do workflow). Durante a correção, achado um bug real em `scripts/sync-full-catalog.js`: `args.batch ? ... : pendingPairs` tratava `--batch=0` como "sem limite" (0 é falsy em JS) em vez de "zero pares" — processou os 706 pares pendentes inteiros sem querer ao tentar só recalcular o manifesto. Interrompido a tempo (commits atômicos por par, nada corrompido), corrigido comparando com `!= null`. Ver `reports/decision.md`, seção 11.5/11.6 para o detalhe completo e os números reais publicados.
+
+### 3.6. Gargalo real de performance: `rankCandidates()` levava 14-20 SEGUNDOS no celular
+Medido de verdade em dispositivo físico (instrumentação temporária com `console.log`, removida depois): `rankCandidates()` rodando sobre as 21.828 cartas do catálogo completo levava 14.464ms/20.036ms/20.457ms no celular (Hermes) contra 76ms no desktop (V8) — ~200-270x mais lento, não só a diferença normal de hardware. SQLite (607ms) e OCR (3 chamadas nativas, ~600ms) não eram o gargalo. Corrigido com um pré-filtro via SQL (`CatalogRepository.getScannerCandidateRecords()`, novo, usa `catalogIndex.searchByNumber`/`searchByName`) ANTES de `rankCandidates()` rodar — que continua **sem nenhuma alteração** na lógica de pontuação. Resultado medido depois, no mesmo celular: ~0,9-1,3s por carta (confirmado pelo usuário: "ficou bem rápido agora. Cerca de 2 segundos").
+
+### 3.7. Miniaturas lentas (3,5-34s cada) — diagnosticado como rede do usuário, não bug de código
+Mesma instrumentação temporária. CDN do TCGdex respondeu em ~1s testada diretamente deste ambiente; usuário confirmou não ser a mesma rede/DNS que já tinha dado problema antes. Padrão de tempos crescentes (3,5s→34,4s) é consistente com banda limitada do lado do usuário, não um bug identificado. Mitigado com um indicador de carregamento na miniatura (antes ficava em branco); o sistema de miniaturas pequenas pré-empacotadas (seção 11.3 de `reports/decision.md`) resolveria de vez, mas continua gated até o catálogo completo de metadados terminar.
+
+### 3.8. UX: ordem de idioma em empate de confiança
+Usuário notou que, em empate de score entre impressões da mesma carta, inglês sempre vinha primeiro (só por ser a 1ª língua processada pela sincronização, não uma escolha deliberada). Corrigido com `src/catalog/candidateOrdering.js` (pura, testada): reordena o resultado final de `rankCandidates()` pra priorizar português só em empate real, sem tocar na lógica de pontuação.
 
 ## 4. Cadastro mestre da Pokédex Nacional
 
@@ -115,21 +127,23 @@ Corrigido: `new Directory(DB_DIRECTORY_URI).create({ intermediates: true, idempo
 
 ```
 $ npm test
-test:matching                 # tests 36, pass 36, fail 0  (Entrega 0, inalterado)
-test:catalog-sync             # tests 4,  pass 4,  fail 0  (shouldUpdate - Entrega 0)
-test:cron-switch              # tests 4,  pass 4,  fail 0  (Entrega 0, inalterado)
-test:physical-classification  # tests 5,  pass 5,  fail 0  (NOVO — inclui caso B2-001/tcgp da especificação)
-test:catalog-install-decision # tests 6,  pass 6,  fail 0  (NOVO — checksum/integridade)
-test:catalog-row-mapping      # tests 6,  pass 6,  fail 0  (NOVO — linha real do catalog.db)
-test:catalog-index-query      # tests 13, pass 13, fail 0  (NOVO — integração real contra SQLite)
-test:catalog-repository       # tests 10, pass 10, fail 0  (NOVO — integração real, física/digital/scanner)
-test:national-dex             # tests 10, pass 10, fail 0  (NOVO — arquivo real gerado, 1025 espécies)
-test:path-utils               # tests 2,  pass 2,  fail 0  (NOVO — trava o bug #3.2)
-check:jsx                       OK: App.js, app/index.jsx, app/theme.js, app/Navigation.jsx,
-                                 app/components/AppButton.jsx, app/components/CatalogStatusBanner.jsx,
-                                 app/screens/{Home,Ficharios,Pokedex,Inventario}Screen.jsx
+test:matching                   # tests 36, pass 36, fail 0  (Entrega 0, inalterado)
+test:catalog-sync               # tests 4,  pass 4,  fail 0  (shouldUpdate - Entrega 0)
+test:cron-switch                # tests 4,  pass 4,  fail 0  (Entrega 0, inalterado)
+test:physical-classification    # tests 5,  pass 5,  fail 0  (inclui caso B2-001/tcgp da especificação)
+test:catalog-install-decision   # tests 6,  pass 6,  fail 0  (checksum/integridade)
+test:catalog-row-mapping        # tests 6,  pass 6,  fail 0  (linha real do catalog.db)
+test:catalog-index-query        # tests 13, pass 13, fail 0  (integração real contra SQLite)
+test:catalog-repository         # tests 14, pass 14, fail 0  (integração real, física/digital/scanner/pré-filtro/idioma)
+test:national-dex               # tests 10, pass 10, fail 0  (arquivo real gerado, 1025 espécies)
+test:path-utils                 # tests 2,  pass 2,  fail 0  (trava o bug #3.2)
+test:scanner-candidate-search   # tests 6,  pass 6,  fail 0  (pré-filtro número/nome, achado de performance #3.6)
+test:candidate-ordering         # tests 7,  pass 7,  fail 0  (prioridade de idioma em empate, achado #3.8)
+check:jsx                         OK: App.js, app/index.jsx, app/theme.js, app/Navigation.jsx,
+                                   app/components/AppButton.jsx, app/components/CatalogStatusBanner.jsx,
+                                   app/screens/{Home,Ficharios,Pokedex,Inventario}Screen.jsx
 
-TOTAL: 96/96 testes + checagem JSX, 0 falhas
+TOTAL: 113/113 testes + checagem JSX, 0 falhas
 ```
 
 **Testes de integração reais (não mocks):** `test:catalog-index-query` e `test:catalog-repository` rodam contra SQLite de verdade (`better-sqlite3` em memória, adaptado pra expor a mesma interface assíncrona do `expo-sqlite` real — `getAllAsync`/`getFirstAsync`), com linhas de fixture reais copiadas do `catalog.db` publicado. `test:catalog-repository` confirma, de ponta a ponta, que uma carta de série `tcgp` (caso de referência `B2-001` da especificação) nunca aparece como física elegível em nenhum método do repositório (`getAllPhysicalRecords`, `searchByName`, `getScannerCandidates`).
@@ -145,11 +159,13 @@ TOTAL: 96/96 testes + checagem JSX, 0 falhas
 | Catálogo completo instalado com sucesso em dispositivo (app novo, com os 3 fixes da seção 3) | ✅ EXECUTADO | Usuário confirmou: catálogo sincronizando no app real, contagem de cartas visível na tela |
 | Atualização automática (checksum novo detectado e baixado de novo) | ✅ EXECUTADO | Contagem no dispositivo subiu de ~11.000 para 13.191 entre duas checagens do usuário — conferido batendo exatamente com o manifesto publicado real no mesmo momento (`totalRecords: 13191`, `generatedAt: 2026-10-25T18:54:13.962Z`) |
 | Título colado na barra de status / abas coladas na barra de gestos | ✅ CORRIGIDO E CONFIRMADO | Usuário confirmou: "a distância do cabeçalho e rodapé ficaram ótimas" |
-| Abertura do app, navegação entre as 5 abas | ✅ EXECUTADO | Prints reais do usuário (Home, com as 5 abas visíveis) |
-| Scanner usando o catálogo completo (não as 58 cartas de teste) | ⏳ NÃO EXECUTADO AINDA | Catálogo instalado e sincronizando; scanner/busca manual ainda não testados pelo usuário |
-| Pesquisa manual no catálogo completo | ⏳ NÃO EXECUTADO AINDA | — |
+| Scanner usando o catálogo completo (não as 58 cartas de teste) | ✅ EXECUTADO | Usuário escaneou cartas reais do "151" (depois do fix 3.5) e o candidato correto apareceu |
+| Performance do scanner (captura → candidatos) | ✅ EXECUTADO, CORRIGIDO | Medido 14-20s real antes do fix 3.6; confirmado pelo usuário depois: "ficou bem rápido agora. Cerca de 2 segundos" |
+| Ordenação por idioma em empate de confiança | ✅ EXECUTADO, CORRIGIDO | Usuário reportou inglês sempre primeiro em empate; corrigido (3.8) e testado (7 testes) |
+| Pesquisa manual no catálogo completo | ⏳ NÃO EXECUTADO AINDA | Scanner (captura) testado; busca manual por texto ainda não |
 | Modo avião após instalar — pesquisa local offline | ⏳ NÃO EXECUTADO AINDA | — |
 | Falha de atualização mantém banco anterior | ⏳ NÃO EXECUTADO (não simulado em dispositivo; lógica testada em Node — seção 5) | — |
+| Carregamento de miniaturas de imagem | ⚠️ LENTO, DIAGNOSTICADO COMO REDE DO USUÁRIO | 3,5-34s por imagem medido; CDN rápida testada daqui; não é bug de código identificado (ver 3.7) — indicador de carregamento adicionado |
 
 **Protocolo formal da câmera (especificação principal, 30 impressões/60 fotos) continua PENDENTE**, como já documentado em `reports/decision.md` e no CSV. Esta entrega não tentou avançar isso — os 23 testes informais reais já registrados (`reports/ocr-test-results.csv`) continuam sendo o tamanho de amostra atual.
 
@@ -158,32 +174,37 @@ TOTAL: 96/96 testes + checagem JSX, 0 falhas
 | Área | Veredito | Observação |
 |---|---|---|
 | Sincronização segura do catálogo (checksum + integridade + instalação atômica) | **GO** | Lógica testada (Node) + confirmada end-to-end em dispositivo físico real: instalação inicial E atualização automática (checksum novo detectado, catálogo cresceu de ~11.000 para 13.191 registros no aparelho, batendo exato com o manifesto publicado) |
-| CatalogRepository / pesquisa local | **GO COM LIMITAÇÕES** | 23 testes de integração reais passando; catálogo completo confirmado instalado no dispositivo; busca manual/scanner ainda não exercidos pelo usuário |
+| CatalogRepository / pesquisa local | **GO** | 27 testes de integração reais (catalog-index-query + catalog-repository, incluindo pré-filtro SQL e prioridade de idioma) + 13 de lógica pura associada; catálogo completo instalado e scanner confirmado em dispositivo real |
 | Filtro física/digital/não-confirmada | **GO** | Testado (caso B2-001 da especificação), inclusive integração completa via CatalogRepository |
 | Cadastro mestre da Pokédex Nacional | **GO COM LIMITAÇÕES** | 1025 espécies reais, validadas, testadas; sem nomes em português (limitação real da fonte, documentada); associação carta→espécie não confiável (documentado, não escondido) |
-| Scanner ligado ao catálogo completo | **NÃO EXECUTADO (verificação em dispositivo)** | Código implementado e revisado; catálogo já instalado no aparelho, falta só o usuário testar a captura/identificação |
+| Scanner ligado ao catálogo completo | **GO** | Confirmado em dispositivo físico real: identifica cartas do "151" corretamente, ~1-2s por carta (depois do fix de performance), ordenação por idioma corrigida |
 | Navegação de 5 áreas / áreas seguras | **GO** | Confirmado em dispositivo real: 5 abas navegáveis, título/abas não colam mais na barra de status/gestos (usuário confirmou após o APK novo) |
+| Carregamento de imagens das miniaturas | **GO COM LIMITAÇÕES** | Lento (3,5-34s) numa rede específica do usuário, diagnosticado como limitação de rede/throughput do lado do cliente, não um bug de código identificado; indicador de carregamento adicionado; sistema de miniaturas leves (seção 11.3 de decision.md) resolveria, ainda não disponível |
 | Protocolo formal de câmera/OCR (especificação principal) | **NÃO EXECUTADO** | Fora do escopo desta entrega — pendência pré-existente, não escondida |
 
 ## 8. Pendências / próximos passos imediatos
 
-1. ~~Confirmar o build `40210375798` e reinstalar o APK no celular do usuário.~~ ✅ Feito — build confirmado (10m22s), APK entregue, instalado, testado.
-2. ~~Testar instalação completa do catálogo com o APK novo.~~ ✅ Confirmado: catálogo sincronizando e atualizando corretamente em dispositivo real (seção 6).
-3. Testar, ainda pendente: scanner (captura + identificação) contra o catálogo completo, busca manual, modo avião.
-4. Protocolo formal de câmera/OCR (30 impressões/60 fotos, especificação principal) continua fora do escopo desta entrega.
+1. ~~Confirmar o build `40210375798` e reinstalar o APK no celular do usuário.~~ ✅ Feito.
+2. ~~Testar instalação completa do catálogo com o APK novo.~~ ✅ Confirmado em dispositivo real.
+3. ~~Testar scanner (captura + identificação) contra o catálogo completo.~~ ✅ Confirmado — achou a carta certa do "151" depois do fix 3.5, em ~1-2s depois do fix de performance (3.6).
+4. Ainda pendente: busca manual (texto) no catálogo completo, modo avião (offline), simular falha de atualização em dispositivo.
+5. `SV2a` (versão japonesa do "151") não está no mapa set→série — nunca será sincronizada automaticamente (achado 11.5 de `decision.md`); não corrigido, fora do escopo imediato (cartas do usuário não são japonesas).
+6. Sistema de miniaturas leves pré-empacotadas continua gated até o catálogo completo de metadados terminar (dias, no ritmo atual) — resolveria o achado 3.7 de vez.
+7. Protocolo formal de câmera/OCR (30 impressões/60 fotos, especificação principal) continua fora do escopo desta entrega.
 
 ## 9. Arquivos alterados nesta entrega
 
-32 arquivos (14.479 inserções, 246 remoções) em 6 commits (`955d2db`..`56f01b8`). Principais:
+~40 arquivos em 12 commits (`955d2db`..`faf6ceb`), incluindo as correções pós-teste em dispositivo físico real (seções 3.5-3.8). Principais:
 
-- **Novo — storage/catálogo:** `src/storage/{catalogInstallDecision,catalogRowMapping,pathUtils,physicalClassification}.js`, `src/catalog/catalogRepository.js`, `src/data/nationalDexValidation.js`
+- **Novo — storage/catálogo:** `src/storage/{catalogInstallDecision,catalogRowMapping,pathUtils,physicalClassification}.js`, `src/catalog/{catalogRepository,scannerCandidateSearch,candidateOrdering}.js`, `src/data/nationalDexValidation.js`
 - **Reescrito — storage/catálogo:** `src/storage/catalogSync.js`, `src/storage/catalogIndex.js`
 - **Novo — Pokédex:** `scripts/build-national-dex.js`, `app/assets/data/national-dex.json`
 - **Novo — navegação/UI:** `app/Navigation.jsx`, `app/theme.js`, `app/components/{AppButton,CatalogStatusBanner}.jsx`, `app/screens/{Home,Ficharios,Pokedex,Inventario}Screen.jsx`
-- **Alterado — scanner:** `app/index.jsx` (catálogo completo + gate de sincronização + safe-area), `App.js` (navegação + SafeAreaProvider)
-- **Novo — testes:** `scripts/run-{physical-classification,catalog-install-decision,catalog-row-mapping,catalog-index-query,catalog-repository,national-dex,path-utils}-tests.js`
+- **Alterado — scanner:** `app/index.jsx` (catálogo completo + gate de sincronização + safe-area + indicador de carregamento de imagem), `App.js` (navegação + SafeAreaProvider)
+- **Novo — testes:** `scripts/run-{physical-classification,catalog-install-decision,catalog-row-mapping,catalog-index-query,catalog-repository,national-dex,path-utils,scanner-candidate-search,candidate-ordering}-tests.js`
+- **Correção:** `scripts/sync-full-catalog.js` (bug real de `--batch=0`, seção 3.5)
 - **Dependências:** `+expo-font`, `+react-native-safe-area-context` (ambas via `npx expo install`, versões corretas do SDK 58)
-- **Docs:** `README.md` (instalação, catálogo inicial/atualização/offline, troubleshooting), `app.json` (plugin `expo-font` auto-adicionado)
+- **Docs:** `README.md` (instalação, catálogo inicial/atualização/offline, troubleshooting), `app.json` (plugin `expo-font` auto-adicionado), `reports/decision.md` (seções 11.5/11.6 com os achados reais pós-teste)
 
 ## 10. Fora do escopo desta entrega (confirmado, não implementado)
 

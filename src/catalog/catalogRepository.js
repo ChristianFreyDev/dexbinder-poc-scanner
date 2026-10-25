@@ -110,20 +110,10 @@ class CatalogRepository {
    * o ranking do scanner e a busca manual (ver nota de performance acima).
    */
   async getAllPhysicalRecords({ forceReload = false } = {}) {
-    if (this._physicalRecordsCache && !forceReload) {
-      console.log("[timing] getAllPhysicalRecords: cache hit, 0ms");
-      return this._physicalRecordsCache;
-    }
-    const t0 = Date.now();
+    if (this._physicalRecordsCache && !forceReload) return this._physicalRecordsCache;
     const db = await this._getDb();
-    const t1 = Date.now();
     const all = await catalogIndex.getAllRecords(db);
-    const t2 = Date.now();
     this._physicalRecordsCache = this._filterPhysical(all);
-    const t3 = Date.now();
-    console.log(
-      `[timing] getAllPhysicalRecords (cache miss): abrirDb=${t1 - t0}ms lerSQLite(${all.length} linhas)=${t2 - t1}ms filtrarFisicas=${t3 - t2}ms`
-    );
     return this._physicalRecordsCache;
   }
 
@@ -223,9 +213,7 @@ class CatalogRepository {
    */
   async getScannerCandidates(parsed, { topN = 5 } = {}) {
     const records = await this.getScannerCandidateRecords(parsed);
-    const t0 = Date.now();
     const { candidates, needsManualConfirmation } = rankCandidates(parsed, records, { topN });
-    console.log(`[timing] rankCandidates sobre ${records.length} cartas (pré-filtradas): ${Date.now() - t0}ms`);
     // Pedido real do usuário (25/10/2026): em empate de confiança, prioriza
     // a impressão em português — rankCandidates() em si fica sem alteração
     // (reordenação pura aplicada só no resultado final, ver candidateOrdering.js).
