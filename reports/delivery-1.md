@@ -135,6 +135,7 @@ Usuário testou a busca manual com "001", "025", "050" e nenhuma achou a carta c
 $ npm test
 test:matching                   # tests 36, pass 36, fail 0  (Entrega 0, inalterado)
 test:catalog-sync               # tests 4,  pass 4,  fail 0  (shouldUpdate - Entrega 0)
+test:catalog-sync-failure-simulation # tests 3, pass 3, fail 0  (simulação Node: falha de checksum/integridade mantém catálogo anterior, achado pendente 6.2/6.3 fechado)
 test:cron-switch                # tests 4,  pass 4,  fail 0  (Entrega 0, inalterado)
 test:physical-classification    # tests 5,  pass 5,  fail 0  (inclui caso B2-001/tcgp da especificação)
 test:catalog-install-decision   # tests 6,  pass 6,  fail 0  (checksum/integridade)
@@ -150,10 +151,12 @@ check:jsx                         OK: App.js, app/index.jsx, app/theme.js, app/N
                                    app/components/AppButton.jsx, app/components/CatalogStatusBanner.jsx,
                                    app/screens/{Home,Ficharios,Pokedex,Inventario}Screen.jsx
 
-TOTAL: 122/122 testes + checagem JSX, 0 falhas
+TOTAL: 125/125 testes + checagem JSX, 0 falhas
 ```
 
 **Testes de integração reais (não mocks):** `test:catalog-index-query` e `test:catalog-repository` rodam contra SQLite de verdade (`better-sqlite3` em memória, adaptado pra expor a mesma interface assíncrona do `expo-sqlite` real — `getAllAsync`/`getFirstAsync`), com linhas de fixture reais copiadas do `catalog.db` publicado. `test:catalog-repository` confirma, de ponta a ponta, que uma carta de série `tcgp` (caso de referência `B2-001` da especificação) nunca aparece como física elegível em nenhum método do repositório (`getAllPhysicalRecords`, `searchByName`, `getScannerCandidates`).
+
+**Simulação da falha de atualização (`test:catalog-sync-failure-simulation`, adicionada após a entrega inicial):** injeta dublês de `expo-file-system`/`expo-sqlite` no `require()` do Node (única borda nativa, já documentada como intestável em Node puro) e executa o código REAL de `src/storage/catalogSync.js` (`downloadAndInstallCatalog`/`ensureCatalogReady`, sem reimplementação) contra um "download" controlado que falha de propósito — uma vez por checksum incompleto/corrompido, outra por integridade SQLite inválida. Confirma que, nos dois casos, o banco e o manifesto já instalados continuam byte-a-byte intactos e `ensureCatalogReady()` retorna `READY` com o catálogo anterior, nunca um erro bloqueante. Um terceiro teste de sanity-check confirma que o mesmo dublê instala normalmente quando checksum e integridade passam (prova que os dois primeiros falham pelo motivo certo). **É uma simulação em Node, não um teste no dispositivo físico real** — ver `scripts/fakeExpoModulesForSyncFailureTest.js`.
 
 ## 6. Testes em dispositivo físico (Android real)
 
@@ -162,6 +165,7 @@ TOTAL: 122/122 testes + checagem JSX, 0 falhas
 | Bundle Metro monta sem erro (906+ módulos) | ✅ EXECUTADO | `curl` real contra `/node_modules/expo/AppEntry.bundle`, HTTP 200, confirmado 4x após cada fix |
 | Conexão real com manifesto público (sem mock) | ✅ EXECUTADO | `fetch` real contra a URL exata usada por `catalogSync.js`, HTTP 200, shape confirmado |
 | Abertura do app, navegação entre as 5 abas | ✅ EXECUTADO | Prints reais do usuário (Home, com as 5 abas visíveis) |
+| Capturas de tela reais salvas como evidência | ✅ EXECUTADO | 3 prints reais do erro de sincronização (antes do fix) salvos em `reports/screenshots/` — ver README lá; não há print do estado já corrigido, só confirmação por texto do usuário (ver seção 8) |
 | Detecção de catálogo ausente + tentativa de sincronizar | ✅ EXECUTADO (revelou bugs 3.2 e 3.3, corrigidos) | Prints reais + logs do Metro em tempo real |
 | Catálogo completo instalado com sucesso em dispositivo (app novo, com os 3 fixes da seção 3) | ✅ EXECUTADO | Usuário confirmou: catálogo sincronizando no app real, contagem de cartas visível na tela |
 | Atualização automática (checksum novo detectado e baixado de novo) | ✅ EXECUTADO | Contagem no dispositivo subiu de ~11.000 para 13.191 entre duas checagens do usuário — conferido batendo exatamente com o manifesto publicado real no mesmo momento (`totalRecords: 13191`, `generatedAt: 2026-10-25T18:54:13.962Z`) |
@@ -171,7 +175,7 @@ TOTAL: 122/122 testes + checagem JSX, 0 falhas
 | Ordenação por idioma em empate de confiança | ✅ EXECUTADO, CORRIGIDO | Usuário reportou inglês sempre primeiro em empate; corrigido (3.8) e testado (7 testes) |
 | Pesquisa manual no catálogo completo | ✅ EXECUTADO, CORRIGIDO | Achado real (3.9): busca por número puro ("001") não achava nada — corrigido com parser dedicado; "025"/"050"/"Bulbasaur 001"/"Marowak 105" confirmados funcionando pelo usuário |
 | Modo avião após instalar — pesquisa local offline | ✅ EXECUTADO | Usuário confirmou: "está bem rápido e preciso" |
-| Falha de atualização mantém banco anterior | ⏳ NÃO EXECUTADO (não simulado em dispositivo; lógica testada em Node — seção 5) | — |
+| Falha de atualização mantém banco anterior | ✅ EXECUTADO EM SIMULAÇÃO NODE (não em dispositivo físico) | `test:catalog-sync-failure-simulation` (3 testes, seção 5) exercita o código real de `catalogSync.js` com dublês da borda nativa; confirma catálogo/manifesto intactos nos 2 cenários de falha |
 | Carregamento de miniaturas de imagem | ⚠️ LENTO, DIAGNOSTICADO COMO REDE DO USUÁRIO | 3,5-34s por imagem medido; CDN rápida testada daqui; não é bug de código identificado (ver 3.7) — indicador de carregamento adicionado (e sua própria regressão real corrigida, ver 3.7b) |
 
 **Protocolo formal da câmera (especificação principal, 30 impressões/60 fotos) continua PENDENTE**, como já documentado em `reports/decision.md` e no CSV. Esta entrega não tentou avançar isso — os 23 testes informais reais já registrados (`reports/ocr-test-results.csv`) continuam sendo o tamanho de amostra atual.
@@ -180,7 +184,7 @@ TOTAL: 122/122 testes + checagem JSX, 0 falhas
 
 | Área | Veredito | Observação |
 |---|---|---|
-| Sincronização segura do catálogo (checksum + integridade + instalação atômica) | **GO** | Lógica testada (Node) + confirmada end-to-end em dispositivo físico real: instalação inicial E atualização automática (checksum novo detectado, catálogo cresceu de ~11.000 para 13.191 registros no aparelho, batendo exato com o manifesto publicado) |
+| Sincronização segura do catálogo (checksum + integridade + instalação atômica) | **GO** | Lógica testada (Node) + confirmada end-to-end em dispositivo físico real: instalação inicial E atualização automática (checksum novo detectado, catálogo cresceu de ~11.000 para 13.191 registros no aparelho, batendo exato com o manifesto publicado); falha de atualização (mantém catálogo anterior) confirmada por simulação Node (não em dispositivo) |
 | CatalogRepository / pesquisa local (scanner + busca manual) | **GO** | 27 testes de integração reais + 22 de lógica pura associada (pré-filtro, idioma, parser de busca manual); catálogo completo, scanner, busca manual e modo offline confirmados em dispositivo real |
 | Filtro física/digital/não-confirmada | **GO** | Testado (caso B2-001 da especificação), inclusive integração completa via CatalogRepository |
 | Cadastro mestre da Pokédex Nacional | **GO COM LIMITAÇÕES** | 1025 espécies reais, validadas, testadas; sem nomes em português (limitação real da fonte, documentada); associação carta→espécie não confiável (documentado, não escondido) |
@@ -195,7 +199,8 @@ TOTAL: 122/122 testes + checagem JSX, 0 falhas
 2. ~~Testar instalação completa do catálogo com o APK novo.~~ ✅ Confirmado em dispositivo real.
 3. ~~Testar scanner (captura + identificação) contra o catálogo completo.~~ ✅ Confirmado — achou a carta certa do "151" depois do fix 3.5, em ~1-2s depois do fix de performance (3.6).
 4. ~~Testar busca manual (texto) e modo avião (offline).~~ ✅ Confirmados — busca manual corrigida (3.9), modo avião "rápido e preciso" (confirmação do usuário).
-5. Ainda pendente (menor prioridade, não bloqueante): simular falha de atualização em dispositivo (lógica já testada em Node).
+5. ~~Simular falha de atualização.~~ ✅ Feito em simulação Node (`test:catalog-sync-failure-simulation`, seção 5) — exercita o código real de `catalogSync.js` com dublês da borda nativa expo-file-system/expo-sqlite, não exige o celular do usuário. Ainda não confirmado no dispositivo físico real (menor prioridade, não bloqueante — a lógica de decisão (`decideInstall`) e a orquestração completa (`ensureCatalogReady`) já estão cobertas).
+5b. Capturas de tela reais salvas em `reports/screenshots/` (erro de sincronização, antes do fix) — ver README lá. Não há captura do estado já corrigido; os testes posteriores (catálogo completo, scanner, busca manual, modo avião) foram confirmados pelo usuário por texto, não por novo print.
 6. `SV2a` (versão japonesa do "151") não está no mapa set→série — nunca será sincronizada automaticamente (achado 11.5 de `decision.md`); não corrigido, fora do escopo imediato (cartas do usuário não são japonesas).
 7. Sistema de miniaturas leves pré-empacotadas continua gated até o catálogo completo de metadados terminar (dias, no ritmo atual) — resolveria o achado 3.7 de vez.
 8. Protocolo formal de câmera/OCR (30 impressões/60 fotos, especificação principal) continua fora do escopo desta entrega.
@@ -209,7 +214,8 @@ TOTAL: 122/122 testes + checagem JSX, 0 falhas
 - **Novo — Pokédex:** `scripts/build-national-dex.js`, `app/assets/data/national-dex.json`
 - **Novo — navegação/UI:** `app/Navigation.jsx`, `app/theme.js`, `app/components/{AppButton,CatalogStatusBanner}.jsx`, `app/screens/{Home,Ficharios,Pokedex,Inventario}Screen.jsx`
 - **Alterado — scanner:** `app/index.jsx` (catálogo completo + gate de sincronização + safe-area + indicador de carregamento de imagem), `App.js` (navegação + SafeAreaProvider)
-- **Novo — testes:** `scripts/run-{physical-classification,catalog-install-decision,catalog-row-mapping,catalog-index-query,catalog-repository,national-dex,path-utils,scanner-candidate-search,candidate-ordering,parse-manual-query}-tests.js`
+- **Novo — testes:** `scripts/run-{physical-classification,catalog-install-decision,catalog-row-mapping,catalog-index-query,catalog-repository,national-dex,path-utils,scanner-candidate-search,candidate-ordering,parse-manual-query,catalog-sync-failure-simulation}-tests.js`, `scripts/fakeExpoModulesForSyncFailureTest.js`
+- **Novo — evidência:** `reports/screenshots/` (3 prints reais do erro de sincronização + README explicando o que mostram)
 - **Novo — busca manual:** `src/scanner/parseManualQuery.js` (achado 3.9)
 - **Correção:** `scripts/sync-full-catalog.js` (bug real de `--batch=0`, seção 3.5)
 - **Dependências:** `+expo-font`, `+react-native-safe-area-context` (ambas via `npx expo install`, versões corretas do SDK 58)

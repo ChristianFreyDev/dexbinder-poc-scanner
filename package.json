@@ -15,6 +15,7 @@
     "build:national-dex": "node scripts/build-national-dex.js",
     "test:matching": "node --test scripts/run-matching-tests.js",
     "test:catalog-sync": "node --test scripts/run-catalog-sync-tests.js",
+    "test:catalog-sync-failure-simulation": "node --test scripts/run-catalog-sync-failure-simulation-tests.js",
     "test:cron-switch": "node --test scripts/run-cron-switch-tests.js",
     "test:physical-classification": "node --test scripts/run-physical-classification-tests.js",
     "test:catalog-install-decision": "node --test scripts/run-catalog-install-decision-tests.js",
@@ -27,7 +28,7 @@
     "test:candidate-ordering": "node --test scripts/run-candidate-ordering-tests.js",
     "test:parse-manual-query": "node --test scripts/run-parse-manual-query-tests.js",
     "check:jsx": "node scripts/check-jsx-syntax.js",
-    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run test:national-dex && npm run test:path-utils && npm run test:scanner-candidate-search && npm run test:candidate-ordering && npm run test:parse-manual-query && npm run check:jsx"
+    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:catalog-sync-failure-simulation && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run test:national-dex && npm run test:path-utils && npm run test:scanner-candidate-search && npm run test:candidate-ordering && npm run test:parse-manual-query && npm run check:jsx"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
