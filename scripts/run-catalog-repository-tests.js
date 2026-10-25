@@ -144,6 +144,61 @@ test("getScannerCandidates: usa só os registros físicos confirmados (rankCandi
   assert.ok(!candidates.some((c) => c.record.sourceCardId === "B2-001"));
 });
 
+/**
+ * Base maior simulada (2000 cartas "ruído" + 1 carta alvo real) — prova,
+ * com volume comparável ao catálogo real (21 mil+), que o pré-filtro SQL
+ * (achado real de performance em dispositivo físico, 25/10/2026: sem ele,
+ * rankCandidates() levava 14-20s no celular) reduz de verdade o volume
+ * pontuado em JS, sem perder a carta certa.
+ */
+function buildLargeRepoWithTestDb() {
+  const raw = new Database(":memory:");
+  raw.exec(`
+    CREATE TABLE card_index (
+      source_card_id TEXT NOT NULL, source_language TEXT NOT NULL, name TEXT,
+      local_id TEXT, set_id TEXT, set_name TEXT, set_serie_id TEXT,
+      set_official INTEGER, set_total INTEGER, set_printed_code TEXT,
+      has_image INTEGER, image_base_url TEXT,
+      PRIMARY KEY (source_card_id, source_language)
+    );
+  `);
+  const insert = raw.prepare(`INSERT INTO card_index VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`);
+  const insertMany = raw.transaction((rows) => { for (const r of rows) insert.run(...r); });
+
+  const noise = [];
+  for (let i = 0; i < 2000; i++) {
+    noise.push([`noise-${i}`, "en", `Ruído ${i}`, String(i % 300), `set-${i % 40}`, `Set ${i % 40}`, "base", 300, 300, null, 0, null]);
+  }
+  insertMany(noise);
+  insert.run("sv03.5-025", "en", "Pikachu", "025", "sv03.5", "151", "sv", 165, 207, "MEW", 1, "https://assets.tcgdex.net/en/sv/sv03.5/025");
+
+  const repo = new CatalogRepository();
+  repo._db = wrapDb(raw);
+  return repo;
+}
+
+test("getScannerCandidateRecords: pré-filtro SQL reduz de verdade o volume (2001 -> muito menos) sem perder a carta certa", async () => {
+  const repo = buildLargeRepoWithTestDb();
+  const parsed = parseCardText(["Pikachu", "025/165"]);
+  const records = await repo.getScannerCandidateRecords(parsed);
+  assert.ok(records.length < 2001, `esperado bem menos que 2001 registros, veio ${records.length}`);
+  assert.ok(records.some((r) => r.sourceCardId === "sv03.5-025"), "a carta certa precisa continuar no conjunto pré-filtrado");
+});
+
+test("getScannerCandidates: encontra a carta certa como Top-1 mesmo com 2000 cartas de ruído no catálogo", async () => {
+  const repo = buildLargeRepoWithTestDb();
+  const parsed = parseCardText(["Pikachu", "025/165"]);
+  const { candidates } = await repo.getScannerCandidates(parsed, { topN: 5 });
+  assert.equal(candidates[0].record.sourceCardId, "sv03.5-025");
+});
+
+test("getScannerCandidateRecords: sem número nem nome legível -> cai pro catálogo completo (rede de segurança)", async () => {
+  const repo = buildLargeRepoWithTestDb();
+  const parsed = parseCardText([]); // OCR não leu nada
+  const records = await repo.getScannerCandidateRecords(parsed);
+  assert.equal(records.length, 2001); // 2000 ruído + Pikachu, nada filtrado
+});
+
 test("listSets / listLanguages: não filtram por física (são metadados informativos do banco instalado)", async () => {
   const repo = buildRepoWithTestDb();
   const sets = await repo.listSets();

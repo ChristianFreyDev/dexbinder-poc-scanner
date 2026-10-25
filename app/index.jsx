@@ -257,7 +257,17 @@ export default function ScannerPocScreen() {
     setPhase("processing");
     setErrorMessage(null);
     try {
+      // Instrumentação temporária (Entrega 1, 25/10/2026): usuário relatou
+      // lentidão perceptível após ligar o scanner ao catálogo completo
+      // (22 mil+ cartas) que não existia com o bundle de 58 cartas da
+      // Entrega 0. Benchmark em Node mostrou rankCandidates() rodando em
+      // ~76ms sobre o catálogo real — não deveria ser o gargalo sozinho.
+      // Medido aqui, de verdade, no dispositivo físico, pra achar o
+      // gargalo real em vez de adivinhar (ver logs do Metro). Remover
+      // depois de diagnosticado.
+      const tStart = Date.now();
       const crops = await generateCardCrops(capturedPhoto.uri, capturedPhoto);
+      const tCrops = Date.now();
       // Achado real: rodar o OCR só na foto inteira lia mal (ou não lia)
       // o número de coleção, que ocupa uma fração minúscula da imagem.
       // Roda o OCR também nos recortes de cabeçalho/rodapé (ampliados
@@ -270,9 +280,15 @@ export default function ScannerPocScreen() {
       const fullBlocks = await recognizeCardText(crops.fullUri, { provider: "rn-mlkit-ocr" });
       const headerBlocks = await recognizeCardText(crops.headerUri, { provider: "rn-mlkit-ocr" }).catch(() => []);
       const footerBlocks = await recognizeCardText(crops.footerUri, { provider: "rn-mlkit-ocr" }).catch(() => []);
+      const tOcr = Date.now();
       const textBlocks = [...headerBlocks, ...fullBlocks, ...footerBlocks];
       const parsed = parseCardText(textBlocks);
       const { candidates, needsManualConfirmation } = await catalogRepository.getScannerCandidates(parsed, { topN: 5 });
+      const tCandidates = Date.now();
+
+      console.log(
+        `[timing] recorte=${tCrops - tStart}ms ocr(3x)=${tOcr - tCrops}ms candidatos(catálogo)=${tCandidates - tOcr}ms total=${tCandidates - tStart}ms`
+      );
 
       setOcrResult({ parsed, candidates, needsManualConfirmation });
       setPhase("result");

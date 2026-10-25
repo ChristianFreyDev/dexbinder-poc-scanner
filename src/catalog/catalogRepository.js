@@ -49,6 +49,14 @@ const catalogIndex = require("../storage/catalogIndex");
 const { classifyPhysical, isConfirmedPhysical, PHYSICAL, DIGITAL, UNCONFIRMED } = require("../storage/physicalClassification");
 const { rankCandidates } = require("../scanner/rankCandidates");
 const { resolveImageUrl } = require("../scanner/resolveImageUrl");
+const { extractCandidateSearchTerms } = require("./scannerCandidateSearch");
+
+// Teto por consulta SQL de pré-filtro — generoso o bastante pra não cortar
+// candidatos legítimos (ex.: número "1" existe em ~220 sets × 5 idiomas),
+// mas MUITO menor que o catálogo inteiro (21 mil+ linhas), que é o que
+// causava os 14-20s reais medidos em dispositivo físico (ver
+// scripts/run-scanner-candidate-search-tests.js e reports/delivery-1.md).
+const CANDIDATE_SEARCH_LIMIT_PER_TERM = 1000;
 
 // Mesma lista usada por scripts/sync-full-catalog.js (DIGITAL_ONLY_SERIES) e
 // src/catalog/catalogFixtures.js (filterPhysicalCards) — duplicada
@@ -101,10 +109,20 @@ class CatalogRepository {
    * o ranking do scanner e a busca manual (ver nota de performance acima).
    */
   async getAllPhysicalRecords({ forceReload = false } = {}) {
-    if (this._physicalRecordsCache && !forceReload) return this._physicalRecordsCache;
+    if (this._physicalRecordsCache && !forceReload) {
+      console.log("[timing] getAllPhysicalRecords: cache hit, 0ms");
+      return this._physicalRecordsCache;
+    }
+    const t0 = Date.now();
     const db = await this._getDb();
+    const t1 = Date.now();
     const all = await catalogIndex.getAllRecords(db);
+    const t2 = Date.now();
     this._physicalRecordsCache = this._filterPhysical(all);
+    const t3 = Date.now();
+    console.log(
+      `[timing] getAllPhysicalRecords (cache miss): abrirDb=${t1 - t0}ms lerSQLite(${all.length} linhas)=${t2 - t1}ms filtrarFisicas=${t3 - t2}ms`
+    );
     return this._physicalRecordsCache;
   }
 
@@ -165,13 +183,49 @@ class CatalogRepository {
   }
 
   /**
+   * Pré-filtra o catálogo via SQL (número/nome, índice nativo — rápido)
+   * ANTES de rankCandidates() rodar a pontuação em JS. Achado real em
+   * dispositivo físico (25/10/2026): sem isso, rankCandidates() sobre as
+   * 21.828 cartas do catálogo completo levava 14-20 SEGUNDOS no celular
+   * (Hermes) — inaceitável. Nunca muda o resultado de QUAL carta é
+   * encontrada em condições normais (só reduz quantos registros chegam a
+   * ser pontuados); se nada bater por número/nome, cai pro catálogo
+   * completo em memória como rede de segurança (mais lento, mas nunca
+   * "sem candidatos" só por falha do pré-filtro).
+   */
+  async getScannerCandidateRecords(parsed) {
+    const db = await this._getDb();
+    const { numbers, names } = extractCandidateSearchTerms(parsed);
+    const resultsMap = new Map();
+
+    for (const number of numbers) {
+      const rows = await catalogIndex.searchByNumber(db, number, { limit: CANDIDATE_SEARCH_LIMIT_PER_TERM });
+      for (const r of rows) resultsMap.set(`${r.sourceCardId}::${r.sourceLanguage}`, r);
+    }
+    for (const name of names) {
+      const rows = await catalogIndex.searchByName(db, name, { limit: CANDIDATE_SEARCH_LIMIT_PER_TERM });
+      for (const r of rows) resultsMap.set(`${r.sourceCardId}::${r.sourceLanguage}`, r);
+    }
+
+    const physical = this._filterPhysical([...resultsMap.values()]);
+    if (physical.length > 0) return physical;
+    // Nada bateu por número/nome (OCR muito ruim ou busca manual vazia) —
+    // rede de segurança: volta pro catálogo completo em memória.
+    return this.getAllPhysicalRecords();
+  }
+
+  /**
    * Candidatos do scanner — usa o MESMO rankCandidates() já validado com
    * cartas físicas reais na Entrega 0, sem alterações, agora sobre o
-   * catálogo completo instalado em vez do bundle de 58 cartas de teste.
+   * catálogo completo instalado em vez do bundle de 58 cartas de teste
+   * (pré-filtrado via SQL, ver getScannerCandidateRecords() acima).
    */
   async getScannerCandidates(parsed, { topN = 5 } = {}) {
-    const records = await this.getAllPhysicalRecords();
-    return rankCandidates(parsed, records, { topN });
+    const records = await this.getScannerCandidateRecords(parsed);
+    const t0 = Date.now();
+    const result = rankCandidates(parsed, records, { topN });
+    console.log(`[timing] rankCandidates sobre ${records.length} cartas (pré-filtradas): ${Date.now() - t0}ms`);
+    return result;
   }
 }
 
