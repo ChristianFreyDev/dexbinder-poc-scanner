@@ -128,15 +128,20 @@ function capitalizeFirst(text) {
 
 /**
  * Pedido real do usuário (25/10/2026): uma linha separada com código da
- * expansão impresso na carta (ex.: "MEW" — só confirmado pro set "151" por
- * ora, ver SET_PRINTED_CODES em catalogFixtures.js) + número/total impresso
- * (ex.: "061/165"). Nunca inventa o código quando não está confirmado —
- * só omite esse pedaço da linha.
+ * expansão impresso na carta (ex.: "MEW", "DRI" — vem de verdade da API do
+ * TCGdex, `abbreviation.official`, gravado como `setPrintedCode` por
+ * scripts/sync-full-catalog.js; ausente só nos sets que a própria API não
+ * documenta um código, nunca inventado aqui) + número/total impresso (ex.:
+ * "061/165"). Usa `setOfficial` (contagem OFICIAL impressa na carta, ex.:
+ * 165/182) — achado real ao testar com a carta "034/182" do Ethan's
+ * Typhlosion (set "151", "Destined Rivals"): `setTotal` inclui secretas/
+ * variantes especiais fora da numeração impressa (ex.: 244 em vez de 182
+ * no "Destined Rivals") e mostraria um total errado.
  */
 function buildCardCodeLine(record) {
   const parts = [];
   if (record.setPrintedCode) parts.push(record.setPrintedCode);
-  if (record.localId) parts.push(record.setTotal ? `${record.localId}/${record.setTotal}` : record.localId);
+  if (record.localId) parts.push(record.setOfficial ? `${record.localId}/${record.setOfficial}` : record.localId);
   return parts.join(" · ");
 }
 
