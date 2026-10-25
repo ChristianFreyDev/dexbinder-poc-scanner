@@ -1,107 +1,135 @@
 /**
- * Índice local em SQLite — NÃO usado pelo app desta PoC (que usa o bundle
- * JSON estático em app/assets/catalog-index.json, suficiente para a amostra
- * de 30 cartas desta Entrega 0). Mantido deliberadamente no repositório: é a
- * base correta para a Entrega 1, quando o catálogo precisa ter TODAS as
- * cartas/expansões e se atualizar sozinho (sem publicar um app novo a cada
- * expansão) — ver reports/decision.md, seção 11, para a arquitetura completa
- * (sincronização periódica + download do catálogo pelo app + cache de
- * imagens). Falta aqui o passo de popular esta tabela a partir de um pacote
- * baixado da rede, em vez das fixtures locais da PoC — trabalho da Entrega 1.
+ * Acesso de leitura ao banco SQLite do catálogo completo instalado
+ * (baixado/validado por catalogSync.js). Reescrito na Entrega 1: a versão
+ * da Entrega 0 tinha um nome de arquivo DIFERENTE do que catalogSync.js
+ * realmente baixa (`poc_catalog_index.db` vs `dexbinder_catalog.db`) e um
+ * schema DIFERENTE do que scripts/sync-full-catalog.js realmente gera
+ * (tinha `category`/`rarity`/`dex_ids`, que o catálogo real NÃO tem;
+ * faltavam `set_official`/`set_total`/`set_printed_code`, que
+ * src/scanner/rankCandidates.js PRECISA para desambiguar por total do set
+ * e código de expansão impresso). Confirmado baixando o banco publicado de
+ * verdade e inspecionando `sqlite_master` (ver reports/delivery-1.md).
  *
- * Usa a API real do `expo-sqlite` conforme a documentação oficial, mas não
- * foi executado em dispositivo nesta PoC (não tem chamador — ver acima).
+ * Schema real (fonte da verdade: scripts/sync-full-catalog.js):
+ *   card_index(source_card_id, source_language, name, local_id, set_id,
+ *              set_name, set_serie_id, set_official, set_total,
+ *              set_printed_code, has_image, image_base_url)
+ *   PRIMARY KEY (source_card_id, source_language)
  *
- * Mantém a tabela mínima para a PoC: uma linha por impressão de carta,
- * já normalizada por catalogFixtures.normalizeCard().
+ * Não popula o banco (isso acontece fora do app, pelo workflow de
+ * sincronização) — só abre o banco já instalado por catalogSync.js e
+ * expõe consultas. `localId` é tratado sempre como texto (nunca convertido
+ * para inteiro — especificação da Entrega 1, seção 4.4).
  */
 
-// eslint-disable-next-line import/no-unresolved
-const { openDatabaseAsync } = require("expo-sqlite");
+const { mapRow, buildNumberCandidates } = require("./catalogRowMapping");
 
-const DB_NAME = "poc_catalog_index.db";
-
-async function openCatalogIndexDb() {
-  const db = await openDatabaseAsync(DB_NAME);
-  await db.execAsync(`
-    PRAGMA journal_mode = WAL;
-    CREATE TABLE IF NOT EXISTS card_index (
-      source_card_id TEXT NOT NULL,
-      source_language TEXT NOT NULL,
-      name TEXT,
-      category TEXT,
-      rarity TEXT,
-      local_id TEXT,
-      set_id TEXT,
-      set_name TEXT,
-      set_serie_id TEXT,
-      dex_ids TEXT,
-      has_image INTEGER,
-      image_base_url TEXT,
-      PRIMARY KEY (source_card_id, source_language)
-    );
-  `);
-  return db;
+// require() de "./catalogSync" é LAZY (só dentro da função, não no topo do
+// módulo): catalogSync.js importa expo-file-system/expo-sqlite, que não
+// rodam em Node puro (ver catalogSyncDecision.js). Todas as outras funções
+// deste arquivo recebem `db` já aberto por parâmetro — não precisam dessa
+// importação — e por isso são testáveis de verdade em Node com um `db` de
+// teste (ver scripts/run-catalog-index-query-tests.js, que injeta um
+// adaptador sobre better-sqlite3 com a mesma interface async do expo-sqlite).
+function openSyncedCatalogDb() {
+  return require("./catalogSync").openSyncedCatalogDb();
 }
 
-/** Popula o índice a partir dos registros normalizados (ver catalogFixtures.js). */
-async function populateCatalogIndex(db, records) {
-  for (const r of records) {
-    await db.runAsync(
-      `INSERT OR REPLACE INTO card_index
-        (source_card_id, source_language, name, category, rarity, local_id, set_id, set_name, set_serie_id, dex_ids, has_image, image_base_url)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        r.sourceCardId,
-        r.sourceLanguage,
-        r.name,
-        r.category,
-        r.rarity,
-        r.localId,
-        r.setId,
-        r.setName,
-        r.setSerieId,
-        JSON.stringify(r.dexIds || []),
-        r.hasImage ? 1 : 0,
-        r.imageBaseUrl,
-      ]
-    );
-  }
+/** Todas as linhas do catálogo instalado, sem nenhum filtro — uso interno do repositório. */
+async function getAllRecords(db) {
+  const rows = await db.getAllAsync(`SELECT * FROM card_index`);
+  return rows.map(mapRow);
+}
+
+/** Pesquisa por nome (substring, case-insensitive via LIKE + lower em ambos os lados). */
+async function searchByName(db, query, { lang = null, limit = 50 } = {}) {
+  const like = `%${query.toLowerCase()}%`;
+  const rows = lang
+    ? await db.getAllAsync(
+        `SELECT * FROM card_index WHERE lower(name) LIKE ? AND source_language = ? LIMIT ?`,
+        [like, lang, limit]
+      )
+    : await db.getAllAsync(`SELECT * FROM card_index WHERE lower(name) LIKE ? LIMIT ?`, [like, limit]);
+  return rows.map(mapRow);
 }
 
 /**
- * Carrega todas as linhas do índice de volta para o formato usado por
- * rankCandidates() — a busca local nunca deve ir até a API por item lido.
- * Filtra por padrão a série "tcgp" (Pokémon TCG Pocket), que NÃO representa
- * cartas físicas (ver reports/catalog-audit.md, achado 6).
- *
- * GAP RESOLVIDO: `set_serie_id` agora é resolvido de verdade por
- * `catalogFixtures.normalizeCard()` a partir do mapa real gerado por
- * `scripts/build-series-map.js` (consulta real a `GET /{lang}/series/{id}`,
- * já que a resposta de `GET /{lang}/cards/{id}` não traz essa informação).
- * Quem popular este índice deve carregar as fixtures via
- * `catalogFixtures.loadFixtureCards()` (que já faz esse cruzamento) para que
- * este filtro funcione de verdade — ver scripts/run-matching-tests.js para
- * um teste automatizado que comprova isso com dados reais.
+ * Pesquisa por número/localId, tratado sempre como texto. Tolera
+ * zero-padding (ex.: "1", "01", "001" devem casar) comparando também a
+ * forma sem zeros à esquerda — igual a numberMatches() em rankCandidates.js.
  */
-async function loadIndexRecords(db, { includeDigitalOnlySeries = false } = {}) {
-  const rows = await db.getAllAsync(`SELECT * FROM card_index`);
-  return rows
-    .filter((row) => includeDigitalOnlySeries || row.set_serie_id !== "tcgp")
-    .map((row) => ({
-      sourceCardId: row.source_card_id,
-      sourceLanguage: row.source_language,
-      name: row.name,
-      category: row.category,
-      rarity: row.rarity,
-      localId: row.local_id,
-      setId: row.set_id,
-      setName: row.set_name,
-      setSerieId: row.set_serie_id,
-      dexIds: JSON.parse(row.dex_ids || "[]"),
-      hasImage: Boolean(row.has_image),
-      imageBaseUrl: row.image_base_url,
-    }));
+async function searchByNumber(db, number, { setId = null, lang = null, limit = 50 } = {}) {
+  const candidates = buildNumberCandidates(number);
+  const placeholders = candidates.map(() => "?").join(", ");
+  const conditions = [`local_id IN (${placeholders})`];
+  const params = [...candidates];
+  if (setId) {
+    conditions.push(`set_id = ?`);
+    params.push(setId);
+  }
+  if (lang) {
+    conditions.push(`source_language = ?`);
+    params.push(lang);
+  }
+  params.push(limit);
+  const rows = await db.getAllAsync(
+    `SELECT * FROM card_index WHERE ${conditions.join(" AND ")} LIMIT ?`,
+    params
+  );
+  return rows.map(mapRow);
 }
 
-module.exports = { openCatalogIndexDb, populateCatalogIndex, loadIndexRecords, DB_NAME };
+/** Pesquisa por nome ou id de expansão (set). */
+async function searchBySet(db, query, { limit = 50 } = {}) {
+  const like = `%${query.toLowerCase()}%`;
+  const rows = await db.getAllAsync(
+    `SELECT * FROM card_index WHERE lower(set_id) LIKE ? OR lower(set_name) LIKE ? LIMIT ?`,
+    [like, like, limit]
+  );
+  return rows.map(mapRow);
+}
+
+/** Detalhe de uma impressão específica (chave real: source_card_id + source_language). */
+async function getCardDetail(db, sourceCardId, sourceLanguage) {
+  const row = await db.getFirstAsync(
+    `SELECT * FROM card_index WHERE source_card_id = ? AND source_language = ?`,
+    [sourceCardId, sourceLanguage]
+  );
+  return row ? mapRow(row) : null;
+}
+
+/** Expansões (sets) efetivamente presentes no catálogo instalado. */
+async function listSets(db) {
+  const rows = await db.getAllAsync(
+    `SELECT DISTINCT set_id, set_name, set_serie_id FROM card_index ORDER BY set_name`
+  );
+  return rows.map((r) => ({ setId: r.set_id, setName: r.set_name, setSerieId: r.set_serie_id }));
+}
+
+/** Idiomas efetivamente presentes no catálogo instalado. */
+async function listLanguages(db) {
+  const rows = await db.getAllAsync(
+    `SELECT DISTINCT source_language FROM card_index ORDER BY source_language`
+  );
+  return rows.map((r) => r.source_language);
+}
+
+/** Estatísticas rápidas do banco instalado (contagem total, não filtra física/digital). */
+async function getStats(db) {
+  const row = await db.getFirstAsync(`SELECT COUNT(*) AS c FROM card_index`);
+  return { totalRecords: row ? row.c : 0 };
+}
+
+module.exports = {
+  openSyncedCatalogDb,
+  getAllRecords,
+  searchByName,
+  searchByNumber,
+  searchBySet,
+  getCardDetail,
+  listSets,
+  listLanguages,
+  getStats,
+  mapRow,
+  buildNumberCandidates,
+};
