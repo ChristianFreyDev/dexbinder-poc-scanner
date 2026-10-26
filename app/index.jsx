@@ -148,6 +148,7 @@ function buildCardCodeLine(record) {
 function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true, onImageSettled }) {
   const { record, score, reasons } = candidate;
   const thumbUrl = resolveImageUrl(record, "low");
+  const cardCodeLine = buildCardCodeLine(record);
   // Achado real (25/10/2026, medido em dispositivo físico): a miniatura
   // "low" do TCGdex pode levar de 3,5 a 34s pra carregar dependendo da
   // rede do usuário (CDN responde rápido quando testado de outros lugares
@@ -219,7 +220,7 @@ function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true
           <Text style={styles.candidateName}>{record.name || "(sem nome)"}</Text>
           <Text style={styles.candidateSet}>{record.setName || record.setId || "Expansão desconhecida"}</Text>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-            <Text style={styles.candidateMeta}>{buildCardCodeLine(record)}</Text>
+            {cardCodeLine ? <Text style={styles.candidateMeta}>{cardCodeLine} ·</Text> : null}
             <LanguageTag code={record.sourceLanguage} />
           </View>
           <ScoreBadge score={score} />
