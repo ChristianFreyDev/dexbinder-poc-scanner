@@ -224,10 +224,13 @@ function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true
             <LanguageTag code={record.sourceLanguage} />
           </View>
           <ScoreBadge score={score} />
-          <Text style={styles.candidateReasons}>{reasons.map(capitalizeFirst).join(" - ")}</Text>
         </View>
-        <AppButton title="Confirmar" variant="outline" compact onPress={() => onConfirm(record)} />
+        <AppButton title="Confirmar" variant="successOutline" compact onPress={() => onConfirm(record)} />
       </View>
+      {/* Pedido do usuário (25/10/2026): os motivos ocupando a largura toda do
+          card (fora da coluna espremida ao lado da miniatura/botão) — menos
+          quebra de linha, card mais baixo. */}
+      <Text style={styles.candidateReasons}>{reasons.map(capitalizeFirst).join(" · ")}</Text>
     </View>
   );
 }
@@ -832,6 +835,7 @@ const styles = StyleSheet.create({
   candidateReasons: {
     color: COLORS.textMuted,
     fontSize: 11,
+    marginTop: 8,
   },
   badge: {
     alignSelf: "flex-start",

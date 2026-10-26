@@ -11,6 +11,9 @@ export const BUTTON_VARIANTS = {
   outline: { bg: "transparent", border: COLORS.border, text: COLORS.textPrimary },
   warning: { bg: COLORS.warning, text: "#FFFFFF" },
   success: { bg: COLORS.success, text: "#FFFFFF" },
+  // Pedido do usuário (25/10/2026): só contorno + texto verdes, sem fundo —
+  // usado no botão "Confirmar" da lista de candidatos.
+  successOutline: { bg: "transparent", border: COLORS.success, text: COLORS.success },
 };
 
 export function AppButton({ title, onPress, variant = "primary", compact = false, disabled = false }) {
