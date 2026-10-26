@@ -245,15 +245,17 @@ function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true
           <AppButton title="Confirmar" variant="successOutline" compact onPress={() => onConfirm(record)} />
         </View>
         <View style={{ marginLeft: 88, gap: 4 }}>
-          <View style={{ gap: 4, paddingRight: 100 }}>
-            <Text style={styles.candidateName}>{record.name || "(sem nome)"}</Text>
-            <Text style={styles.candidateSet}>{record.setName || record.setId || "Expansão desconhecida"}</Text>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-              {cardCodeLine ? <Text style={styles.candidateMeta}>{cardCodeLine} ·</Text> : null}
-              <LanguageTag code={record.sourceLanguage} />
-            </View>
-            <ScoreBadge score={score} />
+          <Text style={[styles.candidateName, { paddingRight: 100 }]}>{record.name || "(sem nome)"}</Text>
+          {/* Pedido do usuário (25/10/2026, testado com nome de expansão
+              propositalmente grande): a expansão/coleção também precisa da
+              largura total, igual os motivos — reservar espaço pro botão
+              aqui fazia ela quebrar em 2 linhas sem necessidade. */}
+          <Text style={styles.candidateSet}>{record.setName || record.setId || "Expansão desconhecida"}</Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap", paddingRight: 100 }}>
+            {cardCodeLine ? <Text style={styles.candidateMeta}>{cardCodeLine} ·</Text> : null}
+            <LanguageTag code={record.sourceLanguage} />
           </View>
+          <ScoreBadge score={score} />
           <Text style={styles.candidateReasons}>{reasons.map(capitalizeFirst).join(" · ")}</Text>
         </View>
       </View>
