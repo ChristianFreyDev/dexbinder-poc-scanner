@@ -189,9 +189,23 @@ function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true
 
   return (
     <View style={styles.candidateCard}>
-      <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+      {/* Achado real (25/10/2026): com a miniatura (106px) e o texto na
+          mesma linha flex, a altura da LINHA sempre batia 106px (a altura do
+          maior filho) mesmo quando o texto era bem mais curto — por isso os
+          motivos, colocados como irmão logo abaixo dessa linha, sempre
+          ficavam "presos" a essa altura de 106px, longe da confiança.
+          Miniatura flutua (position: absolute) por cima de um container
+          com altura MÍNIMA de 106px (nunca corta a miniatura), mas o bloco
+          de texto (nome/expansão/código/confiança/motivos) fica em fluxo
+          normal, do lado dela — sua altura real (que pode passar de 106px
+          quando os motivos quebram linha) é que manda, não a da miniatura. */}
+      <View style={{ minHeight: 106 }}>
         {thumbUrl ? (
-          <TouchableOpacity onPress={() => onExpandImage(record)} accessibilityLabel={`Ampliar imagem de ${record.name || "carta"}`}>
+          <TouchableOpacity
+            style={{ position: "absolute", left: 0, top: 0 }}
+            onPress={() => onExpandImage(record)}
+            accessibilityLabel={`Ampliar imagem de ${record.name || "carta"}`}
+          >
             <View style={styles.candidateThumb}>
               {canLoadImage && (
                 <Image
@@ -212,27 +226,26 @@ function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true
             </View>
           </TouchableOpacity>
         ) : (
-          <View style={[styles.candidateThumb, styles.candidateThumbPlaceholder]}>
+          <View style={[styles.candidateThumb, styles.candidateThumbPlaceholder, { position: "absolute", left: 0, top: 0 }]}>
             <Text style={{ fontSize: 10, color: COLORS.textMuted, textAlign: "center" }}>sem{"\n"}imagem</Text>
           </View>
         )}
-        <View style={{ flex: 1, gap: 4 }}>
-          <Text style={styles.candidateName}>{record.name || "(sem nome)"}</Text>
-          <Text style={styles.candidateSet}>{record.setName || record.setId || "Expansão desconhecida"}</Text>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-            {cardCodeLine ? <Text style={styles.candidateMeta}>{cardCodeLine} ·</Text> : null}
-            <LanguageTag code={record.sourceLanguage} />
+        <View style={{ marginLeft: 88, gap: 4 }}>
+          <View style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
+            <View style={{ flex: 1, gap: 4 }}>
+              <Text style={styles.candidateName}>{record.name || "(sem nome)"}</Text>
+              <Text style={styles.candidateSet}>{record.setName || record.setId || "Expansão desconhecida"}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+                {cardCodeLine ? <Text style={styles.candidateMeta}>{cardCodeLine} ·</Text> : null}
+                <LanguageTag code={record.sourceLanguage} />
+              </View>
+              <ScoreBadge score={score} />
+            </View>
+            <AppButton title="Confirmar" variant="successOutline" compact onPress={() => onConfirm(record)} />
           </View>
-          <ScoreBadge score={score} />
+          <Text style={styles.candidateReasons}>{reasons.map(capitalizeFirst).join(" · ")}</Text>
         </View>
-        <AppButton title="Confirmar" variant="successOutline" compact onPress={() => onConfirm(record)} />
       </View>
-      {/* Pedido do usuário (25/10/2026): os motivos abaixo de tudo, mas
-          começando no mesmo ponto em que o nome/expansão começam (não
-          embaixo da miniatura) e indo até a borda direita do card — a
-          miniatura fica sozinha à esquerda, o texto nunca passa por baixo
-          dela. 88 = largura da miniatura (76) + gap da linha acima (12). */}
-      <Text style={[styles.candidateReasons, { marginLeft: 88 }]}>{reasons.map(capitalizeFirst).join(" · ")}</Text>
     </View>
   );
 }
@@ -837,7 +850,6 @@ const styles = StyleSheet.create({
   candidateReasons: {
     color: COLORS.textMuted,
     fontSize: 11,
-    marginTop: 4,
   },
   badge: {
     alignSelf: "flex-start",
