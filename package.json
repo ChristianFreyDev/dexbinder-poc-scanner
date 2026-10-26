@@ -29,8 +29,11 @@
     "test:parse-manual-query": "node --test scripts/run-parse-manual-query-tests.js",
     "test:catalog-card-key": "node --test scripts/run-catalog-card-key-tests.js",
     "test:user-migrations": "node --test scripts/run-user-migrations-tests.js",
+    "test:grid-layout": "node --test scripts/run-grid-layout-tests.js",
+    "test:progress-calculations": "node --test scripts/run-progress-calculations-tests.js",
+    "test:checklist-generation": "node --test scripts/run-checklist-generation-tests.js",
     "check:jsx": "node scripts/check-jsx-syntax.js",
-    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:catalog-sync-failure-simulation && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run test:national-dex && npm run test:path-utils && npm run test:scanner-candidate-search && npm run test:candidate-ordering && npm run test:parse-manual-query && npm run test:catalog-card-key && npm run test:user-migrations && npm run check:jsx"
+    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:catalog-sync-failure-simulation && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run test:national-dex && npm run test:path-utils && npm run test:scanner-candidate-search && npm run test:candidate-ordering && npm run test:parse-manual-query && npm run test:catalog-card-key && npm run test:user-migrations && npm run test:grid-layout && npm run test:progress-calculations && npm run test:checklist-generation && npm run check:jsx"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",

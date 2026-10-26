@@ -99,3 +99,22 @@ test("constraint real: não permite item de checklist de espécie duplicado ativ
   await insertItem("item1");
   await assert.rejects(() => insertItem("item2"), /UNIQUE constraint failed/);
 });
+
+test("migração v2: constraint real para item any_supported (catalog_card_key NULL, identidade por set+número)", async () => {
+  const db = createTestDb();
+  await runMigrations(db);
+  const now = new Date().toISOString();
+  await db.runAsync(
+    `INSERT INTO user_collections (id, name, collection_type, creation_mode, created_at, updated_at) VALUES (?,?,?,?,?,?)`,
+    ["c1", "Expansão", "expansion", "automatic", now, now]
+  );
+  const insertAnyLangItem = (id) =>
+    db.runAsync(
+      `INSERT INTO checklist_items
+        (id, collection_id, target_type, target_set_snapshot, target_number_snapshot, sort_order, source, created_at, updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?)`,
+      [id, "c1", "catalog_card", "sv03.5", "001", 1, "automatic", now, now]
+    );
+  await insertAnyLangItem("itemA");
+  await assert.rejects(() => insertAnyLangItem("itemB"), /UNIQUE constraint failed/);
+});

@@ -119,6 +119,21 @@ const MIGRATIONS = [
       `CREATE INDEX IF NOT EXISTS idx_species_links_dex ON card_species_links(national_dex_number)`,
     ],
   },
+  {
+    // language_policy "any_supported" (especificação, seção 6.3): um item de
+    // checklist pode representar a MESMA posição impressa (set real + número
+    // real, já validados por virem do mesmo set_id) em qualquer idioma
+    // sincronizado, em vez de uma única catalog_card_key. Nesse caso
+    // catalog_card_key fica NULL e a identidade do item é (target_set_snapshot,
+    // target_number_snapshot) — índice parcial separado, pois o índice da v1
+    // (uq_checklist_card_active) exige catalog_card_key não-nulo.
+    version: 2,
+    statements: [
+      `CREATE UNIQUE INDEX IF NOT EXISTS uq_checklist_card_any_lang_active
+        ON checklist_items(collection_id, target_set_snapshot, target_number_snapshot)
+        WHERE target_type = 'catalog_card' AND is_excluded = 0 AND catalog_card_key IS NULL`,
+    ],
+  },
 ];
 
 /** Versão mais alta já aplicada neste banco, ou 0 se nunca migrado (tabela ainda não existe). */
