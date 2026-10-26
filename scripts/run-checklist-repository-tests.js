@@ -98,6 +98,39 @@ test("previewRegeneration + applyRegeneration: edição manual não desaparece n
   assert.deepEqual(dexNumbers, [1, 3, 999], "espécie 2 removida, 3 adicionada, 999 (manual) preservada");
 });
 
+test("findMatchingItem: acha item de impressão exata por catalogCardKey", async () => {
+  const { checklists, collectionId } = await setupCollection();
+  const item = await checklists.addManualItem(collectionId, {
+    targetType: "catalog_card",
+    catalogCardKey: "key-1",
+    targetSetSnapshot: "sv",
+    targetNumberSnapshot: "001",
+  });
+  const match = await checklists.findMatchingItem(collectionId, { catalogCardKey: "key-1" });
+  assert.equal(match.id, item.item.id);
+  const noMatch = await checklists.findMatchingItem(collectionId, { catalogCardKey: "key-outro" });
+  assert.equal(noMatch, null);
+});
+
+test("findMatchingItem: acha item any_supported por set+número quando catalogCardKey é null", async () => {
+  const { checklists, collectionId } = await setupCollection();
+  await checklists.addManualItem(collectionId, {
+    targetType: "catalog_card",
+    catalogCardKey: null,
+    targetSetSnapshot: "sv03.5",
+    targetNumberSnapshot: "001",
+  });
+  const match = await checklists.findMatchingItem(collectionId, { catalogCardKey: "key-en", setId: "sv03.5", localId: "001" });
+  assert.ok(match, "deveria bater pelo set+número mesmo com catalogCardKey diferente");
+});
+
+test("findMatchingItem: acha item de espécie por nationalDexNumber", async () => {
+  const { checklists, collectionId } = await setupCollection();
+  await checklists.addManualItem(collectionId, { targetType: "pokemon_species", nationalDexNumber: 25 });
+  const match = await checklists.findMatchingItem(collectionId, { nationalDexNumber: 25 });
+  assert.ok(match);
+});
+
 test("exclusão manual de item automático não reaparece numa regeneração seguinte", async () => {
   const { checklists, collectionId } = await setupCollection();
   await checklists.generateAutomatic(collectionId, generateSpeciesChecklistItems([{ nationalNumber: 1 }, { nationalNumber: 2 }]));

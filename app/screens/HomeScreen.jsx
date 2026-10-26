@@ -1,28 +1,27 @@
 /**
- * Início — especificação da Entrega 1, seção 4.8: "incluir um local
- * simples para exibir o estado/versão do catálogo e permitir tentar
- * sincronizar novamente" e "não apresentar números inventados na Home
- * (como total de cartas, fichários ou progresso). Usar zero/estado vazio
- * ou indicar que a área ainda será habilitada."
- *
- * O total de cartas mostrado vem do manifesto REAL do catálogo instalado
- * (nunca inventado) — os contadores de fichários/inventário ficam
- * explicitamente zerados/"ainda não disponível", porque essas áreas não
- * têm dados de usuário nesta entrega (seção 4.9: nenhum dado pessoal
- * ainda persistido).
+ * Início — agora com contagens REAIS (especificação da Entrega 2, seção
+ * 8.1): progresso global da Pokédex, cópias físicas no inventário, número
+ * de fichários ativos e resumo dos fichários recentes. Mantém o estado/
+ * versão do catálogo (Entrega 1) intocado.
  */
 import { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { catalogRepository } from "../../src/catalog/catalogRepository";
+import { collectionRepository, collectionProgressService } from "../../src/collections";
 import { COLORS } from "../theme";
 import { CatalogStatusBanner } from "../components/CatalogStatusBanner";
 import { ScreenHeader } from "../components/ScreenHeader";
+import nationalDex from "../assets/data/national-dex.json";
 
 export default function HomeScreen() {
   const [status, setStatus] = useState("checking");
   const [error, setError] = useState(null);
   const [manifest, setManifest] = useState(null);
+
+  const [dexProgress, setDexProgress] = useState(null);
+  const [inventoryTotals, setInventoryTotals] = useState(null);
+  const [activeCollections, setActiveCollections] = useState([]);
 
   const sync = useCallback(async () => {
     setError(null);
@@ -32,9 +31,21 @@ export default function HomeScreen() {
     setError(result.error);
   }, []);
 
+  const loadPersonalData = useCallback(async () => {
+    const [dex, totals, collections] = await Promise.all([
+      collectionProgressService.getPokedexGlobalProgress(nationalDex.totalSpecies),
+      collectionProgressService.getInventoryTotals(),
+      collectionRepository.list({ includeArchived: false }),
+    ]);
+    setDexProgress(dex);
+    setInventoryTotals(totals);
+    setActiveCollections(collections);
+  }, []);
+
   useEffect(() => {
     sync();
-  }, [sync]);
+    loadPersonalData();
+  }, [sync, loadPersonalData]);
 
   return (
     <SafeAreaView edges={["top"]} style={styles.screen}>
@@ -43,18 +54,21 @@ export default function HomeScreen() {
         <CatalogStatusBanner status={status} error={error} manifest={manifest} onRetry={sync} />
 
         <View style={styles.statRow}>
+          <StatCard label="Fichários ativos" value={String(activeCollections.length)} note={activeCollections.length === 0 ? "Crie o primeiro na aba Fichários" : "Toque em Fichários para ver"} />
+          <StatCard label="Inventário" value={inventoryTotals ? String(inventoryTotals.totalPhysicalCopies) : "—"} note={inventoryTotals ? `${inventoryTotals.distinctPrints} impressões distintas` : "Carregando..."} />
+        </View>
+
+        <View style={styles.statRow}>
           <StatCard
-            label="Fichários"
-            value="—"
-            note="Ainda não disponível nesta entrega"
+            label="Pokédex"
+            value={dexProgress ? `${dexProgress.obtainedSpeciesCount}/${nationalDex.totalSpecies}` : "—"}
+            note={dexProgress ? `${dexProgress.completionPercentage}% obtidas (associação confirmada)` : "Carregando..."}
           />
-          <StatCard label="Inventário" value="—" note="Ainda não disponível nesta entrega" />
         </View>
 
         <Text style={styles.sectionNote}>
-          A Entrega 1 conecta o catálogo completo e a Pokédex Nacional ao scanner (aba Garimpo). Fichários e
-          Inventário completos — com CRUD, posições físicas e checklist — ficam para as próximas entregas (ver
-          reports/delivery-1.md).
+          Dados pessoais (fichários, cópias físicas e associações de espécie) ficam só neste dispositivo nesta versão — ainda
+          não há sincronização por conta/e-mail entre aparelhos.
         </Text>
       </ScrollView>
     </SafeAreaView>

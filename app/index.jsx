@@ -43,10 +43,12 @@ import { parseCardText } from "../src/scanner/parseCardText";
 import { parseManualQuery } from "../src/scanner/parseManualQuery";
 import { resolveImageUrl } from "../src/scanner/resolveImageUrl";
 import { catalogRepository } from "../src/catalog/catalogRepository";
+import { collectionProgressService } from "../src/collections";
 import { COLORS } from "./theme";
 import { AppButton, BUTTON_VARIANTS } from "./components/AppButton";
 import { CatalogStatusBanner } from "./components/CatalogStatusBanner";
 import { ScreenHeader } from "./components/ScreenHeader";
+import { AddCopyModal } from "./components/AddCopyModal";
 
 /** Botão circular com ícone vetorial (Feather/MaterialIcons), para ações compactas lado a lado. */
 function IconButton({ icon, iconSet: IconSet = Feather, onPress, variant = "outline", accessibilityLabel, size = 52 }) {
@@ -337,6 +339,13 @@ export default function ScannerPocScreen() {
   const [manualQuery, setManualQuery] = useState("");
   const [manualResult, setManualResult] = useState(null);
 
+  // Integração do inventário ao resultado confirmado do Garimpo
+  // (especificação da Entrega 2, seção 8.9): identificar NUNCA grava posse
+  // sozinho — só depois de "confirmed" é que consultamos o estado real da
+  // coleção, e só o botão explícito abaixo grava algo.
+  const [confirmedCardStatus, setConfirmedCardStatus] = useState(null);
+  const [showAddCopyModal, setShowAddCopyModal] = useState(false);
+
   // Pedido real de quem testou o app: poder ampliar a imagem da carta pra
   // ler o texto nela, em vez de só a miniatura pequena da lista.
   const [expandedRecord, setExpandedRecord] = useState(null);
@@ -366,6 +375,7 @@ export default function ScannerPocScreen() {
     setOcrResult(null);
     setErrorMessage(null);
     setConfirmedRecord(null);
+    setConfirmedCardStatus(null);
     setManualResult(null);
   }, []);
 
@@ -450,11 +460,15 @@ export default function ScannerPocScreen() {
   }, [manualQuery]);
 
   const handleConfirmCandidate = useCallback((record) => {
-    // Confirmação manual explícita do usuário — nunca automática. Este
-    // protótipo só exibe o resultado confirmado; ele NÃO grava nada em
-    // inventário/checklist (isso é escopo do app final, fora desta PoC).
+    // Confirmação manual explícita do usuário — nunca automática. A partir
+    // daqui (Entrega 2, seção 8.9) consultamos o estado REAL da coleção
+    // (cópias já existentes e onde estão, fichários que já tem/precisam
+    // desta impressão) — a identificação em si ainda não grava nada; só o
+    // botão "Já comprei" abaixo registra uma cópia de verdade.
     setConfirmedRecord(record);
+    setConfirmedCardStatus(null);
     setPhase("confirmed");
+    collectionProgressService.getConfirmedCardStatus(record).then(setConfirmedCardStatus);
   }, []);
 
   const noneMatchMessage = useMemo(
@@ -686,11 +700,48 @@ export default function ScannerPocScreen() {
                 {confirmedRecord.name} — {confirmedRecord.setName} #{confirmedRecord.localId} (
                 {LANGUAGE_FLAGS[confirmedRecord.sourceLanguage?.toLowerCase()] ?? ""} {confirmedRecord.sourceLanguage?.toUpperCase()})
               </Text>
-              <Text style={styles.captionText}>
-                Este protótipo não grava nada em inventário/checklist — a confirmação aqui serve só para a
-                avaliação da PoC. Isso é escopo do app final.
-              </Text>
-              <AppButton title="Nova captura" onPress={resetToReady} />
+
+              {!confirmedCardStatus && (
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                  <ActivityIndicator size="small" color={COLORS.primary} />
+                  <Text style={styles.captionText}>Consultando seu inventário...</Text>
+                </View>
+              )}
+
+              {confirmedCardStatus && (
+                <View style={{ gap: 6 }}>
+                  {confirmedCardStatus.existingCopies.length > 0 ? (
+                    <>
+                      <Text style={styles.sectionTitle}>Você já tem esta impressão:</Text>
+                      {confirmedCardStatus.existingCopies.map((c) => (
+                        <Text key={c.id} style={styles.captionText}>
+                          • {c.collectionName ? c.collectionName : "Sem fichário"}
+                          {c.pageNumber ? ` · pág. ${c.pageNumber}, bolso ${c.slotIndex}` : c.collectionName ? " · aguardando organização" : ""}
+                        </Text>
+                      ))}
+                    </>
+                  ) : (
+                    <Text style={styles.captionText}>Você ainda não tem nenhuma cópia desta impressão no inventário.</Text>
+                  )}
+
+                  {confirmedCardStatus.collectionsNeedingThis.length > 0 && (
+                    <Text style={styles.captionText}>
+                      Falta para: {confirmedCardStatus.collectionsNeedingThis.map((c) => c.name).join(", ")}
+                    </Text>
+                  )}
+                  {confirmedCardStatus.collectionsCompletedByThis.length > 0 && (
+                    <Text style={[styles.captionText, { color: COLORS.successText }]}>
+                      Já completa: {confirmedCardStatus.collectionsCompletedByThis.map((c) => c.name).join(", ")}
+                    </Text>
+                  )}
+                  {!confirmedCardStatus.speciesAssociation.confirmed && (
+                    <Text style={styles.captionText}>Associação ao Pokémon precisa ser confirmada (se aplicável).</Text>
+                  )}
+                </View>
+              )}
+
+              <AppButton title="Já comprei — registrar no inventário" variant="success" onPress={() => setShowAddCopyModal(true)} />
+              <AppButton title="Nova captura" variant="outline" onPress={resetToReady} />
             </View>
           )}
         </View>
@@ -727,6 +778,14 @@ export default function ScannerPocScreen() {
 
       {imageModal}
       {rawTextModal}
+      <AddCopyModal
+        visible={showAddCopyModal}
+        record={confirmedRecord}
+        onClose={() => setShowAddCopyModal(false)}
+        onSaved={() => {
+          if (confirmedRecord) collectionProgressService.getConfirmedCardStatus(confirmedRecord).then(setConfirmedCardStatus);
+        }}
+      />
     </SafeAreaView>
   );
 }

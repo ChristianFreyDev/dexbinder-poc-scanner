@@ -142,6 +142,26 @@ class ChecklistRepository {
     return this.listItems(collectionId, { includeExcluded: true });
   }
 
+  /**
+   * Acha o item ATIVO cujo alvo bate exatamente com a impressão/espécie
+   * informada (especificação, seção 8.8, passo 5: "oferecer associação
+   * automática a item compatível quando inequívoco"). Nunca cria nada;
+   * devolve null se não houver alvo compatível nesta coleção.
+   */
+  async findMatchingItem(collectionId, { catalogCardKey = null, nationalDexNumber = null, setId = null, localId = null } = {}) {
+    const items = await this.listItems(collectionId, { includeExcluded: false });
+    return (
+      items.find((it) => {
+        if (it.targetType === "pokemon_species") return nationalDexNumber != null && it.nationalDexNumber === nationalDexNumber;
+        if (it.targetType === "catalog_card") {
+          if (it.catalogCardKey) return it.catalogCardKey === catalogCardKey;
+          return it.targetSetSnapshot === setId && it.targetNumberSnapshot === localId;
+        }
+        return false;
+      }) || null
+    );
+  }
+
   /** Prévia pura de regeneração (especificação, seção 5.2) — não aplica nada sozinha. */
   async previewRegeneration(collectionId, freshItemSpecs) {
     const existing = await this.listItems(collectionId, { includeExcluded: true });
