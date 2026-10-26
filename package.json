@@ -27,13 +27,16 @@
     "test:scanner-candidate-search": "node --test scripts/run-scanner-candidate-search-tests.js",
     "test:candidate-ordering": "node --test scripts/run-candidate-ordering-tests.js",
     "test:parse-manual-query": "node --test scripts/run-parse-manual-query-tests.js",
+    "test:catalog-card-key": "node --test scripts/run-catalog-card-key-tests.js",
+    "test:user-migrations": "node --test scripts/run-user-migrations-tests.js",
     "check:jsx": "node scripts/check-jsx-syntax.js",
-    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:catalog-sync-failure-simulation && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run test:national-dex && npm run test:path-utils && npm run test:scanner-candidate-search && npm run test:candidate-ordering && npm run test:parse-manual-query && npm run check:jsx"
+    "test": "npm run test:matching && npm run test:catalog-sync && npm run test:catalog-sync-failure-simulation && npm run test:cron-switch && npm run test:physical-classification && npm run test:catalog-install-decision && npm run test:catalog-row-mapping && npm run test:catalog-index-query && npm run test:catalog-repository && npm run test:national-dex && npm run test:path-utils && npm run test:scanner-candidate-search && npm run test:candidate-ordering && npm run test:parse-manual-query && npm run test:catalog-card-key && npm run test:user-migrations && npm run check:jsx"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
     "expo": "58.0.17",
     "expo-camera": "58.0.12",
+    "expo-crypto": "~58.0.7",
     "expo-dev-client": "~58.0.14",
     "expo-file-system": "~58.0.10",
     "expo-font": "~58.0.10",
