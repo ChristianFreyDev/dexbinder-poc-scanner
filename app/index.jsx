@@ -227,10 +227,12 @@ function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true
         </View>
         <AppButton title="Confirmar" variant="successOutline" compact onPress={() => onConfirm(record)} />
       </View>
-      {/* Pedido do usuário (25/10/2026): os motivos ocupando a largura toda do
-          card (fora da coluna espremida ao lado da miniatura/botão) — menos
-          quebra de linha, card mais baixo. */}
-      <Text style={styles.candidateReasons}>{reasons.map(capitalizeFirst).join(" · ")}</Text>
+      {/* Pedido do usuário (25/10/2026): os motivos abaixo de tudo, mas
+          começando no mesmo ponto em que o nome/expansão começam (não
+          embaixo da miniatura) e indo até a borda direita do card — a
+          miniatura fica sozinha à esquerda, o texto nunca passa por baixo
+          dela. 88 = largura da miniatura (76) + gap da linha acima (12). */}
+      <Text style={[styles.candidateReasons, { marginLeft: 88 }]}>{reasons.map(capitalizeFirst).join(" · ")}</Text>
     </View>
   );
 }
