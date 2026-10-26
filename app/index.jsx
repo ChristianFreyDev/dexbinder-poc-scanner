@@ -199,52 +199,56 @@ function CandidateRow({ candidate, onConfirm, onExpandImage, canLoadImage = true
           de texto (nome/expansão/código/confiança/motivos) fica em fluxo
           normal, do lado dela — sua altura real (que pode passar de 106px
           quando os motivos quebram linha) é que manda, não a da miniatura. */}
-      <View style={{ minHeight: 106 }}>
-        {thumbUrl ? (
-          <TouchableOpacity
-            style={{ position: "absolute", left: 0, top: 0 }}
-            onPress={() => onExpandImage(record)}
-            accessibilityLabel={`Ampliar imagem de ${record.name || "carta"}`}
-          >
-            <View style={styles.candidateThumb}>
-              {canLoadImage && (
-                <Image
-                  source={{ uri: thumbUrl }}
-                  style={{ width: 76, height: 106, borderRadius: 8 }}
-                  resizeMode="contain"
-                  onLoadEnd={handleImageSettled}
-                  onError={handleImageSettled}
-                />
-              )}
-              {imageLoading && (
-                <ActivityIndicator
-                  style={{ position: "absolute", width: 76, height: 106 }}
-                  color={COLORS.primary}
-                  size="small"
-                />
-              )}
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <View style={[styles.candidateThumb, styles.candidateThumbPlaceholder, { position: "absolute", left: 0, top: 0 }]}>
-            <Text style={{ fontSize: 10, color: COLORS.textMuted, textAlign: "center" }}>sem{"\n"}imagem</Text>
-          </View>
-        )}
-        <View style={{ marginLeft: 88, gap: 4 }}>
-          <View style={{ flexDirection: "row", gap: 12, alignItems: "flex-start" }}>
-            <View style={{ flex: 1, gap: 4 }}>
-              <Text style={styles.candidateName}>{record.name || "(sem nome)"}</Text>
-              <Text style={styles.candidateSet}>{record.setName || record.setId || "Expansão desconhecida"}</Text>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-                {cardCodeLine ? <Text style={styles.candidateMeta}>{cardCodeLine} ·</Text> : null}
-                <LanguageTag code={record.sourceLanguage} />
+      {/* Pedido do usuário (25/10/2026): o botão "Confirmar" deve ficar
+          sempre no meio/centro vertical do card — movido pra fora do bloco
+          de texto, como irmão dele numa linha com alignItems:"center", que
+          centraliza contra a altura real desse bloco (miniatura OU texto+
+          motivos, o que for mais alto — pode passar de 106px quando os
+          motivos quebram linha). */}
+      <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+        <View style={{ flex: 1, minHeight: 106 }}>
+          {thumbUrl ? (
+            <TouchableOpacity
+              style={{ position: "absolute", left: 0, top: 0 }}
+              onPress={() => onExpandImage(record)}
+              accessibilityLabel={`Ampliar imagem de ${record.name || "carta"}`}
+            >
+              <View style={styles.candidateThumb}>
+                {canLoadImage && (
+                  <Image
+                    source={{ uri: thumbUrl }}
+                    style={{ width: 76, height: 106, borderRadius: 8 }}
+                    resizeMode="contain"
+                    onLoadEnd={handleImageSettled}
+                    onError={handleImageSettled}
+                  />
+                )}
+                {imageLoading && (
+                  <ActivityIndicator
+                    style={{ position: "absolute", width: 76, height: 106 }}
+                    color={COLORS.primary}
+                    size="small"
+                  />
+                )}
               </View>
-              <ScoreBadge score={score} />
+            </TouchableOpacity>
+          ) : (
+            <View style={[styles.candidateThumb, styles.candidateThumbPlaceholder, { position: "absolute", left: 0, top: 0 }]}>
+              <Text style={{ fontSize: 10, color: COLORS.textMuted, textAlign: "center" }}>sem{"\n"}imagem</Text>
             </View>
-            <AppButton title="Confirmar" variant="successOutline" compact onPress={() => onConfirm(record)} />
+          )}
+          <View style={{ marginLeft: 88, gap: 4 }}>
+            <Text style={styles.candidateName}>{record.name || "(sem nome)"}</Text>
+            <Text style={styles.candidateSet}>{record.setName || record.setId || "Expansão desconhecida"}</Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+              {cardCodeLine ? <Text style={styles.candidateMeta}>{cardCodeLine} ·</Text> : null}
+              <LanguageTag code={record.sourceLanguage} />
+            </View>
+            <ScoreBadge score={score} />
+            <Text style={styles.candidateReasons}>{reasons.map(capitalizeFirst).join(" · ")}</Text>
           </View>
-          <Text style={styles.candidateReasons}>{reasons.map(capitalizeFirst).join(" · ")}</Text>
         </View>
+        <AppButton title="Confirmar" variant="successOutline" compact onPress={() => onConfirm(record)} />
       </View>
     </View>
   );
