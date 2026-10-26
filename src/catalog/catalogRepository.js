@@ -169,6 +169,18 @@ class CatalogRepository {
     return catalogIndex.listLanguages(db);
   }
 
+  /** Impressões físicas de UM set×idioma exato — base da elegibilidade de checklist automática (Entrega 2, seção 10). */
+  async getRecordsBySetAndLanguage(setId, lang) {
+    const db = await this._getDb();
+    const records = await catalogIndex.getRecordsBySetAndLanguage(db, setId, lang);
+    return this._filterPhysical(records);
+  }
+
+  async listLanguagesForSet(setId) {
+    const db = await this._getDb();
+    return catalogIndex.listLanguagesForSet(db, setId);
+  }
+
   resolveImage(record, quality = "low") {
     return resolveImageUrl(record, quality);
   }

@@ -120,6 +120,26 @@ async function getStats(db) {
   return { totalRecords: row ? row.c : 0 };
 }
 
+/**
+ * Todas as impressões de UM set num idioma específico (exato, não LIKE) —
+ * usada pela Entrega 2 (assistente de fichário de expansão) para checar se
+ * um par set×idioma está elegível para gerar checklist automática completa
+ * (especificação, seção 10: comparar a contagem obtida contra
+ * set_official/set_total reais).
+ */
+async function getRecordsBySetAndLanguage(db, setId, lang) {
+  const rows = await db.getAllAsync(`SELECT * FROM card_index WHERE set_id = ? AND source_language = ?`, [setId, lang]);
+  return rows.map(mapRow);
+}
+
+/** Idiomas em que UM set específico tem pelo menos uma impressão sincronizada. */
+async function listLanguagesForSet(db, setId) {
+  const rows = await db.getAllAsync(`SELECT DISTINCT source_language FROM card_index WHERE set_id = ? ORDER BY source_language`, [
+    setId,
+  ]);
+  return rows.map((r) => r.source_language);
+}
+
 module.exports = {
   openSyncedCatalogDb,
   getAllRecords,
@@ -130,6 +150,8 @@ module.exports = {
   listSets,
   listLanguages,
   getStats,
+  getRecordsBySetAndLanguage,
+  listLanguagesForSet,
   mapRow,
   buildNumberCandidates,
 };
