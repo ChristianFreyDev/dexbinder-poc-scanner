@@ -13,18 +13,33 @@
  *
  * `require("expo-crypto")` lança no Node puro (mesma limitação documentada em
  * catalogSync.js para expo-file-system/expo-sqlite: o módulo nativo não
- * existe fora do runtime React Native) — por isso o fallback para o
- * `crypto.randomUUID()` nativo do Node, que existe desde o Node 19 e é usado
- * só nos testes automatizados (nunca no app rodando no celular).
+ * existe fora do runtime React Native). ACHADO REAL (`npx expo export`,
+ * 26/10/2026): diferente de expo-file-system/expo-sqlite, um fallback para
+ * `require("crypto")` (módulo nativo do Node) QUEBRA O BUNDLE DE VERDADE —
+ * o Metro resolve `require()` estaticamente na montagem do grafo de
+ * dependências, antes de qualquer execução, e falha com "Unable to resolve
+ * module crypto" mesmo o require estando dentro de um try/catch nunca
+ * alcançado em produção. Por isso o fallback aqui é 100% JavaScript puro
+ * (v4 UUID via Math.random, sem nenhum módulo nativo) — usado só nos testes
+ * automatizados em Node; o app no celular sempre usa o Crypto.randomUUID()
+ * real do expo-crypto.
  */
+
+function randomUuidV4Fallback() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 function generateId() {
   try {
     const { randomUUID } = require("expo-crypto");
     return randomUUID();
   } catch {
-    return require("crypto").randomUUID();
+    return randomUuidV4Fallback();
   }
 }
 
-module.exports = { generateId };
+module.exports = { generateId, randomUuidV4Fallback };
