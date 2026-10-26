@@ -837,7 +837,7 @@ const styles = StyleSheet.create({
   candidateReasons: {
     color: COLORS.textMuted,
     fontSize: 11,
-    marginTop: 8,
+    marginTop: 4,
   },
   badge: {
     alignSelf: "flex-start",
