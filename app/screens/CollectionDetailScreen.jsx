@@ -6,7 +6,7 @@
  * (reports/delivery-2.md): as regras de posição únicas já são garantidas
  * pelo repositório/índice do banco; o que muda aqui é só a apresentação.
  */
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { COLORS } from "../theme";
 import { AppButton } from "../components/AppButton";
@@ -123,6 +123,8 @@ export function CollectionDetailScreen({ collectionId, onBack }) {
   const [confirmedLinksByCardKey, setConfirmedLinksByCardKey] = useState(new Map());
   const [progress, setProgress] = useState(null);
   const [tab, setTab] = useState("checklist"); // "checklist" | "copies"
+  const [checklistFilter, setChecklistFilter] = useState("all"); // "all" | "completed" | "missing"
+  const [checklistQuery, setChecklistQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [addCopyRecord, setAddCopyRecord] = useState(null);
   const [notice, setNotice] = useState(null);
@@ -151,6 +153,18 @@ export function CollectionDetailScreen({ collectionId, onBack }) {
   // reimplementada aqui) — ver src/domain/progressCalculations.js.
   const ownership = buildOwnershipIndex(copies, confirmedLinksByCardKey);
   const isItemCompleted = (item) => isItemComplete(item, ownership);
+
+  const visibleItems = useMemo(() => {
+    const q = checklistQuery.trim().toLowerCase();
+    return items.filter((item) => {
+      const completed = isItemCompleted(item);
+      if (checklistFilter === "completed" && !completed) return false;
+      if (checklistFilter === "missing" && completed) return false;
+      if (!q) return true;
+      return (item.targetLabelSnapshot || "").toLowerCase().includes(q) || String(item.nationalDexNumber ?? "").includes(q);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items, checklistFilter, checklistQuery, copies, confirmedLinksByCardKey]);
 
   const handleAddCopyForItem = async (item) => {
     const record = await findRecordForItem(item);
@@ -223,13 +237,35 @@ export function CollectionDetailScreen({ collectionId, onBack }) {
       </View>
 
       {tab === "checklist" && (
-        <FlatList
-          data={items}
-          keyExtractor={(i) => i.id}
-          contentContainerStyle={{ padding: 16, gap: 8 }}
-          renderItem={({ item }) => <ChecklistRow item={item} completed={isItemCompleted(item)} onAddCopy={handleAddCopyForItem} onRemove={handleRemoveItem} />}
-          ListEmptyComponent={<Text style={styles.bodyText}>Checklist vazia.</Text>}
-        />
+        <>
+          <View style={{ paddingHorizontal: 16, paddingTop: 12, gap: 8 }}>
+            <TextInput
+              value={checklistQuery}
+              onChangeText={setChecklistQuery}
+              placeholder="Buscar na checklist"
+              placeholderTextColor={COLORS.textMuted}
+              style={styles.searchInput}
+            />
+            <View style={{ flexDirection: "row", gap: 8 }}>
+              {[
+                { key: "all", label: "Todos" },
+                { key: "completed", label: "Completos" },
+                { key: "missing", label: "Faltantes" },
+              ].map((f) => (
+                <Pressable key={f.key} onPress={() => setChecklistFilter(f.key)} style={[styles.filterChip, checklistFilter === f.key && styles.filterChipActive]}>
+                  <Text style={[styles.filterChipText, checklistFilter === f.key && styles.filterChipTextActive]}>{f.label}</Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+          <FlatList
+            data={visibleItems}
+            keyExtractor={(i) => i.id}
+            contentContainerStyle={{ padding: 16, gap: 8 }}
+            renderItem={({ item }) => <ChecklistRow item={item} completed={isItemCompleted(item)} onAddCopy={handleAddCopyForItem} onRemove={handleRemoveItem} />}
+            ListEmptyComponent={<Text style={styles.bodyText}>Nenhum item encontrado para este filtro/busca.</Text>}
+          />
+        </>
       )}
 
       {tab === "copies" && (
@@ -300,4 +336,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   noticeText: { color: COLORS.warningText, fontSize: 12, flex: 1 },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.surface,
+    color: COLORS.textPrimary,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    fontSize: 13,
+  },
+  filterChip: { borderWidth: 1, borderColor: COLORS.border, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6 },
+  filterChipActive: { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
+  filterChipText: { color: COLORS.textSecondary, fontSize: 12 },
+  filterChipTextActive: { color: "#FFFFFF", fontWeight: "700" },
 });

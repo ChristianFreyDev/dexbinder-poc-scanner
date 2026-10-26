@@ -1,11 +1,12 @@
 # poc-catalog-scanner — DexBinder
 
-Este repositório tem duas camadas:
+Este repositório tem três camadas:
 
 - **Entrega 0** — uma PoC isolada e descartável que respondeu, com evidência real, se o catálogo TCGdex serve como base confiável e se câmera+OCR no dispositivo geram candidatos úteis. Relatório completo: [`reports/decision.md`](reports/decision.md).
-- **Entrega 1** (atual) — primeira base real do app: catálogo completo sincronizado e pesquisável localmente, cadastro mestre da Pokédex Nacional (1025 espécies), navegação de 5 áreas, e o scanner da Entrega 0 ligado ao catálogo completo (sem mais o bundle de teste de 58 cartas). Relatório completo: [`reports/delivery-1.md`](reports/delivery-1.md).
+- **Entrega 1** — primeira base real do app: catálogo completo sincronizado e pesquisável localmente, cadastro mestre da Pokédex Nacional (1025 espécies), navegação de 5 áreas, e o scanner da Entrega 0 ligado ao catálogo completo (sem mais o bundle de teste de 58 cartas). Relatório completo: [`reports/delivery-1.md`](reports/delivery-1.md).
+- **Entrega 2** (atual) — persistência local pessoal (SQLite próprio, separado do catálogo público): CRUD de fichários, geração/edição de checklists, registro individual de cópias físicas com localização por página/bolso, progresso real de fichário/Pokédex global/inventário, e integração do estado da coleção ao resultado confirmado do Garimpo. Relatório completo: [`reports/delivery-2.md`](reports/delivery-2.md).
 
-**Leia primeiro:** [`reports/delivery-1.md`](reports/delivery-1.md) para o estado atual (o que está pronto, o que não está, veredito por área) e [`reports/decision.md`](reports/decision.md) para o histórico/validação original da Entrega 0.
+**Leia primeiro:** [`reports/delivery-2.md`](reports/delivery-2.md) para o estado atual (o que está pronto, o que não está, veredito por área), [`reports/delivery-1.md`](reports/delivery-1.md) para o histórico da Entrega 1 e [`reports/decision.md`](reports/decision.md) para o histórico/validação original da Entrega 0.
 
 ## O que roda agora, sem nenhum dispositivo Android
 
@@ -35,8 +36,10 @@ npm run test:matching
 # Verifica a sintaxe JSX/JS real do app (sem precisar instalar o React Native inteiro)
 npm run check:jsx
 
-# Tudo junto: 94 testes (matching, sincronização/instalação do catálogo, consultas,
-# repositório, Pokédex Nacional) + checagem de sintaxe JSX
+# Tudo junto: 226 testes (matching, sincronização/instalação do catálogo, consultas,
+# repositório de catálogo, Pokédex Nacional, identidade de carta, migrações/repositórios
+# pessoais da Entrega 2, cálculos de progresso, geração de checklist, elegibilidade de
+# expansão) + checagem de sintaxe JSX
 npm test
 ```
 
@@ -118,13 +121,47 @@ Todos têm modo de amostra pequena por padrão (sem `--full`/`--batch`) — segu
 
 **Miniaturas (`.github/workflows/sync-thumbnails.yml`, novo)**: roda de hora em hora, mas só baixa imagem de verdade DEPOIS que o banco de metadados completar o primeiro ciclo inteiro (checa o manifesto publicado por `sync-catalog.yml` antes de fazer qualquer coisa — enquanto não completar, cada execução só faz essa checagem e não baixa nenhuma imagem). Publica o progresso como assets da Release `catalog-thumbnails` deste repositório, mesmo padrão resumível/idempotente do sync de metadados.
 
-**CI automático**: `.github/workflows/test.yml` roda `npm test` (hoje 44 testes + checagem JSX) a cada push/PR em `master`.
+**CI automático**: `.github/workflows/test.yml` roda `npm test` (hoje 226 testes + checagem JSX) a cada push/PR em `master`.
 
 **Redução automática da frequência**: quando o manifesto marca `complete: true` pela primeira vez (todos os pares set×idioma sincronizados), o próprio workflow `sync-catalog.yml` reduz sua cadência de hora em hora pra cada 3 dias sozinho — editando e commitando seu próprio cron (`scripts/maybe-slow-down-cron.js`, lógica testada em `src/automation/cronSwitch.js`). Não depende de ninguém lembrar de editar o YAML na mão.
 
 **Repositório público**: tornado público em 23/10/2026 (ver `reports/decision.md`, seção 11.3) porque o app precisa baixar os assets da Release `catalog-data` sem autenticação — um app publicado não pode ter um token do GitHub embutido só pra isso. Histórico conferido antes: nenhum segredo encontrado.
 
 **`src/storage/catalogSync.js`**: baixa/valida/instala o banco publicado com segurança (`ensureCatalogReady()`, `downloadAndInstallCatalog()`, `checkForUpdate()`, `openSyncedCatalogDb()`), usando `expo-file-system` + `expo-sqlite`. **`src/storage/catalogIndex.js`**: consultas SQL sobre o banco instalado (schema real: `source_card_id, source_language, name, local_id, set_id, set_name, set_serie_id, set_official, set_total, set_printed_code, has_image, image_base_url`). **`src/catalog/catalogRepository.js`**: camada única entre a UI/scanner e o armazenamento (ligada de verdade em `app/index.jsx` e `app/screens/HomeScreen.jsx`), com filtro física/digital/não-confirmada. Lógica pura extraída e testada sem depender de Expo: `catalogSyncDecision.js` (quando baixar de novo), `catalogInstallDecision.js` (quando instalar: checksum + integridade), `catalogRowMapping.js` (mapeamento de linha), `physicalClassification.js` (física/digital/não-confirmada) — mais testes de integração reais contra SQLite de verdade para `catalogIndex.js` e `catalogRepository.js` (`npm run test:catalog-sync`, `test:catalog-install-decision`, `test:catalog-row-mapping`, `test:physical-classification`, `test:catalog-index-query`, `test:catalog-repository`).
+
+## Entrega 2: persistência pessoal (fichários, checklist, inventário)
+
+### Onde os dados ficam
+
+Os dados pessoais (fichários, cópias físicas, associações de espécie) vivem num banco **separado** do catálogo público: `dexbinder_user.db`, no mesmo diretório padrão do expo-sqlite (`defaultDatabaseDirectory`, ex.: `/data/user/0/<pacote>/files/SQLite` no Android). O catálogo público (`dexbinder_catalog.db`, somente leitura, substituído inteiro a cada sincronização) nunca é tocado pelas tabelas pessoais.
+
+**Esta versão não sincroniza entre dispositivos nem exige conta/e-mail** — os dados ficam só neste aparelho (aviso também visível na aba Início). Login/Supabase/nuvem são explicitamente fora do escopo desta entrega (ver `reports/delivery-2.md`, seção de limitações).
+
+### Migrações
+
+`src/storage/userMigrations.js` guarda um array de migrações versionadas (`schema_migrations`, uma linha por versão aplicada). `src/storage/userDb.js` abre o banco e roda as migrações pendentes automaticamente na primeira chamada de qualquer repositório — reabrir o app não duplica nem perde dados (testado: `npm run test:user-migrations`). Rodar uma migração nova só exige adicionar um item ao array `MIGRATIONS`, nunca editar uma já publicada.
+
+### Camadas (nenhuma tela fala SQL diretamente)
+
+- **Identidade de carta** (`src/domain/catalogCardKey.js`): `catalog_card_key` é gerada a partir de provider+idioma+ID da carta+ID do set+`localId`, com serialização escapada (nunca concatenação ingênua) — nunca usa `variantId` do TCGdex nem só `source_card_id` (ver achados reais documentados em `reports/catalog-audit.md`/`reports/delivery-1.md`).
+- **Domínio puro e testável** (`src/domain/`): `gridLayout.js` (grade/posição), `progressCalculations.js` (progresso de fichário/inventário/Pokédex global — nunca duplicado nas telas), `checklistGeneration.js` (geração/regeneração de itens), `expansionEligibility.js` (decide se um set×idioma já está sincronizado o bastante pra checklist automática completa), `collectionValidation.js`, `speciesSuggestion.js` (sugestão de espécie por nome — nunca confirma sozinha).
+- **Repositórios** (`src/collections/`): `CollectionRepository`, `ChecklistRepository`, `PhysicalCopyRepository`, `CardSpeciesRepository` e `CollectionProgressService` (orquestra os quatro + os cálculos puros). Instâncias únicas exportadas em `src/collections/index.js`, mesmo padrão de `catalogRepository`.
+- **Telas**: `app/screens/FichariosScreen.jsx` (lista real), `app/screens/CollectionWizard.jsx` (assistente de criação), `app/screens/CollectionDetailScreen.jsx` (checklist + cópias/posições), `app/components/AddCopyModal.jsx` (fluxo único de "adicionar cópia", compartilhado entre Inventário, detalhe de fichário e Garimpo), `app/screens/InventarioScreen.jsx` e `app/screens/PokedexScreen.jsx` atualizados com dados reais, `app/screens/HomeScreen.jsx` com contadores reais, e `app/index.jsx` (Garimpo) com o botão **"Já comprei — registrar no inventário"** e a consulta ao estado real da coleção ao confirmar um candidato.
+
+### Regra física central
+
+Uma impressão (carta específica de um set+número+idioma) pode estar em vários fichários — mas cada **cópia física** é um registro próprio, com no máximo um fichário e um bolso por vez (garantido por índices únicos parciais reais no SQLite, não só por convenção de código — ver `src/storage/userMigrations.js`). Transferir uma cópia muda sua localização; nunca cria ou apaga um registro.
+
+### UUID
+
+`expo-crypto` (instalado nesta entrega, `npx expo install expo-crypto`) fornece `Crypto.randomUUID()` real para todo ID pessoal (`src/domain/generateId.js`). Achado real verificando o build (`npx expo export`): um fallback para `require("crypto")` (módulo nativo do Node) QUEBRA o bundle de verdade — o Metro resolve `require()` estaticamente, mesmo dentro de um try/catch nunca alcançado em produção — por isso o fallback usado nos testes em Node é 100% JavaScript puro (sem nenhum módulo nativo).
+
+### Troubleshooting (Entrega 2)
+
+- **"Fichário não aparece depois de criado"**: a lista (`FichariosScreen`) só recarrega ao entrar na tela — volte para "Fichários" na navegação inferior.
+- **"Bolso já ocupado" ao mover uma cópia**: é o índice único parcial fazendo seu trabalho — escolha outro bolso ou mova a cópia ocupante primeiro.
+- **Checklist de expansão bloqueada no assistente**: o set×idioma escolhido ainda não tem todas as impressões sincronizadas localmente (`sync-catalog.yml` roda de hora em hora); aguarde ou crie um fichário Personalizado enquanto isso.
+- **Nova dependência nativa (`expo-crypto`)**: como `@expo/vector-icons` na Entrega 1, pode não exigir um APK de dev-client novo (é JS-only por cima de um módulo nativo simples do próprio Expo), mas se o app não conseguir gerar IDs num build de dev-client antigo, gere um novo via `build-android-dev.yml`.
 
 ## Estrutura
 
@@ -134,11 +171,15 @@ app/Navigation.jsx                # navegação de 5 abas (Início/Fichários/Po
 app/theme.js                      # paleta de cores compartilhada entre as telas
 app/components/AppButton.jsx      # botão compartilhado
 app/components/CatalogStatusBanner.jsx  # estado da sincronização do catálogo (usado na Home e no Garimpo)
-app/screens/HomeScreen.jsx        # Início: estado/versão do catálogo, "tentar de novo", sem números inventados
-app/screens/FichariosScreen.jsx   # estado vazio honesto (CRUD fora do escopo da Entrega 1)
-app/screens/PokedexScreen.jsx     # lista as 1025 espécies reais do cadastro mestre
-app/screens/InventarioScreen.jsx  # estado vazio honesto (fora do escopo da Entrega 1)
-app/index.jsx                    # aba Garimpo: permissão → captura → prévia/refazer → OCR → candidatos (catálogo completo) → confirmação manual → busca manual
+app/components/ScreenHeader.jsx    # cabeçalho padrão de topo de aba (Entrega 1)
+app/components/AddCopyModal.jsx    # (Entrega 2) fluxo único de "adicionar cópia física", usado por Inventário/detalhe de fichário/Garimpo
+app/screens/HomeScreen.jsx        # Início: estado/versão do catálogo + contadores reais de fichários/inventário/Pokédex (Entrega 2)
+app/screens/FichariosScreen.jsx   # (Entrega 2) lista real de fichários, progresso, arquivar/restaurar/excluir
+app/screens/CollectionWizard.jsx  # (Entrega 2) assistente de criação de fichário (tipo -> origem/escopo -> grade -> prévia)
+app/screens/CollectionDetailScreen.jsx  # (Entrega 2) detalhe do fichário: checklist + cópias/posições
+app/screens/PokedexScreen.jsx     # lista as 1025 espécies reais do cadastro mestre + progresso/associação real (Entrega 2)
+app/screens/InventarioScreen.jsx  # (Entrega 2) totais reais, filtro por fichário/"Sem fichário", mover/remover cópia
+app/index.jsx                    # aba Garimpo: permissão → captura → prévia/refazer → OCR → candidatos (catálogo completo) → confirmação manual → consulta ao inventário real + "Já comprei" (Entrega 2) → busca manual
 app/assets/catalog-index.json    # bundle estático de 58 cartas da Entrega 0 — histórico, não usado mais pelo app real
 app/assets/data/national-dex.json # cadastro mestre da Pokédex Nacional (1025 espécies, PokeAPI), gerado por scripts/build-national-dex.js
 android/                        # gerado por `expo prebuild` nesta sessão (config real, não hipotética)
@@ -160,6 +201,23 @@ src/storage/catalogInstallDecision.js # lógica pura: quando instalar (checksum 
 src/storage/catalogIndex.js      # consultas SQL sobre o catálogo completo instalado (schema real)
 src/storage/catalogRowMapping.js # lógica pura: mapeia linha do banco -> registro usado por rankCandidates()
 src/storage/physicalClassification.js  # física / digital / não-confirmada (nunca silenciosa)
+src/storage/userDb.js            # (Entrega 2) abre o banco pessoal (dexbinder_user.db) e roda as migrações
+src/storage/userMigrations.js    # (Entrega 2) schema versionado do banco pessoal (fichários/checklist/cópias/espécies)
+src/storage/userRowMapping.js    # (Entrega 2) mapeia linhas cruas das tabelas pessoais para objetos camelCase
+src/domain/generateId.js         # (Entrega 2) UUID real (expo-crypto) com fallback 100% JS para os testes em Node
+src/domain/catalogCardKey.js     # (Entrega 2) identidade estável de impressão (nunca variantId nem só source_card_id)
+src/domain/collectionValidation.js # (Entrega 2) validação pura de nome/grade ao criar/editar fichário
+src/domain/gridLayout.js         # (Entrega 2) modelos de grade, posição de slot, prévia de impacto ao redimensionar
+src/domain/checklistGeneration.js # (Entrega 2) geração/regeneração de itens de checklist (espécie e impressão)
+src/domain/expansionEligibility.js # (Entrega 2) decide se um set×idioma já está sincronizado o bastante pra checklist automática
+src/domain/progressCalculations.js # (Entrega 2) progresso de fichário/inventário/Pokédex global — centralizado, nunca duplicado na UI
+src/domain/speciesSuggestion.js  # (Entrega 2) sugestão (nunca confirmação automática) de espécie por nome da carta
+src/collections/collectionRepository.js   # (Entrega 2) CRUD de fichários
+src/collections/checklistRepository.js    # (Entrega 2) itens de checklist (gerar/adicionar/remover/reordenar/regenerar)
+src/collections/physicalCopyRepository.js # (Entrega 2) cópias físicas (adicionar/mover/trocar/transferir/remover)
+src/collections/cardSpeciesRepository.js  # (Entrega 2) associação carta->espécie (confirmed/suggested)
+src/collections/collectionProgressService.js # (Entrega 2) orquestra os repositórios acima + estado real pro Garimpo
+src/collections/index.js         # (Entrega 2) instâncias únicas dos repositórios, mesmo padrão de catalogRepository
 scripts/build-national-dex.js    # busca as 1025 espécies reais da PokeAPI, gera app/assets/data/national-dex.json
 scripts/run-catalog-audit.js     # roda a auditoria real do catálogo (ver reports/catalog-audit.md)
 scripts/build-series-map.js      # consulta real a /series e /series/{id}; gera o mapa set->série
@@ -176,6 +234,19 @@ scripts/run-catalog-row-mapping-tests.js      # 6 testes (mapeamento de linha re
 scripts/run-catalog-index-query-tests.js      # 13 testes de integração reais (SQLite de verdade) das consultas do catálogo
 scripts/run-catalog-repository-tests.js       # 10 testes de integração reais do CatalogRepository (física/digital/scanner)
 scripts/run-national-dex-tests.js             # 10 testes reais contra o cadastro mestre de 1025 espécies gerado de verdade
+scripts/run-catalog-card-key-tests.js         # (Entrega 2) 10 testes de identidade de impressão (sem colisão, mesmo com delimitador nos dados)
+scripts/run-user-migrations-tests.js          # (Entrega 2) 7 testes do schema pessoal contra SQLite de verdade (constraints reais, idempotência)
+scripts/run-grid-layout-tests.js              # (Entrega 2) 8 testes de grade/posição/prévia de redimensionamento
+scripts/run-progress-calculations-tests.js    # (Entrega 2) 15 testes de progresso de fichário/inventário/Pokédex global
+scripts/run-checklist-generation-tests.js     # (Entrega 2) 14 testes de geração/regeneração de checklist
+scripts/run-collection-repository-tests.js    # (Entrega 2) 9 testes reais do CollectionRepository (CRUD, exclusão segura)
+scripts/run-checklist-repository-tests.js     # (Entrega 2) 10 testes reais do ChecklistRepository (gerar/regenerar/matching)
+scripts/run-physical-copy-repository-tests.js # (Entrega 2) 10 testes reais do PhysicalCopyRepository (mover/trocar/transferir)
+scripts/run-card-species-repository-tests.js  # (Entrega 2) 7 testes reais do CardSpeciesRepository (confirmed/suggested)
+scripts/run-collection-progress-service-tests.js # (Entrega 2) 6 testes de integração ponta a ponta (Garimpo->inventário->checklist->Pokédex)
+scripts/run-expansion-eligibility-tests.js    # (Entrega 2) 5 testes de elegibilidade de set×idioma pra checklist automática
+scripts/testHelpers/sqliteTestAdapter.js      # (Entrega 2) adaptador reutilizável better-sqlite3 -> interface async do expo-sqlite
+scripts/testHelpers/userTestDb.js             # (Entrega 2) banco de teste em memória já migrado, usado pelos testes de repositório
 scripts/maybe-slow-down-cron.js  # reduz sozinho o cron do sync-catalog.yml quando o catálogo completa (chamado pelo próprio workflow)
 scripts/run-cron-switch-tests.js # 4 testes reais da lógica acima (src/automation/cronSwitch.js)
 scripts/check-jsx-syntax.js      # valida sintaxe JSX real com @babel/parser
@@ -197,11 +268,13 @@ reports/ocr-test-results.csv     # 3 linhas informais reais (ver decision.md 3.1
 - `expo-camera@58.0.12`, `expo-image-manipulator@58.0.15`, `expo-sqlite@58.0.13`, `expo-dev-client@~58.0.14` — versões reais da família SDK 58.
 - `rn-mlkit-ocr@0.3.1` — candidato primário de OCR (ver `reports/decision.md`, seção 5, para a comparação com a alternativa e as ressalvas sobre New Architecture).
 - `@expo/vector-icons@^15.0.2` — ícones da interface (Feather/MaterialCommunityIcons); usa `expo-font`, já incluído como dependência transitiva do pacote `expo` e autolinkado — não exigiu gerar um APK novo.
+- `expo-crypto@58.0.7` (Entrega 2) — `Crypto.randomUUID()` real para IDs pessoais; instalado via `npx expo install expo-crypto` (versão confirmada compatível com o SDK 58 pela própria Expo).
 
 ## Importante
 
-- A Entrega 0 foi um protótipo de validação técnica descartável; a Entrega 1 é a primeira base real do app (preserva o código validado da Entrega 0, não o reimplementa do zero).
+- A Entrega 0 foi um protótipo de validação técnica descartável; a Entrega 1 é a primeira base real do app (preserva o código validado da Entrega 0, não o reimplementa do zero); a Entrega 2 liga Fichários/Pokédex/Inventário a persistência local real, sem reimplementar nada da Entrega 1.
 - Nenhuma credencial foi usada (TCGdex e PokeAPI são públicas, sem autenticação; a Release `catalog-data` deste repositório também é pública, sem token embutido no app).
-- O scanner (aba Garimpo) **identifica e consulta**, mas não grava nada em Fichários/Inventário ainda — isso é escopo de entregas futuras (ver `reports/delivery-1.md`, seção "Fora do escopo").
+- O scanner (aba Garimpo) identifica, consulta o estado real da coleção e, só com confirmação explícita do usuário ("Já comprei — registrar no inventário"), grava uma cópia física — nunca por uma simples identificação (Entrega 2, seção 8.9).
 - Direitos de imagem/marca Pokémon **não foram avaliados** (ver seção 15 da especificação original) — continuam bloqueando qualquer publicação comercial. Mesma ressalva vale para os dados da PokeAPI (Pokédex Nacional): fonte comunitária, sem licença comercial formal.
-- A PokeAPI não tem nomes de espécie em português — achado real, documentado em `app/assets/data/national-dex.json` e `reports/delivery-1.md`.
+- A PokeAPI não tem nomes de espécie em português — achado real, documentado em `app/assets/data/national-dex.json` e `reports/delivery-1.md`. A interface da Pokédex continua mostrando o nome disponível (inglês), nunca uma tradução inventada.
+- Persistência pessoal é só local nesta versão — sem login, conta ou sincronização entre dispositivos (ver seção "Entrega 2" acima e `reports/delivery-2.md` para o detalhamento completo de limitações).
